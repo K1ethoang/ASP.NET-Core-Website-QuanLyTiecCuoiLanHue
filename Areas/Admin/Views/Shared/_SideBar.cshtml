@@ -1,0 +1,82 @@
+﻿<aside class="main-sidebar main-sidebar-custom sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a asp-controller="dashboard" asp-action="index" class="brand-link">
+        <img src="~/admin/dist/img/AdminLTELogo.png"
+             alt="AdminLTE Logo"
+             class="brand-image img-circle elevation-3"
+             style="opacity: 0.8" />
+        <span class="brand-text font-weight-light">Lan Huệ</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- SidebarSearch Form -->
+        <div class="form-inline">
+            <div class="input-group" data-widget="sidebar-search">
+                <input class="form-control form-control-sidebar"
+                       type="search"
+                       placeholder="Search"
+                       aria-label="Search" />
+                <div class="input-group-append">
+                    <button class="btn btn-sidebar">
+                        <i class="fas fa-search fa-fw"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column"
+                data-widget="treeview"
+                role="menu"
+                data-accordion="false">
+                <!-- Add icons to the links using the .nav-icon class
+                 with font-awesome or any other icon font library -->
+                <li class="nav-item">
+                    <a asp-controller="dashboard" asp-action="index" class="nav-link @Url.MakeActiveClass("dashboard","index")">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>
+                            bảng điều khiển
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item @Url.MakeMenuOpenClass("parties")">
+                    <a asp-controller="parties" asp-action="index" class="nav-link @Url.MakeActiveClass("parties","")">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Tiệc
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a asp-controller="parties" asp-action="index" class="nav-link @Url.MakeActiveClass("parties","index")">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Danh sách tiệc</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-controller="parties" asp-action="create" class="nav-link @Url.MakeActiveClass("parties","create")">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Thêm tiệc</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+
+    <div class="sidebar-custom">
+        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+            <button type="submit" class="btn btn-danger hide-on-collapse">
+                <i class="fas fa-door-open"></i>
+                <span>Đăng xuất</span>
+            </button>
+        </form>
+    </div>
+    <!-- /.sidebar-custom -->
+</aside>

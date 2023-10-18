@@ -9,5 +9,6 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Data
             : base(options)
         {
         }
+
     }
 }
