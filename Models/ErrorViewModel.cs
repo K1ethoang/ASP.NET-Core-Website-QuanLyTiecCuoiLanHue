@@ -8,5 +8,10 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Models
         }
 
         public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
+
+        public string? ErrorMessage
+        {
+            get; set;
+        } = string.Empty;
     }
 }
