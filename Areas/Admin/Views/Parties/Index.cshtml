@@ -1,3 +1,5 @@
+﻿@model IEnumerable<ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Models.Party>
+
 ﻿@{
     ViewData["Title"] = "Danh sách tiệc";
 }
@@ -5,13 +7,21 @@
 <!-- Content Header (Page header) -->
 <div class="content-header">
     <div class="container-fluid">
-        <div class="row mb-12">
-            <div class="col-sm-12">
-                <h1 class="m-0">Danh sách tiệc</h1>
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">@ViewData["Title"]</h1>
+            </div>
+            <div class="col-sm-6">
+                <a asp-action="create" class="btn btn-outline-primary float-sm-right">
+                        <i class="fas fa-plus"></i>
+                        Thêm tiệc
+                </a>
             </div>
         </div>
-    </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.container-fluid -->
 </div>
+<!-- /.content-header -->
 
 <!-- Main content -->
 <section class="content">
@@ -20,55 +30,102 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <table id="example1" class="table table-bordered table-striped">
+                        <table id="table-data" class="table table-bordered table-striped tablas">
                             <thead>
                                 <tr>
-                                    <th>Rendering engine</th>
-                                    <th>Browser</th>
-                                    <th>Platform(s)</th>
-                                    <th>Engine version</th>
-                                    <th>CSS grade</th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.PartyId)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.PartyName)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Quantity)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Date)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Time)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Location)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.PartyType.Name)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Status)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.HasMenu)
+                                    </th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Misc</td>
-                                    <td>Lynx</td>
-                                    <td>Text only</td>
-                                    <td>-</td>
-                                    <td>X</td>
-                                </tr>
-                                <tr>
-                                    <td>Misc</td>
-                                    <td>IE Mobile</td>
-                                    <td>Windows Mobile 6</td>
-                                    <td>-</td>
-                                    <td>C</td>
-                                </tr>
-                                <tr>
-                                    <td>Misc</td>
-                                    <td>PSP browser</td>
-                                    <td>PSP</td>
-                                    <td>-</td>
-                                    <td>C</td>
-                                </tr>
-                                <tr>
-                                    <td>Other browsers</td>
-                                    <td>All others</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>U</td>
-                                </tr>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.PartyId)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.PartyName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Quantity)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Date)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Time)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Location)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.PartyType.Name)
+                                        </td>
+                                        <td>
+                                            @{
+                                                string status = item.Status;
+                                                if (@status.Equals(Party.COMING_SOON))
+                                                {
+                                                    <span class="badge badge-warning">@status</span>
+                                                }
+                                                else if (@status.Equals(Party.GOING_ON))
+                                                {
+                                                    <span class="badge badge-info">@status</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge badge-success">@status</span>
+                                                }
+                                            }
+                                        </td>
+                                        <td>
+                                            @{
+                                                if (item.HasMenu)
+                                                {
+                                                    <span class="badge badge-success">@Party.HAS_MENU</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge badge-warning">@Party.NO_MENU</span>
+                                                }
+                                            }
+                                        </td>
+
+                                        <td>
+                                            <a asp-action="Edit" asp-route-id="@item.PartyId">Edit</a> |
+                                            <a asp-action="Details" asp-route-id="@item.PartyId">Details</a> |
+                                            <a asp-action="Delete" asp-route-id="@item.PartyId">Delete</a>
+                                        </td>
+                                    </tr>
+                                }
                             </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th>Rendering engine</th>
-                                    <th>Browser</th>
-                                    <th>Platform(s)</th>
-                                    <th>Engine version</th>
-                                    <th>CSS grade</th>
-                                </tr>
-                            </tfoot>
                         </table>
                     </div>
                     <!-- /.card-body -->
@@ -82,39 +139,3 @@
     <!-- /.container-fluid -->
 </section>
 <!-- /.content -->
-@section Scripts {
-    <script>
-        $(function () {
-            $("#example1")
-                .DataTable({
-                    responsive: true,
-                    lengthChange: false,
-                    autoWidth: false,
-                    buttons: ["copy", "csv", "excel", "pdf", "print", "colvis"],
-                })
-                .buttons()
-                .container()
-                .appendTo("#example1_wrapper .col-md-6:eq(0)");
-        });
-    </script>
-
-    <script>
-        toastr.success("Thêm thành công", "Tiệc")
-        toastr.warning('Lorem ipsum dolor sit amet, consetetur sadipscing elitr.')
-        toastr.error('Lorem ipsum dolor sit amet, consetetur sadipscing elitr.')
-        toastr.info('Lorem ipsum dolor sit amet, consetetur sadipscing elitr.')
-    </script>
-
-    <script src="~/admin/plugins/datatables/jquery.dataTables.min.js"></script>
-    <script src="~/admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-    <script src="~/admin/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-    <script src="~/admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-    <script src="~/admin/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
-    <script src="~/admin/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
-    <script src="~/admin/plugins/jszip/jszip.min.js"></script>
-    <script src="~/admin/plugins/pdfmake/pdfmake.min.js"></script>
-    <script src="~/admin/plugins/pdfmake/vfs_fonts.js"></script>
-    <script src="~/admin/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
-    <script src="~/admin/plugins/datatables-buttons/js/buttons.print.min.js"></script>
-    <script src="~/admin/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
-}
