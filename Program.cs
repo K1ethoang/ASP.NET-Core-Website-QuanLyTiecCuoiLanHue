@@ -1,5 +1,5 @@
 using ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Data;
-using AspNetCoreHero.ToastNotification.Toastify.Models;
+using ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
@@ -19,6 +19,8 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
+
+            builder.Services.AddDbContext<QlDichVuNauTiecLanHueContext>(options => options.UseSqlServer(connectionString));
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -113,7 +115,6 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue
                     await userManager.AddToRoleAsync(user, "Admin");
                 }
             }
-
 
             app.MapRazorPages();
 

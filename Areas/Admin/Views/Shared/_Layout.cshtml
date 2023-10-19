@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Admin | Lan Huệ</title>
+    <title>@ViewData["Title"] | Lan Huệ</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
@@ -50,7 +50,6 @@
                  height="60"
                  width="60" />
         </div>
-
         <!-- Navbar -->
         @{
             Html.RenderPartial("_Navbar");
@@ -71,9 +70,6 @@
             Html.RenderPartial("_Footer");
         }
         <!-- /.Footer-->
-        <!-- Control Sidebar -->
-        <aside class="control-sidebar control-sidebar-dark">
-            <!-- Control sidebar content goes here -->
         </aside>
         <!-- /.control-sidebar -->
     </div>
@@ -117,7 +113,22 @@
         toastr.options.closeButton = 'true';
         toastr.options.preventDuplicates = 'true';
     </script>
- 
+    <!-- Datatable -->
+    <script src="~/admin/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/admin/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script>
+        $(function () {
+            $("#table-data").DataTable({
+                "language": {
+                    url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/vi.json',
+                },
+                responsive: true,
+                fixedHeader: true,
+            });
+        });
+    </script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>
