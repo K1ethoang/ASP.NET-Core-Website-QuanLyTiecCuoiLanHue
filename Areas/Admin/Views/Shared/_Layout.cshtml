@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>@ViewData["Title"] | Lan Huệ</title>
-
+    <link rel="stylesheet" href="~/css/site.css"/>
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback" />
@@ -51,14 +51,10 @@
                  width="60" />
         </div>
         <!-- Navbar -->
-        @{
-            Html.RenderPartial("_Navbar");
-        }
+        <partial name="_Navbar" />
         <!-- /.navbar -->
         <!-- Main Sidebar Container -->
-        @{
-            Html.RenderPartial("_Sidebar");
-        }
+            <partial name="_Sidebar" />
         <!-- /.Main Sidebar Container -->
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
@@ -66,9 +62,7 @@
         </div>
         <!-- /.content-wrapper -->
         <!-- Footer-->
-        @{
-            Html.RenderPartial("_Footer");
-        }
+        <partial name="_Footer" />
         <!-- /.Footer-->
         </aside>
         <!-- /.control-sidebar -->
@@ -125,11 +119,14 @@
                     url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/vi.json',
                 },
                 responsive: true,
+                // processing: true,
                 fixedHeader: true,
+                scrollCollapse: true,
+                scrollY: '50vh'
+
             });
         });
     </script>
-
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -4,6 +4,7 @@ using System.ComponentModel;
 
 namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Models;
 
+[DisplayName("Loại tiệc")]
 public partial class PartyType
 {
     [DisplayName("Mã loại tiệc")]

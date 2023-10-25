@@ -20,6 +20,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
         }
 
         // GET: Admin/Parties
+        [Route("admin/parties")]
         public async Task<IActionResult> Index()
         {
             var qlDichVuNauTiecLanHueContext = _context.Parties.Include(p => p.Customer).Include(p => p.PartyType);
@@ -49,8 +50,8 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
         // GET: Admin/Parties/Create
         public IActionResult Create()
         {
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CustomerId");
-            ViewData["PartyTypeId"] = new SelectList(_context.PartyTypes, "PartyTypeId", "PartyTypeId");
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CusName");
+            ViewData["PartyTypeId"] = new SelectList(_context.PartyTypes, "PartyTypeId", "Name");
             return View();
         }
 
@@ -67,8 +68,8 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CustomerId", party.CustomerId);
-            ViewData["PartyTypeId"] = new SelectList(_context.PartyTypes, "PartyTypeId", "PartyTypeId", party.PartyTypeId);
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CusName", party.CustomerId);
+            ViewData["PartyTypeId"] = new SelectList(_context.PartyTypes, "PartyTypeId", "Name", party.PartyTypeId);
             return View(party);
         }
 
@@ -85,8 +86,8 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CustomerId", party.CustomerId);
-            ViewData["PartyTypeId"] = new SelectList(_context.PartyTypes, "PartyTypeId", "PartyTypeId", party.PartyTypeId);
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CusName", party.CustomerId);
+            ViewData["PartyTypeId"] = new SelectList(_context.PartyTypes, "PartyTypeId", "Name", party.PartyTypeId);
             return View(party);
         }
 
@@ -122,8 +123,8 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CustomerId", party.CustomerId);
-            ViewData["PartyTypeId"] = new SelectList(_context.PartyTypes, "PartyTypeId", "PartyTypeId", party.PartyTypeId);
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CusName", party.CustomerId);
+            ViewData["PartyTypeId"] = new SelectList(_context.PartyTypes, "PartyTypeId", "Name", party.PartyTypeId);
             return View(party);
         }
 
