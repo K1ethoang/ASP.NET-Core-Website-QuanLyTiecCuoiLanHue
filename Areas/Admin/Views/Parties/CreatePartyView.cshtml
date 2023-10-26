@@ -1,0 +1,89 @@
+﻿@model ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels.PartyViewModel
+
+@{
+    ViewData["Title"] = "CreatePartyView";
+}
+
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">@ViewData["Title"]</h1>
+            </div>
+            <div class="col-sm-6">
+                <div class="float-sm-right">
+                    <a asp-action="index">
+                        @* <i class="fas fa-arrow-left"></i> *@
+                        Danh sách tiệc
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</div>
+
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row mb-12">
+            <div class="col-md-4">
+                <form method="post" asp-action="create" asp-controller="parties" autocomplete="off">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group required">
+                        <label asp-for="CustomerId" class="control-label"></label>
+                        <select asp-for="CustomerId" class="form-control" asp-items="ViewBag.CustomerId"></select>
+                        <span asp-validation-for="CustomerId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group required">
+                        <label asp-for="PartyName" class="control-label"></label>
+                        <input asp-for="PartyName" class="form-control" placeholder="Nhập tên tiệc..." />
+                        <span asp-validation-for="PartyName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group required">
+                        <label asp-for="Quantity" class="control-label"></label>
+                        <input asp-for="Quantity" class="form-control" placeholder="Nhập số bàn..." />
+                        <span asp-validation-for="Quantity" class="text-danger"></span>
+                    </div>
+                    <div class="form-group required">
+                        <label asp-for="Date" class="control-label"></label>
+                        <input asp-for="Date" class="form-control" />
+                        <span asp-validation-for="Date" class="text-danger"></span>
+                    </div>
+                    <div class="form-group required">
+                        <label asp-for="Time" class="control-label"></label>
+                        <input asp-for="Time" class="form-control" />
+                        <span asp-validation-for="Time" class="text-danger"></span>
+                    </div>
+                    <div class="form-group required">
+                        <label asp-for="Location" class="control-label"></label>
+                        <input asp-for="Location" class="form-control" placeholder="Nhập nơi tổ chức..." />
+                        <span asp-validation-for="Location" class="text-danger"></span>
+                    </div>
+                    <div class="form-group required">
+                        <label asp-for="PartyTypeId" class="control-label"></label>
+                        <select asp-for="PartyTypeId" class="form-control" asp-items="ViewBag.PartyTypeId"></select>
+                        <span asp-validation-for="PartyTypeId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Note" class="control-label"></label>
+                        <textarea asp-for="Note" class="form-control" placeholder="Nhập ghi chú..."></textarea>
+                        <span asp-validation-for="Note" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Tạo tiệc" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

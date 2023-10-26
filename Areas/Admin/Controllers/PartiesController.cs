@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Models;
+using NuGet.Protocol;
+using ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels;
 
 namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 {
@@ -50,9 +52,10 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
         // GET: Admin/Parties/Create
         public IActionResult Create()
         {
+            PartyViewModel vm = new PartyViewModel();
             ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CusName");
             ViewData["PartyTypeId"] = new SelectList(_context.PartyTypes, "PartyTypeId", "Name");
-            return View();
+            return View("CreatePartyView", vm);
         }
 
         // POST: Admin/Parties/Create
@@ -60,17 +63,18 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PartyId,PartyName,Quantity,Date,Time,Location,Note,Status,HasMenu,PartyTypeId,CustomerId")] Party party)
+        public async Task<IActionResult> Create([Bind("PartyId,PartyName,Quantity,Date,Time,Location,Note,PartyTypeId,CustomerId")] PartyViewModel vm)
         {
             if (ModelState.IsValid)
             {
+                Party party = vm.ToParty(context: _context);
                 _context.Add(party);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CusName", party.CustomerId);
-            ViewData["PartyTypeId"] = new SelectList(_context.PartyTypes, "PartyTypeId", "Name", party.PartyTypeId);
-            return View(party);
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CusName", vm.CustomerId);
+            ViewData["PartyTypeId"] = new SelectList(_context.PartyTypes, "PartyTypeId", "Name", vm.PartyTypeId);
+            return View("CreatePartyView", vm);
         }
 
         // GET: Admin/Parties/Edit/5
@@ -162,14 +166,14 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
             {
                 _context.Parties.Remove(party);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool PartyExists(int id)
         {
-          return (_context.Parties?.Any(e => e.PartyId == id)).GetValueOrDefault();
+            return (_context.Parties?.Any(e => e.PartyId == id)).GetValueOrDefault();
         }
     }
 }
