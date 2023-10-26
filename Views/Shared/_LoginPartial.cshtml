@@ -8,7 +8,7 @@
         @if (User.IsInRole("Admin"))
         {
             <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="admin" asp-controller="dashboard">Xin chào @User.Identity?.Name!</a>
+                <a class="nav-link text-dark" asp-area="admin" asp-controller="dashboard" asp-action="index">Xin chào @User.Identity?.Name!</a>
             </li>
         }
         else

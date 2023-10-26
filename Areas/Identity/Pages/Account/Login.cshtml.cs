@@ -113,6 +113,8 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Identity.Pages.Account
                 var roles = await _userManager.GetRolesAsync(user);
                 if (result.Succeeded)
                 {
+                    if(returnUrl != null)
+                        return LocalRedirect(returnUrl);
                     if (roles.Contains("Admin"))
                     {
                         return RedirectToAction("index", "dashboard", new

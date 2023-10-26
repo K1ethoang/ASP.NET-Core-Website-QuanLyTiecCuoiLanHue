@@ -20,3 +20,29 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+/* custom*/
+.form-group.required .control-label:after {
+    content: "*";
+    color: #dc3545;
+}
+
+.field-validation-error {
+    color: #dc3545;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+input.input-validation-error {
+    border: 1px solid #dc3545;
+}
+
+.validation-summary-errors {
+    color: #e80c4d;
+}
+
+.validation-summary-valid {
+    border: 1px solid #28a745;
+}  

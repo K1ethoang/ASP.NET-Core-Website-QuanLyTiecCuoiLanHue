@@ -2,8 +2,11 @@ using ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Data;
 using ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using System.Globalization;
 using System.Net;
 
 namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue
@@ -30,6 +33,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue
 
             builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
+
             builder.Services.AddMvc(o =>
             {
                 var policy = new AuthorizationPolicyBuilder()
@@ -46,6 +50,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue
             if (app.Environment.IsDevelopment())
             {
                 app.UseMigrationsEndPoint();
+
             }
             else
             {
