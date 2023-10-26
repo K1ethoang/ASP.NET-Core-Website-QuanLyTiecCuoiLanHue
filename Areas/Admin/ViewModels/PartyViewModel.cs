@@ -45,6 +45,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels
             get; set;
         }
         //CustomerId
+        [Required(ErrorMessage = "{0} không được trống")]
         [DisplayName("Khách hàng")]
         public int CustomerId { get; set; }
         //PartyTypeId
