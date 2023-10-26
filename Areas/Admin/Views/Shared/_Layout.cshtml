@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>@ViewData["Title"] | Lan Huệ</title>
-    <link rel="stylesheet" href="~/css/site.css"/>
+    <link rel="stylesheet" href="~/css/site.css" />
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback" />
@@ -39,6 +39,10 @@
           href="~/admin/plugins/datatables-buttons/css/buttons.bootstrap4.min.css" />
     <!-- Toast -->
     <link rel="stylesheet" href="~/admin/plugins/toastr/toastr.min.css">
+    <!-- Select 2 -->
+    <link rel="stylesheet" href="~/admin/plugins/select2/css/select2.min.css">
+    <link rel="stylesheet" href="~/admin/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
@@ -54,7 +58,7 @@
         <partial name="_Navbar" />
         <!-- /.navbar -->
         <!-- Main Sidebar Container -->
-            <partial name="_Sidebar" />
+        <partial name="_Sidebar" />
         <!-- /.Main Sidebar Container -->
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
@@ -112,8 +116,11 @@
     <script src="~/admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
     <script src="~/admin/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
     <script src="~/admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <!-- Select 2-->
+    <script src="~/admin/plugins/select2/js/select2.full.min.js"></script>
+
     <script>
-        $(function () {
+        $(document).ready(function () {
             $("#table-data").DataTable({
                 "language": {
                     url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/vi.json',
@@ -127,6 +134,15 @@
             });
         });
     </script>
-    @await RenderSectionAsync("Scripts", required: false)
+
+    <script>
+        $(document).ready(function () {
+            $(".select2").select2()
+        });
+    </script>
+    @await RenderSectionAsync("Scripts", required: false);
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 </body>
 </html>
