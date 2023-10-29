@@ -21,6 +21,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 		}
 
 		// GET: Admin/Dishes
+		[Route("admin/dishes")]
 		public async Task<IActionResult> Index()
 		{
 			var qlDichVuNauTiecLanHueContext = _context.Dishes.Include(d => d.DishType).Include(d => d.Unit);
@@ -53,9 +54,6 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 			DishViewModel vm = new DishViewModel();
 
 			ViewData["DishTypeId"] = new SelectList(_context.DishTypes,"DishTypeId", "TypeName");
-
-			Console.WriteLine(_context.DishTypes);
-
 			ViewData["UnitId"] = new SelectList(_context.Units, "UnitId", "UnitName");
 
 			return View("CreateDishView", vm);
