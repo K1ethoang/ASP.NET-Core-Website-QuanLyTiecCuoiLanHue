@@ -4,6 +4,7 @@ using System.ComponentModel;
 
 namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Models;
 
+[DisplayName("Đơn vị")]
 public partial class Unit
 {
     public int UnitId { get; set; }
