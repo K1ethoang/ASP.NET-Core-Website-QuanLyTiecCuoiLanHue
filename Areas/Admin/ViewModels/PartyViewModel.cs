@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels
 {
+    [Keyless]
     public class PartyViewModel
     {
 
