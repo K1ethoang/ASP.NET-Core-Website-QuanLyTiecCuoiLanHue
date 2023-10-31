@@ -8,12 +8,13 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels
 	[Keyless]
 	public class DishViewModel
 	{
-		[Required]
+		[Required(AllowEmptyStrings =false, ErrorMessage = "{0} không được trống")]
 		[DisplayName("Tên món ăn")]
 		public string? DishName { get; set; }
 		[Required]
 		[DisplayName("Giá")]
-		public decimal Price { get; set; }
+		[Range(1000,500000)]
+		public int Price { get; set; }
 
 		[Required]
 		[DisplayName("Loại món ăn")]

@@ -53,7 +53,7 @@
 											@Html.DisplayFor(modelItem => item.DishName)
 										</td>
 										<td>
-											@Html.DisplayFor(modelItem => item.Price)
+											@item.Price.ToString("#,##0").Replace(",",".")đ
 										</td>
 										<td>
 											@Html.DisplayFor(modelItem => item.DishType.TypeName)
