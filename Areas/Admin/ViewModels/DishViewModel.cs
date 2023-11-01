@@ -24,7 +24,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels
 		[DisplayName("Đơn vị tính")]
 		public int UnitId { get; set; }
 
-		DishViewModel(){ }
+		public DishViewModel(){ }
 		public DishViewModel(Dish dish) : this()
 		{
 			DishName = dish.DishName;

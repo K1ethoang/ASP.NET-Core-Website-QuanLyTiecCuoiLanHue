@@ -60,9 +60,12 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels
 		}
 		public class CheckDateRangeAttribute : ValidationAttribute
 		{
-			protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+			protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
 			{
+				if (value == null) return new ValidationResult(ErrorMessage);
+				
 				DateTime dt = (DateTime)value;
+				
 				if (dt >= DateTime.UtcNow)
 				{
 					return ValidationResult.Success;
