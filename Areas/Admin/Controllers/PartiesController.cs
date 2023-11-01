@@ -121,11 +121,32 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
             }
 
             var party = await _context.Parties.FindAsync(id);
+
             if (party == null)
             {
                 return NotFound();
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CusName", party.CustomerId);
+
+            var customerSelectList = new List<SelectListItem>();
+
+            var customerList = _context.Customers.ToList();
+
+            customerSelectList.Add(new SelectListItem(
+                   text: "",
+                   value: ""
+                   ));
+
+            foreach (var cus in customerList)
+            {
+                customerSelectList.Add(new SelectListItem(
+                    text: cus.PhoneNumber + " - " + cus.CusName,
+                    value: Convert.ToString(cus.CustomerId)
+                    ))
+                ;
+            }
+
+            ViewData["CustomerList"] = customerSelectList;
+
             ViewData["PartyTypeId"] = new SelectList(_context.PartyTypes, "PartyTypeId", "Name", party.PartyTypeId);
             return View(party);
         }
@@ -162,7 +183,22 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CusName", party.CustomerId);
+
+            var customerSelectList = new List<SelectListItem>();
+
+            var customerList = _context.Customers.ToList();
+
+            foreach (var cus in customerList)
+            {
+                customerSelectList.Add(new SelectListItem(
+                    text: cus.PhoneNumber + " - " + cus.CusName,
+                    value: Convert.ToString(cus.CustomerId)
+                    ))
+                ;
+            }
+
+            ViewData["CustomerList"] = customerSelectList;
+
             ViewData["PartyTypeId"] = new SelectList(_context.PartyTypes, "PartyTypeId", "Name", party.PartyTypeId);
             return View(party);
         }

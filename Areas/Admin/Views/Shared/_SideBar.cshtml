@@ -41,6 +41,7 @@
                         </p>
                     </a>
                 </li>
+                <!-- PARTY -->
                 <li class="nav-item @Url.MakeMenuOpenClass("parties")">
                     <a asp-controller="parties" asp-action="index" class="nav-link @Url.MakeActiveClass("parties","")">
                         <i class="nav-icon fas fa-th"></i>
@@ -60,6 +61,30 @@
                             <a asp-controller="parties" asp-action="create" class="nav-link @Url.MakeActiveClass("parties","create")">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Thêm tiệc</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item @Url.MakeMenuOpenClass("dishes")">
+                    <a asp-controller="dishes" asp-action="index" class="nav-link @Url.MakeActiveClass("dishes","")">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Món ăn
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <!-- DISH -->
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a asp-controller="dishes" asp-action="index" class="nav-link @Url.MakeActiveClass("dishes","index")">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Danh sách món ăn</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-controller="dishes" asp-action="create" class="nav-link @Url.MakeActiveClass("dishes","create")">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Thêm món ăn</p>
                             </a>
                         </li>
                     </ul>

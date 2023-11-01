@@ -1,0 +1,83 @@
+﻿@model IEnumerable<ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Models.Dish>
+
+@{
+	ViewData["Title"] = "Danh sách món ăn";
+}
+
+<!-- Content Header (Page header) -->
+<div class="content-header">
+	<div class="container-fluid">
+		<div class="row mb-2">
+			<div class="col-sm-6">
+				<h1 class="m-0">@ViewData["Title"]</h1>
+			</div>
+			<div class="col-sm-6">
+				<a asp-action="create" class="btn btn-outline-primary float-sm-right">
+					<i class="fas fa-plus"></i>
+					Thêm món
+				</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<section class="content">
+	<div class="container-fluid">
+		<div class="row mb-12">
+			<div class="col-12">
+				<div class="card">
+					<div class="card-body">
+						<table class="table">
+							<thead>
+								<tr>
+									<th>
+										@Html.DisplayNameFor(model => model.DishName)
+									</th>
+									<th>
+										@Html.DisplayNameFor(model => model.Price)
+									</th>
+									<th>
+										@Html.DisplayNameFor(model => model.DishType.TypeName)
+									</th>
+									<th>
+										@Html.DisplayNameFor(model => model.Unit.UnitName)
+									</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								@foreach (var item in Model)
+								{
+									<tr>
+										<td>
+											@Html.DisplayFor(modelItem => item.DishName)
+										</td>
+										<td>
+											@item.Price.ToString("#,##0").Replace(",",".")đ
+										</td>
+										<td>
+											@Html.DisplayFor(modelItem => item.DishType.TypeName)
+										</td>
+										<td>
+											@Html.DisplayFor(modelItem => item.Unit.UnitName)
+										</td>
+										<td>
+											<a asp-action="Edit" asp-route-id="@item.DishId">Edit</a> |
+											<a asp-action="Details" asp-route-id="@item.DishId">Details</a> |
+											<a asp-action="Delete" asp-route-id="@item.DishId">Delete</a>
+										</td>
+									</tr>
+								}
+							</tbody>
+						</table>
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+</section>
+
