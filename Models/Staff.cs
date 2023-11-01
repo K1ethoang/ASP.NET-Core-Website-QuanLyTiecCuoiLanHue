@@ -5,13 +5,16 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Models;
 
 public partial class Staff
 {
+    public const string MALE = "Nam";
+    public const string FEMALE = "Nữ";
+
     public int StaffId { get; set; }
 
     public string? StaffName { get; set; }
 
     public string? PhoneNumber { get; set; }
 
-    public bool? Sex { get; set; }
+    public bool? Sex { get; set; } 
 
     public string? Address { get; set; }
 
@@ -19,11 +22,11 @@ public partial class Staff
 
     public int StaffTypeId { get; set; }
 
-    public string? UsersId { get; set; }
+    //public string? UsersId { get; set; }
 
     public virtual StaffType StaffType { get; set; } = null!;
 
-    public virtual AspNetUser? Users { get; set; }
+    //public virtual AspNetUser? Users { get; set; }
 
     public virtual ICollection<Work> Works { get; set; } = new List<Work>();
 }

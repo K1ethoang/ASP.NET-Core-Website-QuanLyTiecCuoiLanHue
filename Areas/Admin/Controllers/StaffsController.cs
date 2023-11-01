@@ -6,8 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Models;
+using ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels;
 
-namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Views
+namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class StaffsController : Controller
@@ -19,10 +20,11 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Views
             _context = context;
         }
 
+        [Route("admin/staffs")]
         // GET: Admin/Staffs
         public async Task<IActionResult> Index()
         {
-            var qlDichVuNauTiecLanHueContext = _context.Staff.Include(s => s.StaffType).Include(s => s.Users);
+            var qlDichVuNauTiecLanHueContext = _context.Staff.Include(s => s.StaffType)/*.Include(s => s.Users)*/;
             return View(await qlDichVuNauTiecLanHueContext.ToListAsync());
         }
 
@@ -36,7 +38,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Views
 
             var staff = await _context.Staff
                 .Include(s => s.StaffType)
-                .Include(s => s.Users)
+                //.Include(s => s.Users)
                 .FirstOrDefaultAsync(m => m.StaffId == id);
             if (staff == null)
             {
@@ -49,8 +51,8 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Views
         // GET: Admin/Staffs/Create
         public IActionResult Create()
         {
-            ViewData["StaffTypeId"] = new SelectList(_context.StaffTypes, "StaffTypeId", "StaffTypeId");
-            ViewData["UsersId"] = new SelectList(_context.AspNetUsers, "Id", "Id");
+            ViewData["StaffTypeId"] = new SelectList(_context.StaffTypes, "StaffName", "Name");
+            //ViewData["UsersId"] = new SelectList(_context.AspNetUsers, "Id", "Id");
             return View();
         }
 
@@ -59,17 +61,18 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Views
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("StaffId,StaffName,PhoneNumber,Sex,Address,CitizenNumber,StaffTypeId,UsersId")] Staff staff)
+        public async Task<IActionResult> Create([Bind("StaffId,StaffName,PhoneNumber,Sex,Address,CitizenNumber,StaffTypeId,UsersId")] StaffViewModel vm)
         {
             if (ModelState.IsValid)
             {
+                Staff staff = vm.ToStaff(context: _context);
                 _context.Add(staff);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["StaffTypeId"] = new SelectList(_context.StaffTypes, "StaffTypeId", "StaffTypeId", staff.StaffTypeId);
-            ViewData["UsersId"] = new SelectList(_context.AspNetUsers, "Id", "Id", staff.UsersId);
-            return View(staff);
+            ViewData["StaffTypeId"] = new SelectList(_context.StaffTypes, "StaffTypeId", "Name", vm.StaffTypeId);
+            //ViewData["UsersId"] = new SelectList(_context.AspNetUsers, "Id", "Id", vm.UsersId);
+            return View(vm);
         }
 
         // GET: Admin/Staffs/Edit/5
@@ -85,8 +88,8 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Views
             {
                 return NotFound();
             }
-            ViewData["StaffTypeId"] = new SelectList(_context.StaffTypes, "StaffTypeId", "StaffTypeId", staff.StaffTypeId);
-            ViewData["UsersId"] = new SelectList(_context.AspNetUsers, "Id", "Id", staff.UsersId);
+            ViewData["StaffTypeId"] = new SelectList(_context.StaffTypes, "StaffTypeId", "Name", staff.StaffTypeId);
+            //ViewData["UsersId"] = new SelectList(_context.AspNetUsers, "Id", "Id", staff.UsersId);
             return View(staff);
         }
 
@@ -122,8 +125,8 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Views
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["StaffTypeId"] = new SelectList(_context.StaffTypes, "StaffTypeId", "StaffTypeId", staff.StaffTypeId);
-            ViewData["UsersId"] = new SelectList(_context.AspNetUsers, "Id", "Id", staff.UsersId);
+            ViewData["StaffTypeId"] = new SelectList(_context.StaffTypes, "StaffTypeId", "Name", staff.StaffTypeId);
+            //ViewData["UsersId"] = new SelectList(_context.AspNetUsers, "Id", "Id", staff.UsersId);
             return View(staff);
         }
 
@@ -137,7 +140,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Views
 
             var staff = await _context.Staff
                 .Include(s => s.StaffType)
-                .Include(s => s.Users)
+                //.Include(s => s.Users)
                 .FirstOrDefaultAsync(m => m.StaffId == id);
             if (staff == null)
             {
