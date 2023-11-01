@@ -1,7 +1,7 @@
-﻿@model ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Models.Party
+﻿@model ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels.PartyViewModel
 
 @{
-    ViewData["Title"] = "Tiệc";
+    ViewData["Title"] = "Tạo tiệc";
 }
 
 <!-- Content Header (Page header) -->
@@ -62,16 +62,6 @@
                         <input asp-for="Location" class="form-control" placeholder="Nhập nơi tổ chức..." />
                         <span asp-validation-for="Location" class="text-danger"></span>
                     </div>
-                  @*   <div class="form-group">
-                        <label asp-for="Status" class="control-label"></label>
-                        <input asp-for="Status" class="form-control" disabled value="@Party.COMING_SOON" />
-                        <span asp-validation-for="Status" class="text-danger"></span>
-                    </div>
-                    <div class="form-group form-check">
-                        <label asp-for="HasMenu" class="form-check-label">
-                            <input class="form-check-input" asp-for="HasMenu" disabled value="false" /> @Html.DisplayNameFor(model => model.HasMenu)
-                        </label>
-                    </div> *@
                     <div class="form-group required">
                         <label asp-for="PartyTypeId" class="control-label"></label>
                         <select asp-for="PartyTypeId" class="form-control" asp-items="ViewBag.PartyTypeId"></select>
