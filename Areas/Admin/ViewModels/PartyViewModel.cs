@@ -54,6 +54,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels
 			Quantity = party.Quantity;
 			Date = party.Date;
 			Time = party.Time;
+			Location = party.Location;
 			CustomerId = party.CustomerId;	
 			PartyTypeId = party.PartyTypeId;
 			Note = party.Note;
