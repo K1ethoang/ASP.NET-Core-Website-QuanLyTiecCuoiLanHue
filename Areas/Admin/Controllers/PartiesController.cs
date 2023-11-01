@@ -75,7 +75,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
             ViewData["CustomerList"] = customerSelectList;
 
             ViewData["PartyTypeId"] = new SelectList(_context.PartyTypes, "PartyTypeId", "Name");
-            return View(vm);
+            return View("CreatePartyView", vm);
         }
 
         // POST: Admin/Parties/Create
@@ -109,7 +109,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
             ViewData["CustomerList"] = customerSelectList;
 
             ViewData["PartyTypeId"] = new SelectList(_context.PartyTypes, "PartyTypeId", "Name", vm.PartyTypeId);
-            return View(vm);
+            return View("CreatePartyView", vm);
         }
 
         // GET: Admin/Parties/Edit/5
