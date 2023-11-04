@@ -23,6 +23,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels
         }
 
         [Required(ErrorMessage = "{0} không được trống")]
+        [Phone]
         [DisplayName("Số điện thoại")]
         public string? PhoneNumber
         {
@@ -50,16 +51,17 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels
             get; set;
         }
 
+        [Required(ErrorMessage = "{0} không được trống")]
         [DisplayName("Loại nhân viên")]
         public int StaffTypeId
         {
             get; set;
         }
 
-        //public string? UsersId
-        //{
-        //    get; set;
-        //}
+        public string? UsersId
+        {
+            get; set;
+        }
 
         public Staff ToStaff(QlDichVuNauTiecLanHueContext context)
         {

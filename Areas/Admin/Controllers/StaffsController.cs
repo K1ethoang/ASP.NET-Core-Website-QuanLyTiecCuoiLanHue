@@ -20,11 +20,12 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
             _context = context;
         }
 
-        [Route("admin/staffs")]
         // GET: Admin/Staffs
+        [Route("admin/staffs")]
         public async Task<IActionResult> Index()
         {
-            var qlDichVuNauTiecLanHueContext = _context.Staff.Include(s => s.StaffType)/*.Include(s => s.Users)*/;
+            var qlDichVuNauTiecLanHueContext = _context.Staff.Include(s => s.StaffType).Include(s => s.Users);
+
             return View(await qlDichVuNauTiecLanHueContext.ToListAsync());
         }
 
@@ -51,9 +52,11 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
         // GET: Admin/Staffs/Create
         public IActionResult Create()
         {
-            ViewData["StaffTypeId"] = new SelectList(_context.StaffTypes, "StaffName", "Name");
+            StaffViewModel vm = new StaffViewModel();
+
+            ViewData["StaffTypeId"] = new SelectList(_context.StaffTypes, "StaffTypeId", "Name");
             //ViewData["UsersId"] = new SelectList(_context.AspNetUsers, "Id", "Id");
-            return View();
+            return View(vm);
         }
 
         // POST: Admin/Staffs/Create
@@ -61,7 +64,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("StaffId,StaffName,PhoneNumber,Sex,Address,CitizenNumber,StaffTypeId,UsersId")] StaffViewModel vm)
+        public async Task<IActionResult> Create([Bind("StaffId,StaffName,PhoneNumber,Sex,Address,CitizenNumber,StaffTypeId")] StaffViewModel vm)
         {
             if (ModelState.IsValid)
             {

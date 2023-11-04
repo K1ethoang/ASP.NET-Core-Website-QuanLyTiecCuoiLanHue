@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels.StaffViewModel>
+﻿@model IEnumerable<ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Models.Staff>
 
 @{
     ViewData["Title"] = "Danh sách nhân viên";
@@ -66,7 +66,15 @@
                                             @Html.DisplayFor(modelItem => item.PhoneNumber)
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.Sex)
+                                            @*  @Html.DisplayFor(modelItem => item.Sex) *@
+                                            @if (item.Sex)
+                                            {
+                                                <span class="badge badge-pill badge-info">@Staff.MALE</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge badge-pill badge-danger">@Staff.FEMALE</span>
+                                            }
                                         </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.Address)
@@ -75,7 +83,7 @@
                                             @Html.DisplayFor(modelItem => item.CitizenNumber)
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.StaffTypeId)
+                                            @Html.DisplayFor(modelItem => item.StaffType.Name)
                                         </td>
                                         <td>
                                             <div class="btn-group">
