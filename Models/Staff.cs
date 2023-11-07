@@ -19,14 +19,15 @@ public partial class Staff
     }
 
     [Required(ErrorMessage = "{0} không được trống")]
-    [DisplayName("Tên nhân viên")]
+    [Display(Name = "Tên nhân viên", Prompt = "Vd: Nguyễn Văn An")]
     public string? StaffName
     {
         get; set;
     }
 
     [Required(ErrorMessage = "{0} không được trống")]
-    [DisplayName("Số điện thoại")]
+    [RegularExpression(@"0(\d{9})", ErrorMessage = "{0} không hợp lệ")]
+    [Display(Name = "Số điện thoại", Prompt = "Vd: 0123456789")]
     public string? PhoneNumber
     {
         get; set;
@@ -40,14 +41,15 @@ public partial class Staff
     }
 
     [Required(ErrorMessage = "{0} không được trống")]
-    [DisplayName("Địa chỉ")]
+    [Display(Name = "Địa chỉ", Prompt = "Vd: 23/10, Tổ 23, Kp23, P. Bình Đa, Tp. Biên Hoà")]
     public string? Address
     {
         get; set;
     }
 
     [Required(ErrorMessage = "{0} không được trống")]
-    [DisplayName("Số CCCD")]
+    [RegularExpression(@"\d{12}", ErrorMessage = "{0} không hợp lệ")]
+    [Display(Name = "Số CCCD", Prompt = "Vd: 012345678910")]
     public string? CitizenNumber
     {
         get; set;

@@ -101,7 +101,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("StaffId,StaffName,PhoneNumber,Sex,Address,CitizenNumber,StaffTypeId,UsersId")] Staff staff)
+        public async Task<IActionResult> Edit(int id, [Bind("StaffId,StaffName,PhoneNumber,Sex,Address,CitizenNumber,StaffTypeId")] Staff staff)
         {
             if (id != staff.StaffId)
             {
