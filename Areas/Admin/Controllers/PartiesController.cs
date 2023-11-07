@@ -10,6 +10,10 @@ using NuGet.Protocol;
 using ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels;
 using Microsoft.CodeAnalysis;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using Microsoft.CodeAnalysis.Differencing;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Runtime.Intrinsics.X86;
+using Microsoft.AspNetCore.Razor.Language.Intermediate;
 
 namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 {
@@ -58,22 +62,13 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 		{
 			PartyViewModel vm = new PartyViewModel();
 
-			var customerSelectList = new List<SelectListItem>();
-
-			var customerList = _context.Customers.ToList();
-
-			customerSelectList.Add(new SelectListItem(
-				   text: "",
-				   value: ""
-				   ));
-
-			foreach (var cus in customerList)
-			{
-				customerSelectList.Add(new SelectListItem(
-					text: cus.PhoneNumber + " - " + cus.CusName,
-					value: Convert.ToString(cus.CustomerId)
-					));
-			}
+			var customerSelectList = _context.Customers
+						.ToList()
+						.Select(c => new SelectListItem(
+						text: c.PhoneNumber + " - " + c.CusName,
+						value: Convert.ToString(c.CustomerId)
+						))
+						.ToList() ?? new List<SelectListItem>();
 
 			ViewData["CustomerList"] = customerSelectList;
 
@@ -133,19 +128,6 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 			{
 				return NotFound();
 			}
-
-			//var customerSelectList = new List<SelectListItem>();
-
-			//var customerList = _context.Customers.ToList();
-
-			//foreach (var cus in customerList)
-			//{
-			//	customerSelectList.Add(new SelectListItem(
-			//		text: cus.PhoneNumber + " - " + cus.CusName,
-			//		value: Convert.ToString(cus.CustomerId)
-			//		))
-			//	;
-			//}
 
 			var customerSelectList = _context.Customers
 						.ToList()
@@ -223,13 +205,11 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 						throw;
 					}
 				}
-				return RedirectToAction(nameof(Index));
+
+                await Console.Out.WriteLineAsync("EXITED HERE");
+
+                return RedirectToAction(nameof(Index));
 			}
-
-			//var customerSelectList = new List<SelectListItem>();
-
-			//var customerList = 1;
-
 
 			var customerSelectList = _context.Customers
 									.ToList()
@@ -238,15 +218,6 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 									value: Convert.ToString(c.CustomerId)
 									))
 									.ToList<SelectListItem>() ?? new List<SelectListItem>();
-
-			//foreach (var cus in customerList)
-			//{
-			//	customerSelectList.Add(new SelectListItem(
-			//		text: cus.PhoneNumber + " - " + cus.CusName,
-			//		value: Convert.ToString(cus.CustomerId)
-			//		))
-			//	;
-			//}
 
 			ViewData["CustomerList"] = customerSelectList;
 
