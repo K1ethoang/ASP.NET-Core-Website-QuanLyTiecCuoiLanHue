@@ -27,7 +27,9 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 		[Route("admin/parties")]
 		public async Task<IActionResult> Index()
 		{
-			var qlDichVuNauTiecLanHueContext = _context.Parties.Include(p => p.Customer).Include(p => p.PartyType);
+			var qlDichVuNauTiecLanHueContext = _context.Parties
+														.Include(p => p.Customer)
+														.Include(p => p.PartyType);
 			return View(await qlDichVuNauTiecLanHueContext.ToListAsync());
 		}
 
@@ -70,13 +72,13 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 				customerSelectList.Add(new SelectListItem(
 					text: cus.PhoneNumber + " - " + cus.CusName,
 					value: Convert.ToString(cus.CustomerId)
-					))
-				;
+					));
 			}
 
 			ViewData["CustomerList"] = customerSelectList;
 
 			ViewData["PartyTypeId"] = new SelectList(_context.PartyTypes, "PartyTypeId", "Name");
+
 			return View(vm);
 		}
 
@@ -85,7 +87,9 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Create([Bind("PartyId,PartyName,Quantity,Date,Time,Location,Note,PartyTypeId,CustomerId")] PartyViewModel vm)
+		public async Task<IActionResult> Create(
+										[Bind("PartyId,PartyName,Quantity,Date,Time,Location,Note,PartyTypeId,CustomerId")] 
+										PartyViewModel vm)
 		{
 			if (ModelState.IsValid)
 			{
@@ -111,13 +115,14 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 			ViewData["CustomerList"] = customerSelectList;
 
 			ViewData["PartyTypeId"] = new SelectList(_context.PartyTypes, "PartyTypeId", "Name", vm.PartyTypeId);
+
 			return View(vm);
 		}
 
 		// GET: Admin/Parties/Edit/5
 		public async Task<IActionResult> Edit(int? id)
 		{
-			if (id == null || _context.Parties == null)
+			if (id == null)
 			{
 				return NotFound();
 			}
@@ -129,24 +134,37 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 				return NotFound();
 			}
 
-			var customerSelectList = new List<SelectListItem>();
+			//var customerSelectList = new List<SelectListItem>();
 
-			var customerList = _context.Customers.ToList();
+			//var customerList = _context.Customers.ToList();
 
-			foreach (var cus in customerList)
-			{
-				customerSelectList.Add(new SelectListItem(
-					text: cus.PhoneNumber + " - " + cus.CusName,
-					value: Convert.ToString(cus.CustomerId)
-					))
-				;
-			}
+			//foreach (var cus in customerList)
+			//{
+			//	customerSelectList.Add(new SelectListItem(
+			//		text: cus.PhoneNumber + " - " + cus.CusName,
+			//		value: Convert.ToString(cus.CustomerId)
+			//		))
+			//	;
+			//}
+
+			var customerSelectList = _context.Customers
+						.ToList()
+						.Select(c => new SelectListItem(
+						text: c.PhoneNumber + " - " + c.CusName,
+						value: Convert.ToString(c.CustomerId)
+						))
+						.ToList() ?? new List<SelectListItem>();
 
 			PartyViewModel vm = new PartyViewModel(party);
+
+			Console.ForegroundColor = ConsoleColor.Red;
+			await Console.Out.WriteLineAsync(vm.ToJson());
+			Console.ResetColor();
 
 			ViewData["CustomerList"] = customerSelectList;
 
 			ViewData["PartyTypeId"] = new SelectList(_context.PartyTypes, "PartyTypeId", "Name", party.PartyTypeId);
+
 			return View(vm);
 		}
 
@@ -155,9 +173,11 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Edit(int id, [Bind("PartyId,PartyName,Quantity,Date,Time,Location,Note,Status,HasMenu,PartyTypeId,CustomerId")] PartyViewModel vm)
+		public async Task<IActionResult> Edit(int id, 
+					[Bind("PartyName,Quantity,Date,Time,Location,Note,Status,HasMenu,PartyTypeId,CustomerId")] 
+											PartyViewModel vm)
 		{
-			Party party = await _context.Parties.FindAsync(keyValues: id);
+			var party = await _context.Parties.FindAsync(keyValues: id);
 
 			if (party == null)
 			{
@@ -167,10 +187,13 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 			Console.ForegroundColor = ConsoleColor.Red;
             await Console.Out.WriteLineAsync(ModelState.IsValid.ToString());
 			Console.ResetColor();
+
 			if (ModelState.IsValid)
 			{
                 try
 				{
+					_context.Entry(party).State = EntityState.Modified;
+
 					party!.PartyName = vm.PartyName.Trim();
 					party!.CustomerId = vm.CustomerId;
 					party!.PartyId = vm.PartyTypeId;
@@ -183,7 +206,8 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 					party!.PartyType = _context.PartyTypes.Find(vm.PartyTypeId) ?? new PartyType();
 					party!.Customer = _context.Customers.Find(vm.CustomerId) ?? new Customer();
 
-					_context.Entry(party).State = EntityState.Modified;
+					party = vm.ToParty(context: _context);
+
 					_context.Update(party);
 					// Save changes
 					await _context.SaveChangesAsync();

@@ -25,10 +25,15 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels
 		// Date
 		[Required(ErrorMessage = "{0} không được trống")]
 		[DataType(DataType.Date, ErrorMessage = "{0} Không hợp lệ")]
-		[DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+		[DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}"
+		//,	ApplyFormatInEditMode = true
+			)]
 		[CheckDateRange(ErrorMessage = "Phải lớn hơn ngày hôm nay")]
 		[DisplayName("Ngày")]
-		public DateTime? Date { get; set; }
+		public DateTime? Date 
+		{ 
+			get; set; 
+		}
 		// Time
 		[Required(ErrorMessage = "{0} không được trống")]
 		[DataType(DataType.Time, ErrorMessage = "{0} Không hợp lệ")]
