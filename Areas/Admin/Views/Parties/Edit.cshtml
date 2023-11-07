@@ -1,4 +1,4 @@
-﻿@model ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Models.Party
+﻿@model ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels.PartyViewModel
 
 @{
     ViewData["Title"] = "Chỉnh sửa tiệc";
@@ -9,7 +9,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0">@ViewData["Title"] / @Model.PartyId</h1>
+                <h1 class="m-0">@ViewData["Title"] / @Model.PartyName</h1>
             </div>
              <div class="col-sm-6">
                 <div class="float-sm-right">
@@ -32,7 +32,7 @@
             <div class="col-md-4">
                 <form method="edit" autocomplete="off">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <input type="hidden" asp-for="PartyId" />
+                    @* <input type="hidden" asp-for="PartyId" /> *@
                     <div class="form-group required">
                         <label asp-for="CustomerId" class="control-label"></label>
                         <select asp-for="CustomerId" class="form-control select2" asp-items="ViewBag.CustomerList"></select>

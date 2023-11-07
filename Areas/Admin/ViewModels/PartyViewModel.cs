@@ -10,7 +10,8 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels
 	[Keyless]
 	public class PartyViewModel
 	{
-
+		//[DisplayName("Mã tiệc")]
+		//public int PartyId { get; set; }
 		// PartyName
 		[Required(ErrorMessage = "{0} không được trống")]
 		[StringLength(maximumLength: 255, MinimumLength = 0, ErrorMessage = "Độ dài tối đa 255 ký tự")]
@@ -24,10 +25,15 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels
 		// Date
 		[Required(ErrorMessage = "{0} không được trống")]
 		[DataType(DataType.Date, ErrorMessage = "{0} Không hợp lệ")]
-		[DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+		[DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}"
+		//,	ApplyFormatInEditMode = true
+			)]
 		[CheckDateRange(ErrorMessage = "Phải lớn hơn ngày hôm nay")]
 		[DisplayName("Ngày")]
-		public DateTime? Date { get; set; }
+		public DateTime? Date 
+		{ 
+			get; set; 
+		}
 		// Time
 		[Required(ErrorMessage = "{0} không được trống")]
 		[DataType(DataType.Time, ErrorMessage = "{0} Không hợp lệ")]
@@ -49,13 +55,13 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels
 
 		public PartyViewModel() { }
 		public PartyViewModel(Party party) : this()
-		{
+		{			
 			PartyName = party.PartyName;
 			Quantity = party.Quantity;
-			Date = party.Date;
+			Date = party.Date!;
 			Time = party.Time;
 			Location = party.Location;
-			CustomerId = party.CustomerId;	
+			CustomerId = party.CustomerId;
 			PartyTypeId = party.PartyTypeId;
 			Note = party.Note;
 		}
@@ -64,9 +70,9 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels
 			protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
 			{
 				if (value == null) return new ValidationResult(ErrorMessage);
-				
+
 				DateTime dt = (DateTime)value;
-				
+
 				if (dt >= DateTime.UtcNow)
 				{
 					return ValidationResult.Success;
