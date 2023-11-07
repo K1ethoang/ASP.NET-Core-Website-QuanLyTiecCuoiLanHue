@@ -87,13 +87,14 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
             }
 
             var staff = await _context.Staff.FindAsync(id);
+            StaffViewModel vm = new StaffViewModel(staff);
             if (staff == null)
             {
                 return NotFound();
             }
             ViewData["StaffTypeId"] = new SelectList(_context.StaffTypes, "StaffTypeId", "Name", staff.StaffTypeId);
             //ViewData["UsersId"] = new SelectList(_context.AspNetUsers, "Id", "Id", staff.UsersId);
-            return View(staff);
+            return View(vm);
         }
 
         // POST: Admin/Staffs/Edit/5
@@ -101,9 +102,9 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("StaffId,StaffName,PhoneNumber,Sex,Address,CitizenNumber,StaffTypeId")] Staff staff)
+        public async Task<IActionResult> Edit(int id, [Bind("StaffId,StaffName,PhoneNumber,Sex,Address,CitizenNumber,StaffTypeId")] StaffViewModel vm)
         {
-            if (id != staff.StaffId)
+            if (id != vm.StaffId)
             {
                 return NotFound();
             }
@@ -112,12 +113,12 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
             {
                 try
                 {
-                    _context.Update(staff);
+                    _context.Update(vm.ToStaff(context: _context));
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!StaffExists(staff.StaffId))
+                    if (!StaffExists(vm.StaffId))
                     {
                         return NotFound();
                     }
@@ -128,9 +129,9 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["StaffTypeId"] = new SelectList(_context.StaffTypes, "StaffTypeId", "Name", staff.StaffTypeId);
+            ViewData["StaffTypeId"] = new SelectList(_context.StaffTypes, "StaffTypeId", "Name", vm.StaffTypeId);
             //ViewData["UsersId"] = new SelectList(_context.AspNetUsers, "Id", "Id", staff.UsersId);
-            return View(staff);
+            return View(vm);
         }
 
         // GET: Admin/Staffs/Delete/5

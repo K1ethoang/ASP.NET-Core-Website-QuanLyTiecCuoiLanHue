@@ -1,8 +1,10 @@
 ﻿using ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Models;
+using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Configuration;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels
 {
@@ -60,9 +62,22 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels
             get; set;
         }
 
-        public string? UsersId
+        //public string? UsersId
+        //{
+        //    get; set;
+        //}
+
+        public StaffViewModel()
         {
-            get; set;
+        }
+        public StaffViewModel(Staff staff) : this()
+        {
+            StaffId = staff.StaffId;
+            StaffName = staff.StaffName;
+            StaffTypeId = staff.StaffTypeId;
+            CitizenNumber = staff.CitizenNumber;
+            PhoneNumber = staff.PhoneNumber;
+            Address = staff.Address;
         }
 
         public Staff ToStaff(QlDichVuNauTiecLanHueContext context)
