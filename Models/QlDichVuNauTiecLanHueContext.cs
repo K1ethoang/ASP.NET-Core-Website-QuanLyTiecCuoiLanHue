@@ -263,6 +263,8 @@ public partial class QlDichVuNauTiecLanHueContext : DbContext
                 .HasForeignKey(d => d.PartyTypeId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_PARTY_PARTY_TYPE_ID");
+
+            entity.HasIndex(p => new { p.PartyTypeId, p.CustomerId }).IsUnique(true);
         });
 
         modelBuilder.Entity<PartyType>(entity =>

@@ -139,10 +139,6 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 
 			PartyViewModel vm = new PartyViewModel(party);
 
-			Console.ForegroundColor = ConsoleColor.Red;
-			await Console.Out.WriteLineAsync(vm.ToJson());
-			Console.ResetColor();
-
 			ViewData["CustomerList"] = customerSelectList;
 
 			ViewData["PartyTypeId"] = new SelectList(_context.PartyTypes, "PartyTypeId", "Name", party.PartyTypeId);
@@ -155,45 +151,73 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 		// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Edit(int id, 
-					[Bind("PartyName,Quantity,Date,Time,Location,Note,Status,HasMenu,PartyTypeId,CustomerId")] 
+		public async Task<IActionResult> Edit(int id,
+					[Bind("PartyName,Quantity,Date,Time,Location,Note,Status,HasMenu,PartyTypeId,CustomerId")]
 											PartyViewModel vm)
 		{
-			var party = await _context.Parties.FindAsync(keyValues: id);
+			var party = await _context.Parties.Where(p => p.PartyId == id).FirstAsync();
 
-			if (party == null)
+			Console.ForegroundColor = ConsoleColor.Red;
+			await Console.Out.WriteLineAsync(party.ToJson());
+			Console.ResetColor();
+
+			if (party == null || party.PartyId != id)
 			{
 				return NotFound();
 			}
 
-			Console.ForegroundColor = ConsoleColor.Red;
-            await Console.Out.WriteLineAsync(ModelState.IsValid.ToString());
-			Console.ResetColor();
+			_context.Attach(party);
 
 			if (ModelState.IsValid)
 			{
-                try
+				try
 				{
+
+					// You should use the Entry() method in case you want to update all the fields in your object.
+					// Also keep in mind you cannot change the field id(key) therefore first set the Id to the same as you edit.
+					// https://stackoverflow.com/a/47340877/20423795
+
 					_context.Entry(party).State = EntityState.Modified;
-
-					party!.PartyName = vm.PartyName.Trim();
-					party!.CustomerId = vm.CustomerId;
-					party!.PartyId = vm.PartyTypeId;
-					party!.Date = vm.Date;
-					party!.Time = vm.Time;
-					party!.Quantity = vm.Quantity;
-					party!.Location = vm.Location?.Trim();
-					party!.Note = vm.Note?.Trim();
-					// Foreign Objects
-					party!.PartyType = _context.PartyTypes.Find(vm.PartyTypeId) ?? new PartyType();
-					party!.Customer = _context.Customers.Find(vm.CustomerId) ?? new Customer();
-
-					party = vm.ToParty(context: _context);
-
+					var newParty = vm.ToParty(context: _context);
+					newParty.PartyId = party.PartyId;
+					_context.Entry(party).CurrentValues.SetValues(newParty);
 					_context.Update(party);
-					// Save changes
-					await _context.SaveChangesAsync();
-				}
+
+
+
+					int returnCode = await _context.SaveChangesAsync();
+
+					Console.ForegroundColor = ConsoleColor.Red;
+					if (returnCode > 0)
+					{
+						Console.WriteLine("Success");
+					}
+					else
+					{
+						Console.WriteLine("Something gone wrong");
+					}
+					Console.ResetColor();
+				
+
+
+						//party!.PartyName = vm.PartyName.Trim();
+						//party!.CustomerId = vm.CustomerId;
+						//party!.PartyId = vm.PartyTypeId;
+						//party!.Date = vm.Date;
+						//party!.Time = vm.Time;
+						//party!.Quantity = vm.Quantity;
+						//party!.Location = vm.Location?.Trim();
+						//party!.Note = vm.Note?.Trim();
+						//// Foreign Objects
+						//party!.PartyType = _context.PartyTypes.Find(vm.PartyTypeId) ?? new PartyType();
+						//party!.Customer = _context.Customers.Find(vm.CustomerId) ?? new Customer();
+
+				//party = vm.ToParty(context: _context);
+
+				//_context.Update(party);
+
+				// Save changes
+				} 
 				catch (DbUpdateConcurrencyException)
 				{
 					if (!PartyExists(party.PartyId))
