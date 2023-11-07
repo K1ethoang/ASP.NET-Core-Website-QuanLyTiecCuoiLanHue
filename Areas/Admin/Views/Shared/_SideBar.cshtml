@@ -65,6 +65,7 @@
                         </li>
                     </ul>
                 </li>
+                <!-- DISH -->
                 <li class="nav-item @Url.MakeMenuOpenClass("dishes")">
                     <a asp-controller="dishes" asp-action="index" class="nav-link @Url.MakeActiveClass("dishes","")">
                         <i class="nav-icon fas fa-th"></i>
@@ -73,7 +74,6 @@
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
-                    <!-- DISH -->
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
                             <a asp-controller="dishes" asp-action="index" class="nav-link @Url.MakeActiveClass("dishes","index")">
@@ -85,6 +85,31 @@
                             <a asp-controller="dishes" asp-action="create" class="nav-link @Url.MakeActiveClass("dishes","create")">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Thêm món ăn</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- STAFF -->
+                <li class="nav-item @Url.MakeMenuOpenClass("staffs")">
+                    <a asp-controller="staffs" asp-action="index" class="nav-link @Url.MakeActiveClass("staffs","")">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Nhân viên
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a asp-controller="staffs" asp-action="index" class="nav-link @Url.MakeActiveClass("staffs","index")">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Danh sách nhân viên</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-controller="staffs" asp-action="create" class="nav-link @Url.MakeActiveClass("staffs","create")">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Thêm nhân viên</p>
                             </a>
                         </li>
                     </ul>

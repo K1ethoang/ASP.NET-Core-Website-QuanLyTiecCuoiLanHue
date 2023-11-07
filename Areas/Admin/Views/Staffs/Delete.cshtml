@@ -1,0 +1,80 @@
+﻿@model ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Models.Staff
+
+@{
+    ViewData["Title"] = "Xác nhận xoá";
+}
+
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">@ViewData["Title"] / @Model.StaffId</h1>
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</div>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-body">
+                <dl class="row mb-12">
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.StaffName)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.StaffName)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.PhoneNumber)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.PhoneNumber)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Sex)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @if (Model.Sex)
+                        {
+                            @Staff.MALE
+                        }
+                        else
+                        {
+                            @Staff.FEMALE
+                        }
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Address)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Address)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.CitizenNumber)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.CitizenNumber)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.StaffType)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.StaffType.Name)
+                    </dd>
+                </dl>
+
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="StaffId" />
+                    <input type="submit" value="Xoá vĩnh viễn" class="btn btn-danger" /> |
+                    <a asp-action="Index" class="btn btn-outline-primary">Danh sách Nhân viên</a>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</section>
+<!-- /.content -->
