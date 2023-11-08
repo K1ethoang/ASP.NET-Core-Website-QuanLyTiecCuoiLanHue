@@ -1,7 +1,7 @@
-﻿@model IEnumerable<ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Models.Dish>
+﻿@model IEnumerable<ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Models.Unit>
 
 @{
-    ViewData["Title"] = "Danh sách món ăn";
+    ViewData["Title"] = "Danh sách đơn vị tính";
 }
 
 <!-- Content Header (Page header) -->
@@ -12,9 +12,9 @@
                 <h1 class="m-0">@ViewData["Title"]</h1>
             </div>
             <div class="col-sm-6">
-                <a asp-action="create" class="btn btn-outline-primary float-sm-right">
+                <a asp-action="create" asp-controller="units" asp-area="admin" class="btn btn-outline-primary float-sm-right">
                     <i class="fas fa-plus"></i>
-                    Thêm món
+                    Thêm ĐVT
                 </a>
             </div>
         </div>
@@ -31,20 +31,12 @@
                         <table id="table-data" class="table table-bordered table-striped tablas">
                             <thead>
                                 <tr>
+                                    <th>Mã</th>
                                     <th>
-                                        Mã
+                                        @Html.DisplayNameFor(model => model.UnitName)
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(model => model.DishName)
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.Price)
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.DishType.TypeName)
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.Unit.UnitName)
+                                        @Html.DisplayNameFor(model => model.Description)
                                     </th>
                                     <th>Tuỳ chỉnh</th>
                                 </tr>
@@ -53,27 +45,19 @@
                                 @foreach (var item in Model)
                                 {
                                     <tr>
+                                        <td>@item.UnitId</td>
                                         <td>
-                                            @item.DishId
+                                            @Html.DisplayFor(modelItem => item.UnitName)
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.DishName)
+                                            @Html.DisplayFor(modelItem => item.Description)
                                         </td>
                                         <td>
-                                            @item.Price.ToString("#,##").Replace(",",".")đ
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.DishType.TypeName)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Unit.UnitName)
-                                        </td>
-                                        <td>
-                                            <a asp-action="edit" asp-route-id="@item.DishId" class="btn bg-gradient-success">
+                                            <a asp-action="edit" asp-route-id="@item.UnitId" class="btn bg-gradient-success">
                                                 <i class="fas fa-pen"></i>
                                                 Chỉnh sửa
                                             </a>
-                                            <a asp-action="delete" asp-route-id="@item.DishId" class="btn bg-gradient-danger">
+                                            <a asp-action="delete" asp-route-id="@item.UnitId" class="btn bg-gradient-danger">
                                                 <i class="fas fa-trash"></i>
                                                 Xoá
                                             </a>
