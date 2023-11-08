@@ -84,12 +84,13 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels
         {
             return new Staff()
             {
+                StaffId = StaffId,
+                StaffTypeId = StaffTypeId,
                 StaffName = StaffName,
                 PhoneNumber = PhoneNumber,
                 Sex = Sex,
                 Address = Address,
                 CitizenNumber = CitizenNumber,
-
                 // Foreign Object
                 StaffType = context.StaffTypes.Find(StaffTypeId) ?? new StaffType(),
                 //Users = context.AspNetUsers.Find(UsersId) ?? new AspNetUser(),

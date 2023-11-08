@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Models;
 using ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels;
+using System.IO;
 
 namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 {
@@ -104,21 +105,30 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("StaffId,StaffName,PhoneNumber,Sex,Address,CitizenNumber,StaffTypeId")] StaffViewModel vm)
         {
-            if (id != vm.StaffId)
+            var staff = await _context.Staff.Where(p => p.StaffId == id).FirstAsync();
+
+            if (staff == null || id != staff.StaffId)
             {
                 return NotFound();
             }
+
+            _context.Attach(staff);
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(vm.ToStaff(context: _context));
+                    _context.Entry(staff).State = EntityState.Modified;
+                    var newStaff = vm.ToStaff(context: _context);
+                    newStaff.StaffId = staff.StaffId;
+                    _context.Entry(staff).CurrentValues.SetValues(newStaff);
+                    _context.Update(staff);
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!StaffExists(vm.StaffId))
+                    if (!StaffExists(staff.StaffId))
                     {
                         return NotFound();
                     }
@@ -168,14 +178,14 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
             {
                 _context.Staff.Remove(staff);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool StaffExists(int id)
         {
-          return (_context.Staff?.Any(e => e.StaffId == id)).GetValueOrDefault();
+            return (_context.Staff?.Any(e => e.StaffId == id)).GetValueOrDefault();
         }
     }
 }
