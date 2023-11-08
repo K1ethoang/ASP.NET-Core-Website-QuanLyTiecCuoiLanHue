@@ -30,7 +30,7 @@
     <div class="container-fluid">
         <div class="row mb-12">
             <div class="col-md-4">
-                <form method="edit" autocomplete="off">
+                <form asp-action="edit" asp-controller="parties" asp-area="Admin" autocomplete="off">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     @* <input type="hidden" asp-for="PartyId" /> *@
                     <div class="form-group required">
