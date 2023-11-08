@@ -69,10 +69,26 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+
                 Staff staff = vm.ToStaff(context: _context);
-                _context.Add(staff);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+                staff.StaffName = staff.StaffName.Trim();
+
+                bool existCusWithPhoneNum = StaffExists(staff.PhoneNumber);
+                bool existCusWithCitizenNum = StaffExistsWithCitizenNum(staff.CitizenNumber);
+
+                if (!existCusWithPhoneNum && !existCusWithCitizenNum)
+                {
+                    _context.Add(staff);
+                    await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "Thêm thành công";
+                    return RedirectToAction(nameof(Index));
+                }
+
+                if (existCusWithPhoneNum)
+                    TempData["ErrorMessage"] = "Số điện thoại đã có";
+                if (existCusWithCitizenNum)
+                    TempData["ErrorMessage1"] = "Số CCCD đã có";
             }
             ViewData["StaffTypeId"] = new SelectList(_context.StaffTypes, "StaffTypeId", "Name", vm.StaffTypeId);
             //ViewData["UsersId"] = new SelectList(_context.AspNetUsers, "Id", "Id", vm.UsersId);
@@ -89,6 +105,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 
             var staff = await _context.Staff.FindAsync(id);
             StaffViewModel vm = new StaffViewModel(staff);
+
             if (staff == null)
             {
                 return NotFound();
@@ -105,7 +122,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("StaffId,StaffName,PhoneNumber,Sex,Address,CitizenNumber,StaffTypeId")] StaffViewModel vm)
         {
-            var staff = await _context.Staff.Where(p => p.StaffId == id).FirstAsync();
+            var staff = await _context.Staff.Where(s => s.StaffId == id).FirstAsync();
 
             if (staff == null || id != staff.StaffId)
             {
@@ -137,10 +154,12 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
                         throw;
                     }
                 }
+                TempData["SuccessMessage"] = "Lưu thành công";
                 return RedirectToAction(nameof(Index));
             }
             ViewData["StaffTypeId"] = new SelectList(_context.StaffTypes, "StaffTypeId", "Name", vm.StaffTypeId);
             //ViewData["UsersId"] = new SelectList(_context.AspNetUsers, "Id", "Id", staff.UsersId);
+            TempData["ErrorMessage"] = "Có lỗi khi lưu";
             return View(vm);
         }
 
@@ -180,12 +199,23 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
             }
 
             await _context.SaveChangesAsync();
+            TempData["SuccessMessage"] = "Xoá thành công";
             return RedirectToAction(nameof(Index));
         }
 
         private bool StaffExists(int id)
         {
             return (_context.Staff?.Any(e => e.StaffId == id)).GetValueOrDefault();
+        }
+
+        private bool StaffExists(string phoneNumber)
+        {
+            return (_context.Staff?.Any(e => e.PhoneNumber == phoneNumber)).GetValueOrDefault();
+        }
+
+        private bool StaffExistsWithCitizenNum(string citizenNumber)
+        {
+            return (_context.Staff?.Any(e => e.CitizenNumber == citizenNumber)).GetValueOrDefault();
         }
     }
 }

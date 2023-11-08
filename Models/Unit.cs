@@ -8,12 +8,22 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Models;
 [DisplayName("Đơn vị")]
 public partial class Unit
 {
-    public int UnitId { get; set; }
-    [DisplayName("Tên đơn vị")]
-    [Required(AllowEmptyStrings = false, ErrorMessage = "{0} không được trống")]
+    [Required(ErrorMessage = "{0} không được trống")]
+    [DisplayName("Mã đơn vị tính")]
+    public int UnitId
+    {
+        get; set;
+    }
+    [Required(ErrorMessage = "{0} không được trống")]
+    [Display(Name = "Tên đơn vị tính", Prompt = "Vd: Tô")]
     public string UnitName { get; set; } = null!;
-    [DisplayName("Mô tả")]
-    public string? Description { get; set; }
+
+
+    [Display(Name = "Mô tả", Prompt = "Vd: 1 đĩa")]
+    public string? Description
+    {
+        get; set;
+    }
 
     public virtual ICollection<Dish> Dishes { get; set; } = new List<Dish>();
 }

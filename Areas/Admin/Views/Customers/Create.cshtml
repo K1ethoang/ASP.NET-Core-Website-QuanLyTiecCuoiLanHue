@@ -1,7 +1,7 @@
-﻿@model ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels.StaffViewModel
+﻿@model ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels.CustomerViewModel
 
 @{
-    ViewData["Title"] = "Thêm nhân viên";
+    ViewData["Title"] = "Thêm khách hàng";
 }
 
 <!-- Content Header (Page header) -->
@@ -15,7 +15,7 @@
                 <div class="float-sm-right">
                     <a asp-action="index">
                         @* <i class="fas fa-arrow-left"></i> *@
-                        Danh sách nhân viên
+                        Danh sách khách hàng
                     </a>
                 </div>
             </div>
@@ -30,14 +30,14 @@
     <div class="container-fluid">
         <div class="card">
             <dic class="card-body">
-                <form method="post" autocomplete="off">
+                <form asp-action="create" asp-controller="customers" asp-area="admin" autocomplete="off">
                     <div class="row mb-12">
                         <div class="col-md-4">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <div class="form-group required">
-                                <label asp-for="StaffName" class="control-label"></label>
-                                <input asp-for="StaffName" class="form-control" />
-                                <span asp-validation-for="StaffName" class="text-danger"></span>
+                                <label asp-for="CusName" class="control-label"></label>
+                                <input asp-for="CusName" class="form-control" />
+                                <span asp-validation-for="CusName" class="text-danger"></span>
                             </div>
                             <div class="form-group required">
                                 <label asp-for="PhoneNumber" class="control-label"></label>
@@ -66,10 +66,6 @@
                                 <label asp-for="CitizenNumber" class="control-label"></label>
                                 <input asp-for="CitizenNumber" class="form-control" />
                                 <span asp-validation-for="CitizenNumber" class="text-danger"></span>
-                            </div>
-                            <div class="form-group required">
-                                <label asp-for="StaffTypeId" class="control-label"></label>
-                                <select asp-for="StaffTypeId" class="form-control" asp-items="ViewBag.StaffTypeId"></select>
                             </div>
                         </div>
                     </div>

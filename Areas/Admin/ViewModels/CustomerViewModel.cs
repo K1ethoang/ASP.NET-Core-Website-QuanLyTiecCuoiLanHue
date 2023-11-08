@@ -1,26 +1,23 @@
 ﻿using ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Models;
-using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Configuration;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels
 {
     [Keyless]
-    public class StaffViewModel
+    public class CustomerViewModel
     {
         [Required(ErrorMessage = "{0} không được trống")]
-        [DisplayName("Mã nhân viên")]
-        public int StaffId
+        [DisplayName("Mã khách hàng")]
+        public int CustomerId
         {
             get; set;
         }
 
         [Required(ErrorMessage = "{0} không được trống")]
         [Display(Name = "Tên nhân viên", Prompt = "Vd: Nguyễn Văn An")]
-        public string? StaffName
+        public string? CusName
         {
             get; set;
         }
@@ -35,7 +32,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels
 
         [Required(ErrorMessage = "{0} không được trống")]
         [DisplayName("Giới tính")]
-        public bool Sex
+        public bool? Sex
         {
             get; set;
         }
@@ -50,51 +47,35 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels
         [Required(ErrorMessage = "{0} không được trống")]
         [RegularExpression(@"\d{12}", ErrorMessage = "{0} không hợp lệ")]
         [Display(Name = "Số CCCD", Prompt = "Vd: 012345678910")]
+
         public string? CitizenNumber
         {
             get; set;
         }
 
-        [Required(ErrorMessage = "{0} không được trống")]
-        [DisplayName("Loại nhân viên")]
-        public int StaffTypeId
-        {
-            get; set;
-        }
-
-        //public string? UsersId
-        //{
-        //    get; set;
-        //}
-
-        public StaffViewModel()
+        public CustomerViewModel()
         {
         }
-        public StaffViewModel(Staff staff) : this()
+        public CustomerViewModel(Customer customer) : this()
         {
-            StaffId = staff.StaffId;
-            StaffName = staff.StaffName;
-            Sex = staff.Sex;
-            StaffTypeId = staff.StaffTypeId;
-            CitizenNumber = staff.CitizenNumber;
-            PhoneNumber = staff.PhoneNumber;
-            Address = staff.Address;
+            CustomerId = customer.CustomerId;
+            CusName = customer.CusName;
+            PhoneNumber = customer.PhoneNumber;
+            Sex = customer.Sex;
+            Address = customer.Address;
+            CitizenNumber = customer.CitizenNumber;
         }
 
-        public Staff ToStaff(QlDichVuNauTiecLanHueContext context)
+        public Customer ToCustomer(QlDichVuNauTiecLanHueContext context)
         {
-            return new Staff()
+            return new Customer()
             {
-                StaffId = StaffId,
-                StaffTypeId = StaffTypeId,
-                StaffName = StaffName,
+                CustomerId = CustomerId,
+                CusName = CusName,
                 PhoneNumber = PhoneNumber,
                 Sex = Sex,
                 Address = Address,
                 CitizenNumber = CitizenNumber,
-                // Foreign Object
-                StaffType = context.StaffTypes.Find(StaffTypeId) ?? new StaffType(),
-                //Users = context.AspNetUsers.Find(UsersId) ?? new AspNetUser(),
             };
         }
     }

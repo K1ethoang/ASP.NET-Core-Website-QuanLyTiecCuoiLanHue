@@ -111,6 +111,27 @@
         toastr.options.closeButton = 'true';
         toastr.options.preventDuplicates = 'true';
     </script>
+
+    <script>
+        $(document).ready(function () {
+            var errorMessage = '@TempData["ErrorMessage"]';
+            var errorMessage1 = '@TempData["ErrorMessage1"]';
+            var successMessage = '@TempData["SuccessMessage"]';
+
+            if (errorMessage) {
+                toastr.error(errorMessage);
+            }
+
+            if (errorMessage1) {
+                toastr.error(errorMessage1);
+            }
+
+            if (successMessage) {
+                toastr.success(successMessage);
+            }
+        });
+    </script>
+
     <!-- Datatable -->
     <script src="~/admin/plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="~/admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
@@ -130,7 +151,6 @@
                 // fixedHeader: true,
                 // scrollCollapse: true,
                 // scrollY: '50vh'
-
             });
         });
     </script>

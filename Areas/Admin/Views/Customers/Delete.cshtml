@@ -1,21 +1,21 @@
-﻿@model ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Models.Staff
+﻿@model ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Models.Customer
 
 @{
-    ViewData["Title"] = "Chi tiết";
+    ViewData["Title"] = "Xác nhận xoá";
 }
-
 
 <!-- Content Header (Page header) -->
 <div class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0">@ViewData["Title"] / @Model.StaffId</h1>
+                <h1 class="m-0">@ViewData["Title"] / @Model.CustomerId</h1>
             </div>
         </div>
     </div>
     <!-- /.container-fluid -->
 </div>
+
 
 <!-- Main content -->
 <section class="content">
@@ -24,10 +24,10 @@
             <div class="card-body">
                 <dl class="row mb-12">
                     <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.StaffName)
+                        @Html.DisplayNameFor(model => model.CusName)
                     </dt>
                     <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.StaffName)
+                        @Html.DisplayFor(model => model.CusName)
                     </dd>
                     <dt class="col-sm-2">
                         @Html.DisplayNameFor(model => model.PhoneNumber)
@@ -39,13 +39,13 @@
                         @Html.DisplayNameFor(model => model.Sex)
                     </dt>
                     <dd class="col-sm-10">
-                        @if (Model.Sex)
+                        @if ((bool)Model.Sex)
                         {
-                            @Staff.MALE
+                            @Customer.MALE
                         }
                         else
                         {
-                            @Staff.FEMALE
+                            @Customer.FEMALE
                         }
                     </dd>
                     <dt class="col-sm-2">
@@ -60,17 +60,13 @@
                     <dd class="col-sm-10">
                         @Html.DisplayFor(model => model.CitizenNumber)
                     </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.StaffType)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.StaffType.Name)
-                    </dd>
                 </dl>
-                <div>
-                    <a asp-action="Edit" class="btn btn-outline-primary" asp-route-id="@Model.StaffId">Chỉnh sửa</a> |
-                    <a asp-action="Index" class="btn btn-outline-primary">Danh sách nhân viên</a>
-                </div>
+
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="CustomerId" />
+                    <input type="submit" value="Xoá vĩnh viễn" class="btn btn-danger" /> |
+                    <a asp-action="Index" class="btn btn-outline-primary">Danh sách khách hàng</a>
+                </form>
             </div>
         </div>
     </div>

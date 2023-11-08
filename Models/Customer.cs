@@ -7,6 +7,9 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Models;
 [DisplayName("khách hàng")]
 public partial class Customer
 {
+    public const string MALE = "Nam";
+    public const string FEMALE = "Nữ";
+
     [DisplayName("Mã khách hàng")]
     public int CustomerId { get; set; }
 

@@ -65,6 +65,7 @@
                         </li>
                     </ul>
                 </li>
+
                 <!-- DISH -->
                 <li class="nav-item @Url.MakeMenuOpenClass("dishes")">
                     <a asp-controller="dishes" asp-action="index" class="nav-link @Url.MakeActiveClass("dishes","")">
@@ -85,6 +86,32 @@
                             <a asp-controller="dishes" asp-action="create" class="nav-link @Url.MakeActiveClass("dishes","create")">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Thêm món ăn</p>
+                            </a>
+                        </li>
+                        
+                    </ul>
+                </li>
+
+                <!-- UNITS -->
+                <li class="nav-item @Url.MakeMenuOpenClass("units")">
+                    <a asp-controller="parties" asp-action="index" class="nav-link @Url.MakeActiveClass("units","")">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Đơn vị tính
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a asp-controller="units" asp-action="index" class="nav-link @Url.MakeActiveClass("units","index")">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Danh sách đơn vị tính</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-controller="units" asp-action="create" class="nav-link @Url.MakeActiveClass("units","create")">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Thêm đơn vị tính</p>
                             </a>
                         </li>
                     </ul>
@@ -110,6 +137,31 @@
                             <a asp-controller="staffs" asp-action="create" class="nav-link @Url.MakeActiveClass("staffs","create")">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Thêm nhân viên</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- CUSTOMER -->
+                <li class="nav-item @Url.MakeMenuOpenClass("customers")">
+                    <a asp-controller="customers" asp-action="index" class="nav-link @Url.MakeActiveClass("customers","")">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Khách hàng
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a asp-controller="customers" asp-action="index" class="nav-link @Url.MakeActiveClass("customers","index")">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Danh sách khách hàng</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-controller="customers" asp-action="create" class="nav-link @Url.MakeActiveClass("customers","create")">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Thêm khách hàng</p>
                             </a>
                         </li>
                     </ul>
