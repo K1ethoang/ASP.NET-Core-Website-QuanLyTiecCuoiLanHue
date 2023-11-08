@@ -89,6 +89,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 
             var staff = await _context.Staff.FindAsync(id);
             StaffViewModel vm = new StaffViewModel(staff);
+
             if (staff == null)
             {
                 return NotFound();

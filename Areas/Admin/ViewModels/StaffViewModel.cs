@@ -26,7 +26,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels
         }
 
         [Required(ErrorMessage = "{0} không được trống")]
-        [RegularExpression(@"0(\d{9})", ErrorMessage = "{0} không hợp lệ")]
+        [RegularExpression(@"(0[3|5|7|8|9])+([0-9]{8})\b", ErrorMessage = "{0} không hợp lệ")]
         [Display(Name = "Số điện thoại", Prompt = "Vd: 0123456789")]
         public string? PhoneNumber
         {

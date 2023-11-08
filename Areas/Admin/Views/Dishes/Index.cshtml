@@ -21,14 +21,15 @@
 	</div>
 </div>
 
+<!-- Main content -->
 <section class="content">
-	<div class="container-fluid">
-		<div class="row mb-12">
-			<div class="col-12">
-				<div class="card">
-					<div class="card-body">
-						<table class="table">
-							<thead>
+    <div class="container-fluid">
+        <div class="row mb-12">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <table id="table-data" class="table table-bordered table-striped tablas">
+                            <thead>
 								<tr>
 									<th>
 										@Html.DisplayNameFor(model => model.DishName)
@@ -42,10 +43,10 @@
 									<th>
 										@Html.DisplayNameFor(model => model.Unit.UnitName)
 									</th>
-									<th></th>
+									<th>Tuỳ chỉnh</th>
 								</tr>
-							</thead>
-							<tbody>
+                            </thead>
+                            <tbody>
 								@foreach (var item in Model)
 								{
 									<tr>
@@ -53,7 +54,7 @@
 											@Html.DisplayFor(modelItem => item.DishName)
 										</td>
 										<td>
-											@item.Price.ToString("#,##0").Replace(",",".")đ
+											@item.Price.ToString("#,##").Replace(",",".")đ
 										</td>
 										<td>
 											@Html.DisplayFor(modelItem => item.DishType.TypeName)
@@ -62,22 +63,38 @@
 											@Html.DisplayFor(modelItem => item.Unit.UnitName)
 										</td>
 										<td>
-											<a asp-action="Edit" asp-route-id="@item.DishId">Edit</a> |
-											<a asp-action="Details" asp-route-id="@item.DishId">Details</a> |
-											<a asp-action="Delete" asp-route-id="@item.DishId">Delete</a>
+											<div class="btn-group">
+												<button type="button" class="btn btn-primary dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
+												</button>
+												<div class="dropdown-menu" role="menu" style="">
+													<a asp-action="edit" asp-route-id="@item.DishId" class="dropdown-item bg-gradient-success">
+														<i class="fas fa-pen"></i>
+														Chỉnh sửa
+													</a>
+													@* <a asp-action="details" asp-route-id="@item.DishId" class="dropdown-item bg-gradient-info">
+														<i class="fas fa-eye"></i>
+														Chi tiết
+													</a> *@
+													<a asp-action="delete" asp-route-id="@item.DishId" class="dropdown-item bg-gradient-danger">
+														<i class="fas fa-trash"></i>
+														Xoá
+													</a>
+												</div>
+											</div>
 										</td>
 									</tr>
 								}
-							</tbody>
-						</table>
-					</div>
-
-				</div>
-
-			</div>
-
-		</div>
-
-	</div>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
 </section>
-
+<!-- /.content -->
