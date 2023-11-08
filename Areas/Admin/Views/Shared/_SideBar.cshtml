@@ -114,6 +114,31 @@
                         </li>
                     </ul>
                 </li>
+
+                <!-- CUSTOMER -->
+                <li class="nav-item @Url.MakeMenuOpenClass("customers")">
+                    <a asp-controller="customers" asp-action="index" class="nav-link @Url.MakeActiveClass("customers","")">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Khách hàng
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a asp-controller="customers" asp-action="index" class="nav-link @Url.MakeActiveClass("customers","index")">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Danh sách khách hàng</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-controller="customers" asp-action="create" class="nav-link @Url.MakeActiveClass("customers","create")">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Thêm khách hàng</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

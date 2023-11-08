@@ -74,6 +74,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels
         {
             StaffId = staff.StaffId;
             StaffName = staff.StaffName;
+            Sex = staff.Sex;
             StaffTypeId = staff.StaffTypeId;
             CitizenNumber = staff.CitizenNumber;
             PhoneNumber = staff.PhoneNumber;

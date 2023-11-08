@@ -67,13 +67,23 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("StaffId,StaffName,PhoneNumber,Sex,Address,CitizenNumber,StaffTypeId")] StaffViewModel vm)
         {
-            if (ModelState.IsValid)
+            Staff staff = vm.ToStaff(context: _context);
+
+            staff.StaffName = staff.StaffName.Trim();
+
+            bool existCusWithPhoneNum = StaffExists(staff.PhoneNumber);
+            bool existCusWithCitizenNum = StaffExistsWithCitizenNum(staff.CitizenNumber);
+
+            if (!existCusWithPhoneNum && !existCusWithPhoneNum)
             {
-                Staff staff = vm.ToStaff(context: _context);
                 _context.Add(staff);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
+            TempData["ErrorMessage"] = "Số điện thoại đã có";
+            TempData["ErrorMessage1"] = "Số CCCD đã có";
+
             ViewData["StaffTypeId"] = new SelectList(_context.StaffTypes, "StaffTypeId", "Name", vm.StaffTypeId);
             //ViewData["UsersId"] = new SelectList(_context.AspNetUsers, "Id", "Id", vm.UsersId);
             return View(vm);
@@ -106,7 +116,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("StaffId,StaffName,PhoneNumber,Sex,Address,CitizenNumber,StaffTypeId")] StaffViewModel vm)
         {
-            var staff = await _context.Staff.Where(p => p.StaffId == id).FirstAsync();
+            var staff = await _context.Staff.Where(s => s.StaffId == id).FirstAsync();
 
             if (staff == null || id != staff.StaffId)
             {
@@ -187,6 +197,16 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
         private bool StaffExists(int id)
         {
             return (_context.Staff?.Any(e => e.StaffId == id)).GetValueOrDefault();
+        }
+
+        private bool StaffExists(string phoneNumber)
+        {
+            return (_context.Staff?.Any(e => e.PhoneNumber == phoneNumber)).GetValueOrDefault();
+        }
+
+        private bool StaffExistsWithCitizenNum(string citizenNumber)
+        {
+            return (_context.Staff?.Any(e => e.CitizenNumber == citizenNumber)).GetValueOrDefault();
         }
     }
 }

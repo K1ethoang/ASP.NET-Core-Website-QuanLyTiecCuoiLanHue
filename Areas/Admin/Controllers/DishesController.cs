@@ -79,9 +79,9 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
                 {
                     _context.Add(dish);
                     await _context.SaveChangesAsync();
-                    TempData["ErrorMessage"] = "Tên món ăn đã tồn tại";
                     return RedirectToAction(nameof(Index));
                 }
+                TempData["ErrorMessage"] = "Tên món ăn đã tồn tại";
             }
             ViewData["DishTypeId"] = new SelectList(_context.DishTypes, "DishTypeId", "TypeName", vm.DishTypeId);
             ViewData["UnitId"] = new SelectList(_context.Units, "UnitId", "UnitName", vm.UnitId);

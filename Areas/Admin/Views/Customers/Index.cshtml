@@ -1,0 +1,120 @@
+﻿@model IEnumerable<ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Models.Customer>
+
+@{
+    ViewData["Title"] = "Danh sách khách hàng";
+}
+
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">@ViewData["Title"]</h1>
+            </div>
+            <div class="col-sm-6">
+                <a asp-action="create" class="btn btn-outline-primary float-sm-right">
+                    <i class="fas fa-plus"></i>
+                    Thêm khách hàng
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row mb-12">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <table id="table-data" class="table table-bordered table-striped tablas">
+                            <thead>
+                                <tr>
+                                    <th>Mã</th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.CusName)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.PhoneNumber)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Sex)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Address)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.CitizenNumber)
+                                    </th>
+                                    <th>
+                                        Tuỳ chỉnh
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @item.CustomerId
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.CusName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.PhoneNumber)
+                                        </td>
+                                        <td>
+                                            @if((bool)item.Sex)
+                                            {
+                                                <span class="badge badge-pill badge-info">@Customer.MALE</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge badge-pill badge-danger">@Customer.FEMALE</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Address)
+                                        </td>
+                                        <td>
+                                            @item.CitizenNumber
+                                        </td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-primary dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
+                                                </button>
+                                                <div class="dropdown-menu" role="menu" style="">
+                                                    <a asp-action="edit" asp-route-id="@item.CustomerId" class="dropdown-item bg-gradient-success">
+                                                        <i class="fas fa-pen"></i>
+                                                        Chỉnh sửa
+                                                    </a>
+                                                    <a asp-action="details" asp-route-id="@item.CustomerId" class="dropdown-item bg-gradient-info">
+                                                        <i class="fas fa-eye"></i>
+                                                        Chi tiết
+                                                    </a>
+                                                    <a asp-action="delete" asp-route-id="@item.CustomerId" class="dropdown-item bg-gradient-danger">
+                                                        <i class="fas fa-trash"></i>
+                                                        Xoá
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+</section>
+<!-- /.content -->
