@@ -79,12 +79,13 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
                 {
                     _context.Add(dish);
                     await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "Thêm thành công";
                     return RedirectToAction(nameof(Index));
                 }
-                TempData["ErrorMessage"] = "Tên món ăn đã có";
             }
             ViewData["DishTypeId"] = new SelectList(_context.DishTypes, "DishTypeId", "TypeName", vm.DishTypeId);
             ViewData["UnitId"] = new SelectList(_context.Units, "UnitId", "UnitName", vm.UnitId);
+            TempData["ErrorMessage"] = "Tên món ăn đã có";
             return View("CreateDishView", vm);
         }
 
@@ -148,10 +149,12 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
                         throw;
                     }
                 }
+                TempData["SuccessMessage"] = "Lưu thành công";
                 return RedirectToAction(nameof(Index));
             }
             ViewData["DishTypeId"] = new SelectList(_context.DishTypes, "DishTypeId", "TypeName", vm.DishTypeId);
             ViewData["UnitId"] = new SelectList(_context.Units, "UnitId", "UnitName", vm.UnitId);
+            TempData["ErrorMessage"] = "Có lỗi khi lưu";
             return View(vm);
         }
 
@@ -171,7 +174,6 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-
             return View(dish);
         }
 
@@ -191,6 +193,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
             }
 
             await _context.SaveChangesAsync();
+            TempData["SuccessMessage"] = "Xoá thành công";
             return RedirectToAction(nameof(Index));
         }
 
@@ -200,7 +203,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
         }
         private bool DishExists(string dishName)
         {
-            return (_context.Dishes?.Any(e => e.DishName == dishName)).GetValueOrDefault();
+            return (_context.Dishes?.Any(e => e.DishName.ToLower() == dishName.ToLower())).GetValueOrDefault();
         }
     }
 }

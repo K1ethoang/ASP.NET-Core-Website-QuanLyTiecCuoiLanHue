@@ -24,9 +24,9 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
         [Route("admin/units")]
         public async Task<IActionResult> Index()
         {
-              return _context.Units != null ? 
-                          View(await _context.Units.ToListAsync()) :
-                          Problem("Entity set 'QlDichVuNauTiecLanHueContext.Units'  is null.");
+            return _context.Units != null ?
+                        View(await _context.Units.ToListAsync()) :
+                        Problem("Entity set 'QlDichVuNauTiecLanHueContext.Units'  is null.");
         }
 
         // GET: Admin/Units/Details/5
@@ -72,11 +72,11 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
                 {
                     _context.Add(unit);
                     await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "Thêm thành công";
                     return RedirectToAction(nameof(Index));
                 }
-                TempData["ErrorMessage"] = "Tên đơn vị đã có";
-
             }
+            TempData["ErrorMessage"] = "Tên đơn vị tính đã có";
             return View(vm);
         }
 
@@ -137,8 +137,10 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
                         throw;
                     }
                 }
+                TempData["SuccessMessage"] = "Lưu thành công";
                 return RedirectToAction(nameof(Index));
             }
+            TempData["ErrorMessage"] = "Có lỗi khi lưu";
             return View(vm);
         }
 
@@ -152,7 +154,6 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 
             var unit = await _context.Units
                 .FirstOrDefaultAsync(m => m.UnitId == id);
-            
 
             if (unit == null)
             {
@@ -176,19 +177,20 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
             {
                 _context.Units.Remove(unit);
             }
-            
+
             await _context.SaveChangesAsync();
+            TempData["SuccessMessage"] = "Xoá thành công";
             return RedirectToAction(nameof(Index));
         }
 
         private bool UnitExists(int id)
         {
-          return (_context.Units?.Any(e => e.UnitId == id)).GetValueOrDefault();
+            return (_context.Units?.Any(e => e.UnitId == id)).GetValueOrDefault();
         }
 
         private bool UnitExists(string name)
         {
-            return (_context.Units?.Any(e => e.UnitName == name)).GetValueOrDefault();
+            return (_context.Units?.Any(e => e.UnitName.ToLower() == name.ToLower())).GetValueOrDefault();
         }
     }
 }

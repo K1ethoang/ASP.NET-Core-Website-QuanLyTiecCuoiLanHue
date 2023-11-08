@@ -67,23 +67,29 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("StaffId,StaffName,PhoneNumber,Sex,Address,CitizenNumber,StaffTypeId")] StaffViewModel vm)
         {
-            Staff staff = vm.ToStaff(context: _context);
-
-            staff.StaffName = staff.StaffName.Trim();
-
-            bool existCusWithPhoneNum = StaffExists(staff.PhoneNumber);
-            bool existCusWithCitizenNum = StaffExistsWithCitizenNum(staff.CitizenNumber);
-
-            if (!existCusWithPhoneNum && !existCusWithPhoneNum)
+            if (ModelState.IsValid)
             {
-                _context.Add(staff);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+                Staff staff = vm.ToStaff(context: _context);
+
+                staff.StaffName = staff.StaffName.Trim();
+
+                bool existCusWithPhoneNum = StaffExists(staff.PhoneNumber);
+                bool existCusWithCitizenNum = StaffExistsWithCitizenNum(staff.CitizenNumber);
+
+                if (!existCusWithPhoneNum && !existCusWithCitizenNum)
+                {
+                    _context.Add(staff);
+                    await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "Thêm thành công";
+                    return RedirectToAction(nameof(Index));
+                }
+
+                if (existCusWithPhoneNum)
+                    TempData["ErrorMessage"] = "Số điện thoại đã có";
+                if (existCusWithCitizenNum)
+                    TempData["ErrorMessage1"] = "Số CCCD đã có";
             }
-
-            TempData["ErrorMessage"] = "Số điện thoại đã có";
-            TempData["ErrorMessage1"] = "Số CCCD đã có";
-
             ViewData["StaffTypeId"] = new SelectList(_context.StaffTypes, "StaffTypeId", "Name", vm.StaffTypeId);
             //ViewData["UsersId"] = new SelectList(_context.AspNetUsers, "Id", "Id", vm.UsersId);
             return View(vm);
@@ -148,10 +154,12 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
                         throw;
                     }
                 }
+                TempData["SuccessMessage"] = "Lưu thành công";
                 return RedirectToAction(nameof(Index));
             }
             ViewData["StaffTypeId"] = new SelectList(_context.StaffTypes, "StaffTypeId", "Name", vm.StaffTypeId);
             //ViewData["UsersId"] = new SelectList(_context.AspNetUsers, "Id", "Id", staff.UsersId);
+            TempData["ErrorMessage"] = "Có lỗi khi lưu";
             return View(vm);
         }
 
@@ -191,6 +199,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
             }
 
             await _context.SaveChangesAsync();
+            TempData["SuccessMessage"] = "Xoá thành công";
             return RedirectToAction(nameof(Index));
         }
 

@@ -25,9 +25,9 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
         [Route("admin/customers")]
         public async Task<IActionResult> Index()
         {
-              return _context.Customers != null ? 
-                          View(await _context.Customers.ToListAsync()) :
-                          Problem("Entity set 'QlDichVuNauTiecLanHueContext.Customers'  is null.");
+            return _context.Customers != null ?
+                        View(await _context.Customers.ToListAsync()) :
+                        Problem("Entity set 'QlDichVuNauTiecLanHueContext.Customers'  is null.");
         }
 
         // GET: Admin/Customers/Details/5
@@ -68,18 +68,22 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
                 Customer customer = vm.ToCustomer(_context);
 
                 customer.CusName = customer.CusName.Trim();
+                customer.Address = customer.Address.Trim();
 
                 bool existCusWithPhoneNum = CustomerExists(customer.PhoneNumber);
                 bool existCusWithCitizenNum = CustomerExistsWithCitizenNum(customer.CitizenNumber);
 
-                if (!existCusWithPhoneNum && !existCusWithPhoneNum)
+                if (!existCusWithPhoneNum && !existCusWithCitizenNum)
                 {
                     _context.Add(customer);
                     await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "Thêm thành công";
                     return RedirectToAction(nameof(Index));
                 }
-                TempData["ErrorMessage"] = "Số điện thoại đã có";
-                TempData["ErrorMessage1"] = "Số CCCD đã có";
+                if (existCusWithPhoneNum)
+                    TempData["ErrorMessage"] = "Số điện thoại đã có";
+                if (existCusWithCitizenNum)
+                    TempData["ErrorMessage1"] = "Số CCCD đã có";
             }
             return View(vm);
         }
@@ -141,9 +145,11 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
                         throw;
                     }
                 }
+                TempData["SuccessMessage"] = "Lưu thành công";
                 return RedirectToAction(nameof(Index));
             }
-            return View(customer);
+            TempData["ErrorMessage"] = "Có lỗi khi lưu";
+            return View(vm);
         }
 
         // GET: Admin/Customers/Delete/5
@@ -178,14 +184,15 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
             {
                 _context.Customers.Remove(customer);
             }
-            
+
             await _context.SaveChangesAsync();
+            TempData["SuccessMessage"] = "Xoá thành công";
             return RedirectToAction(nameof(Index));
         }
 
         private bool CustomerExists(int id)
         {
-          return (_context.Customers?.Any(e => e.CustomerId == id)).GetValueOrDefault();
+            return (_context.Customers?.Any(e => e.CustomerId == id)).GetValueOrDefault();
         }
 
         private bool CustomerExists(string phoneNumber)
