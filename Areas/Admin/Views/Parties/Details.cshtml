@@ -70,18 +70,22 @@
                     <dd class="col-sm-10">
                         @{
                             string status = Model.Status;
-                            if (@status.Equals(Party.COMING_SOON))
+                            string style = "";
+
+                            @switch (@status)
                             {
-                                <span class="badge badge-warning">@status</span>
+                                case Party.DONE:
+                                    style = "badge-success";
+                                    break;
+                                case Party.GOING_ON:
+                                    style = "badge-info";
+                                    break;
+                                default:
+                                    style = "badge-warning";
+                                    break;
                             }
-                            else if (@status.Equals(Party.GOING_ON))
-                            {
-                                <span class="badge badge-info">@status</span>
-                            }
-                            else
-                            {
-                                <span class="badge badge-success">@status</span>
-                            }
+
+                            <span class="badge @style">@status</span>
                         }
                     </dd>
                     <dt class="col-sm-2">
