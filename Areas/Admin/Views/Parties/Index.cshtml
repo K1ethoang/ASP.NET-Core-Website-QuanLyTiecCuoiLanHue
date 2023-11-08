@@ -91,7 +91,7 @@
                                         </td>
                                         <td>
                                             @{
-                                                string status = Model.Status;
+                                                string status = item.Status ?? Party.COMING_SOON;
                                                 string style = "";
 
                                                 @switch (@status)

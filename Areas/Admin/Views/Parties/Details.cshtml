@@ -112,8 +112,13 @@
                     </dd>
                 </dl>
                 <div>
-                    <a asp-action="Edit" class="btn btn-outline-primary" asp-route-id="@Model.PartyId">Chỉnh sửa</a> |
-                    <a asp-action="Index" class="btn btn-outline-primary">Danh sách tiệc</a>
+                    <a asp-action="Edit" class="btn btn-outline-primary mx-2" asp-route-id="@Model.PartyId">Chỉnh sửa</a>
+                    <a asp-action="Index" class="btn btn-outline-primary mx-2">Danh sách tiệc</a>
+
+                    @if (!Model.HasMenu)
+                    {
+                        <a asp-action="" class="btn btn-outline-primary mx-2">Chọn thực đơn</a>
+                    }
                 </div>
             </div>
         </div>
