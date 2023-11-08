@@ -52,8 +52,13 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels
 		//PartyTypeId
 		[DisplayName("Loại tiệc")]
 		public int PartyTypeId { get; set; }
+		// HASMENU
+		public bool HasMenu
+		{
+			get; set;
+		} = false;
 
-		public PartyViewModel() { }
+        public PartyViewModel() { }
 		public PartyViewModel(Party party) : this()
 		{			
 			PartyName = party.PartyName;
@@ -64,6 +69,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels
 			CustomerId = party.CustomerId;
 			PartyTypeId = party.PartyTypeId;
 			Note = party.Note;
+			HasMenu = party.HasMenu;
 		}
 		public class CheckDateRangeAttribute : ValidationAttribute
 		{
@@ -89,7 +95,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels
 			{
 				PartyName = PartyName,
 				Status = Party.COMING_SOON,
-				HasMenu = false,
+				HasMenu = HasMenu,
 				Date = Date,
 				Time = Time,
 				Quantity = Quantity,
