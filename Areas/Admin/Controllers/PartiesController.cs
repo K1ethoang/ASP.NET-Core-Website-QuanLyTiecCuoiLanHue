@@ -292,5 +292,20 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 		{
 			return (_context.Parties?.Any(e => e.PartyId == id)).GetValueOrDefault();
 		}
-	}
+		// GET
+		public IActionResult CreateMenu(int? partyId)
+		{
+
+			
+			ViewData["DishesSelectList"] = null;
+			ViewData["MenuResult"] = new List<Menu.MenuItem>();
+			return View();
+		}
+		// POST
+        [HttpPost]
+		public async Task<IActionResult> CreateMenu (int id, List<Menu.MenuItem> items)
+		{
+			return View();
+		}
+    }
 }

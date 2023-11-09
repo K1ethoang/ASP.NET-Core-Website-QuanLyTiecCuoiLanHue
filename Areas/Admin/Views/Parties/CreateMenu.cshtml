@@ -1,0 +1,43 @@
+﻿@model Tuple<Dish>
+@{
+    ViewData["Title"] = "View";
+}
+
+<h1>View</h1>
+
+@Html.BeginForm(actionName: "CreateMenu", controllerName: "Parties"){
+<button action="submit">Confirm Menu</button>
+
+<section>
+    <section id="section-select"></section>
+    <section id="section-result">
+        <table>
+            <thead>
+                <tr>
+                    <th>Tên món ăn</th>
+                    <th>Loại món ăn</th>
+                    <th>Đơn vị</th>
+                    <th>Số lượng</th>
+                    <th>Thành tiền</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in ViewBag.MenuResult)
+                {
+                    <tr>
+                        <td>item.DishName</td>
+                        <td>item.DishType.Name</td>
+                        <td>item.Unit.UnitName</td>
+                        <td>item.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </section>
+</section>
+}
+
+<script>
+
+</script>
+

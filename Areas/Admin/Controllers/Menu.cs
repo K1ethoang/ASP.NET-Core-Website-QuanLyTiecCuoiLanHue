@@ -1,4 +1,5 @@
 ﻿
+using ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels;
 using ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Models;
 
 namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
@@ -16,19 +17,36 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
         public Menu(Party party)
         {
             this.PartyId = party.PartyId;
+
+            if (party.HasMenu) { }
         }
-        public class MenuItem 
+
+        bool DishExists(int id)
         {
-        //
-        // Type nesting
-        // https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/nested-types
-        //
+            return Items.Any(i => i.DishId == id);
+        }
+        public class MenuItem
+        {
+            //
+            // Type nesting
+            // https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/nested-types
+            //
             Menu? FromMenu;
+            int _DishId;
+            public int DishId { get => _DishId; }
+            int Qty { get; set; }
 
             public MenuItem() { }
-            public MenuItem(Menu? menu)
+            public MenuItem(DishViewModel vm) { }
+            public MenuItem(Dish dish, int qty = 1)
             {
-                FromMenu = menu;
+                _DishId = dish.DishId;
+                Qty = qty;
+            }
+            public MenuItem(int dishId, int qty = 1)
+            {
+                _DishId = dishId;
+                Qty = qty;
             }
         }
 
