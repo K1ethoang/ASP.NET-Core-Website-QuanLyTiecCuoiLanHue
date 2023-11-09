@@ -1,6 +1,7 @@
 ﻿
 using ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels;
 using ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Models;
+using System.ComponentModel;
 
 namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 {
@@ -33,7 +34,9 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
             //
             Menu? FromMenu;
             int _DishId;
+            [DisplayName("Tên món ăn")]
             public int DishId { get => _DishId; }
+            [DisplayName("Số lượng")]
             int Qty { get; set; }
 
             public MenuItem() { }

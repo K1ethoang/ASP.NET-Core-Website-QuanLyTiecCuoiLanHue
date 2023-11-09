@@ -250,22 +250,34 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
         // GET
         public async Task<IActionResult> CreateMenu(int? partyId)
         {
-            if (partyId == null)
+            if (partyId == null || !PartyExists(partyId!.Value))
             {
-                NotFound();
+                return NotFound();
             }
+
+            Menu emptyMenu = new Menu(partyId!.Value);
+
+            if (emptyMenu == null)
+            {
+                return Empty;
+            }
+
             ViewData["DishesSelectList"] = await _context.Dishes
                 .Include(d => d.Unit.UnitName)
                 .Include(d => d.DishType.TypeName)
                 .ToListAsync();
             ViewData["MenuResult"] = new List<Dish>();
-            return View();
+            return View(emptyMenu);
         }
         // POST
         [HttpPost]
-        public async Task<IActionResult> CreateMenu(int partyId, List<Menu.MenuItem> items)
+        public async Task<IActionResult> CreateMenu(int partyId, Menu menu)
         {
-            return View();
+            ViewData["DishesSelectList"] = await _context.Dishes
+                .Include(d => d.Unit.UnitName)
+                .Include(d => d.DishType.TypeName)
+                .ToListAsync();
+            return View(menu);
         }
     }
 }

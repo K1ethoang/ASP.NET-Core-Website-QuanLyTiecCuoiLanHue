@@ -1,15 +1,22 @@
-﻿@model Tuple<Dish>
+﻿@model ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels.Menu
 @{
     ViewData["Title"] = "View";
 }
 
 <h1>View</h1>
 
-@Html.BeginForm(actionName: "CreateMenu", controllerName: "Parties"){
-<button action="submit">Confirm Menu</button>
 
-<section>
-    <section id="section-select"></section>
+    @Html.BeginForm(actionName: "CreateMenu", controllerName: "Parties",FormMethod.Post,{})
+    {
+    <button action="submit">Confirm Menu</button>
+
+    <section id="section-select">
+        <table>
+
+        </table>
+    </section>
+    }
+
     <section id="section-result">
         <table>
             <thead>
@@ -28,14 +35,13 @@
                         <td>item.DishName</td>
                         <td>item.DishType.Name</td>
                         <td>item.Unit.UnitName</td>
-                        <td>item.</td>
+                        <td><input type="number" value="@item.Qty"/></td>
+                        <td></td>
                     </tr>
                 }
             </tbody>
         </table>
     </section>
-</section>
-}
 
 <script>
 
