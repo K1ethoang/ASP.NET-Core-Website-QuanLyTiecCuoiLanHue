@@ -1,9 +1,7 @@
-﻿
-using ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels;
-using ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Models;
+﻿using ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Models;
 using System.ComponentModel;
 
-namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
+namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels
 {
     public class Menu
     {
@@ -17,7 +15,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
         }
         public Menu(Party party)
         {
-            this.PartyId = party.PartyId;
+            PartyId = party.PartyId;
 
             if (party.HasMenu) { }
         }
@@ -34,10 +32,14 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
             //
             Menu? FromMenu;
             int _DishId;
-            [DisplayName("Tên món ăn")]
-            public int DishId { get => _DishId; }
+            public int DishId { get => _DishId; set => _DishId = value; }
+
+            //[DisplayName("Tên món ăn")]
+            public string DishName;
+            public string UnitName;
+            public string DishType;
             [DisplayName("Số lượng")]
-            int Qty { get; set; }
+            public int Qty { get; set; }
 
             public MenuItem() { }
             public MenuItem(DishViewModel vm) { }
@@ -51,7 +53,17 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
                 _DishId = dishId;
                 Qty = qty;
             }
-        }
+            public static MenuItem ToMenuItem(Dish dish, string UnitName)
+            {
+                return new MenuItem()
+                {
+                    DishId = dish.DishId,
+                    DishName = dish.DishName,
+                    UnitName = UnitName,
+                    Qty = 0
+                };
+            }
 
+        }
     }
 }
