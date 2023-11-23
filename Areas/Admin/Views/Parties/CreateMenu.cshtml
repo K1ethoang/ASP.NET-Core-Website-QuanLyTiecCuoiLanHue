@@ -6,44 +6,65 @@
 <h1>View</h1>
 
 
-    @Html.BeginForm(actionName: "CreateMenu", controllerName: "Parties",FormMethod.Post,{})
+@Html.BeginForm(actionName: "CreateMenu", controllerName: "Parties",FormMethod.Post,new{id="frmMenu"})
     {
-    <button action="submit">Confirm Menu</button>
+<button action="submit">Confirm Menu</button>
 
-    <section id="section-select">
-        <table>
-
-        </table>
-    </section>
+<section id="section-select">
+    <table>
+        <thead>
+            <tr>
+                <th>Tên món ăn</th>
+                <th>Loại món ăn</th>
+                <th>Đơn vị</th>
+                <th>Số lượng</th>
+                <th>Thành tiền</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Items.Count; i++)
+            {
+                <tr>
+                    <td><input type="checkbox" value="@Model.Items[i].DishId" asp-for="@Model.Items[i].DishId" /></td>
+                    <td>@Model.Items[i].DishName</td>
+                    <td>@Model.Items[i].DishType</td>
+                    <td>@Model.Items[i].UnitName</td>
+                    <td><input type="number" value="@Model.Items[i].Qty" asp-for="@Model.Items[i].Qty" /></td>
+                    <td id="@i-thanhtien"></td>
+                </tr>
+            } 
+        </tbody>
+    </table>
+</section>
     }
 
-    <section id="section-result">
-        <table>
-            <thead>
-                <tr>
-                    <th>Tên món ăn</th>
-                    <th>Loại món ăn</th>
-                    <th>Đơn vị</th>
-                    <th>Số lượng</th>
-                    <th>Thành tiền</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in ViewBag.MenuResult)
-                {
-                    <tr>
-                        <td>item.DishName</td>
-                        <td>item.DishType.Name</td>
-                        <td>item.Unit.UnitName</td>
-                        <td><input type="number" value="@item.Qty"/></td>
-                        <td></td>
-                    </tr>
-                }
+<section id="section-result">
+    <table>
+        <thead>
+            <tr>
+                <th>Tên món ăn</th>
+                <th>Loại món ăn</th>
+                <th>Đơn vị</th>
+                <th>Số lượng</th>
+                <th>Thành tiền</th>
+            </tr>
+        </thead>
+        <tbody>
+            @*              @foreach (var item in ViewBag.MenuList)
+            {
+            <tr>
+            <td>item.DishName</td>
+            <td>item.DishType.Name</td>
+            <td>item.Unit.UnitName</td>
+            <td><input type="number" value="@item.Qty"/></td>
+            <td></td>
+            </tr>
+            } *@
             </tbody>
-        </table>
-    </section>
+            </table>
+            </section>
 
-<script>
+            <script>
 
-</script>
+            </script>
 

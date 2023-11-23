@@ -117,7 +117,13 @@
 
                     @if (!Model.HasMenu)
                     {
-                        <a asp-action="" class="btn btn-outline-primary mx-2">Chọn thực đơn</a>
+                        @Html.ActionLink(
+                            linkText:"Chọn thực đơn 2",
+                            actionName: "CreateMenu",
+                            controllerName:"Parties",
+                            routeValues: new {id=@Model.PartyId},
+                            htmlAttributes: new{@class="btn btn-outline-primary mx-2",partyId=@Model.PartyId}
+                        )
                     }
                 </div>
             </div>

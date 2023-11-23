@@ -14,6 +14,7 @@ using Microsoft.CodeAnalysis.Differencing;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Runtime.Intrinsics.X86;
 using Microsoft.AspNetCore.Razor.Language.Intermediate;
+using static ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels.Menu;
 
 namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 {
@@ -248,30 +249,52 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
             return (_context.Parties?.Any(e => e.PartyId == id)).GetValueOrDefault();
         }
         // GET
-        public async Task<IActionResult> CreateMenu(int? partyId)
+        public async Task<IActionResult> CreateMenu(int? id)
         {
-            if (partyId == null || !PartyExists(partyId!.Value))
+            if (id == null || !PartyExists(id!.Value))
             {
                 return NotFound();
             }
 
-            Menu emptyMenu = new Menu(partyId!.Value);
+            Menu newMenu = new Menu(id!.Value);
 
-            if (emptyMenu == null)
+            if (newMenu == null)
             {
                 return Empty;
             }
 
-            ViewData["DishesSelectList"] = await _context.Dishes
+            newMenu.Items = await _context.Dishes
                 .Include(d => d.Unit.UnitName)
                 .Include(d => d.DishType.TypeName)
+                .Select(d => new MenuItem()
+                {
+                    DishId = d.DishId,
+                    DishName = d.DishName!,
+                    UnitName = d.Unit.UnitName,
+                    DishType = d.DishType.TypeName,
+                    Qty = 0
+                })
                 .ToListAsync();
-            ViewData["MenuResult"] = new List<Dish>();
-            return View(emptyMenu);
+
+            //ViewData["MenuList"] = await _context.Dishes
+            //    .Include(d => d.Unit.UnitName)
+            //    .Include(d => d.DishType.TypeName)
+            //    .Select(d => new 
+            //    {
+            //        DishId = d.DishId,
+            //        DishName = d.DishName!,
+            //        UnitName = d.Unit.UnitName,
+            //        DishType = d.DishType.TypeName,
+            //        Qty = 0
+            //    })
+            //    .ToListAsync();
+            //ViewData["MenuResult"] = new List<Dish>();
+
+            return View(newMenu);
         }
         // POST
         [HttpPost]
-        public async Task<IActionResult> CreateMenu(int partyId, Menu menu)
+        public async Task<IActionResult> CreateMenu(Menu menu)
         {
             ViewData["DishesSelectList"] = await _context.Dishes
                 .Include(d => d.Unit.UnitName)
