@@ -3,14 +3,13 @@
     ViewData["Title"] = "View";
 }
 
-<h1>View</h1>
+<h1>@ViewBag.Title</h1>
 
-
+@* 
 @Html.BeginForm(actionName: "CreateMenu", controllerName: "Parties",FormMethod.Post,new{id="frmMenu"})
-    {
+    { *@
+<form asp-action="CreateMenu" asp-controller="Parties" method="post" id="frmMenu">
 <button action="submit">Confirm Menu</button>
-
-<section id="section-select">
     <table>
         <thead>
             <tr>
@@ -22,23 +21,29 @@
             </tr>
         </thead>
         <tbody>
-            @for (int i = 0; i < Model.Items.Count; i++)
+            @for (int i = 0; i < Model.AvailableItems.Count; i++)
             {
-                <tr>
-                    <td><input type="checkbox" value="@Model.Items[i].DishId" asp-for="@Model.Items[i].DishId" /></td>
-                    <td>@Model.Items[i].DishName</td>
-                    <td>@Model.Items[i].DishType</td>
-                    <td>@Model.Items[i].UnitName</td>
-                    <td><input type="number" value="@Model.Items[i].Qty" asp-for="@Model.Items[i].Qty" /></td>
-                    <td id="@i-thanhtien"></td>
+                <tr id="tr-@i">
+                    <td>
+                        <label asp-for="@Model.AvailableItems[i].DishId">
+                            <input type="checkbox" id="cb-@i" value="@Model.AvailableItems[i].DishId" onchange="toggle(@i)" />
+                            @Model.AvailableItems[i].DishName
+                        </label>
+                        
+                    </td>
+                    <td>@Model.AvailableItems[i].DishType</td>
+                    <td>@Model.AvailableItems[i].UnitName</td>
+                    <td><input type="number" id="qty-@i" value="@Model.AvailableItems[i].Qty" min="0" asp-for="@Model.AvailableItems[i].Qty" disabled /></td>
+                    <td id="thanhtien-@i"></td>
                 </tr>
-            } 
+            }
         </tbody>
     </table>
-</section>
-    }
+</form>
 
-<section id="section-result">
+    @* } *@
+
+@* <section id="section-result">
     <table>
         <thead>
             <tr>
@@ -50,7 +55,7 @@
             </tr>
         </thead>
         <tbody>
-            @*              @foreach (var item in ViewBag.MenuList)
+                         @foreach (var item in ViewBag.MenuList)
             {
             <tr>
             <td>item.DishName</td>
@@ -59,12 +64,19 @@
             <td><input type="number" value="@item.Qty"/></td>
             <td></td>
             </tr>
-            } *@
-            </tbody>
-            </table>
-            </section>
+            }
+        </tbody>
+    </table>
+</section> *@
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    function toggle(id) {
+        const target = $('input[type="checkbox"]#cb-' + id)
+        if (target.checked == true) {
+            $('input[type="number"]#qty-' + id).value = 10;
+            console.log(id);
+        }
+    }
 
-            <script>
-
-            </script>
+</script>
 

@@ -1,5 +1,7 @@
 ﻿using ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Models;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
+using static ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels.Menu;
 
 namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels
 {
@@ -7,14 +9,42 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels
     {
         public int PartyId { get; }
         public List<MenuItem> Items { get; set; } = new List<MenuItem>();
+        public List<MenuItem> AvailableItems { get; set; }
+        int MinQty;
 
         // CONSTRUCTORS
-        public Menu(int PartyId)
+        public Menu() {
+           
+        }
+        private void initAvailableItems(QlDichVuNauTiecLanHueContext context)
         {
+            
+
+            AvailableItems = context.Dishes
+                //.Include(d => d.Unit.UnitName)
+                //.Include(d => d.DishType.TypeName)
+                .Select(d => new MenuItem()
+                {
+                    DishId = d.DishId,
+                    DishName = d.DishName!,
+                    UnitName = d.Unit.UnitName,
+                    DishType = d.DishType.TypeName,
+                    Qty = 0
+                })
+                .ToList();
+        }
+        private void  initMinQty (QlDichVuNauTiecLanHueContext context)
+        {
+            MinQty = context.Parties.Where(p=>p.PartyId==PartyId).First().Quantity ?? 0;
+        }
+        public Menu(int PartyId, QlDichVuNauTiecLanHueContext context) 
+        {
+            initAvailableItems(context);
             this.PartyId = PartyId;
         }
-        public Menu(Party party)
+        public Menu(Party party, QlDichVuNauTiecLanHueContext context)
         {
+            initAvailableItems(context);
             PartyId = party.PartyId;
 
             if (party.HasMenu) { }

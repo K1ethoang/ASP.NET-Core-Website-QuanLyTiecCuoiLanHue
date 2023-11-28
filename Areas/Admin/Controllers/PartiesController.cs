@@ -256,39 +256,12 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            Menu newMenu = new Menu(id!.Value);
+            Menu newMenu = new Menu(id!.Value, context: _context);
 
             if (newMenu == null)
             {
                 return Empty;
             }
-
-            newMenu.Items = await _context.Dishes
-                .Include(d => d.Unit.UnitName)
-                .Include(d => d.DishType.TypeName)
-                .Select(d => new MenuItem()
-                {
-                    DishId = d.DishId,
-                    DishName = d.DishName!,
-                    UnitName = d.Unit.UnitName,
-                    DishType = d.DishType.TypeName,
-                    Qty = 0
-                })
-                .ToListAsync();
-
-            //ViewData["MenuList"] = await _context.Dishes
-            //    .Include(d => d.Unit.UnitName)
-            //    .Include(d => d.DishType.TypeName)
-            //    .Select(d => new 
-            //    {
-            //        DishId = d.DishId,
-            //        DishName = d.DishName!,
-            //        UnitName = d.Unit.UnitName,
-            //        DishType = d.DishType.TypeName,
-            //        Qty = 0
-            //    })
-            //    .ToListAsync();
-            //ViewData["MenuResult"] = new List<Dish>();
 
             return View(newMenu);
         }
@@ -296,10 +269,15 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateMenu(Menu menu)
         {
-            ViewData["DishesSelectList"] = await _context.Dishes
-                .Include(d => d.Unit.UnitName)
-                .Include(d => d.DishType.TypeName)
-                .ToListAsync();
+
+            foreach (MenuItem item in menu.AvailableItems)
+            {
+                if (item.Qty > 0)
+                {
+                    menu.Items.Add(item);
+                }
+            }
+
             return View(menu);
         }
     }
