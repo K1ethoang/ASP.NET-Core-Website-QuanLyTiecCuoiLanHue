@@ -10,7 +10,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels
         public int PartyId { get; }
         public List<MenuItem> Items { get; set; } = new List<MenuItem>();
         public List<MenuItem> AvailableItems { get; set; }
-        int MinQty;
+        public int MinQty;
 
         // CONSTRUCTORS
         public Menu() {
@@ -39,13 +39,15 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels
         }
         public Menu(int PartyId, QlDichVuNauTiecLanHueContext context) 
         {
-            initAvailableItems(context);
             this.PartyId = PartyId;
+            initMinQty(context);
+            initAvailableItems(context);
         }
         public Menu(Party party, QlDichVuNauTiecLanHueContext context)
         {
-            initAvailableItems(context);
             PartyId = party.PartyId;
+            initMinQty(context);
+            initAvailableItems(context);
 
             if (party.HasMenu) { }
         }

@@ -111,16 +111,24 @@
     @* <script src="~/lib/jquery/dist/jquery.min.js"></script> *@
 
     <script>
-        $(document).ready(function () {
-            function toggle(id) {
-                const target = $('input[type="checkbox"]#cb-' + id)
-                alert(target);
-                if (target.checked == true) {
-                    $('input[type="number"]#qty-' + id).value = 10;
-                    console.log(id);
+		$(document).ready(
+			function () {
+
+				$('input:checkbox').on('click', function () {
+					const id = $(this).attr('id').split('-')[1];
+					const $qty = $('input[type="number"]#qty-' + id)
+					if ($(this).prop('checked')) {
+
+						$qty.attr('value', @Model.MinQty);
+						$qty.prop('disabled', false);
                 }
+					else {
+						$qty.attr('value', 0);
+						$qty.prop('disabled', true);
             }
         });
+			}
+		);
     </script>
 }
 
