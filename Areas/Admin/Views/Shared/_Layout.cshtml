@@ -42,6 +42,8 @@
     <!-- Select 2 -->
     <link rel="stylesheet" href="~/admin/plugins/select2/css/select2.min.css">
     <link rel="stylesheet" href="~/admin/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+    <!-- Duallistbox  -->
+    @* <link rel="stylesheet" type="text/css" href="~/admin/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css"> *@
 
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -139,6 +141,18 @@
     <script src="~/admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
     <!-- Select 2-->
     <script src="~/admin/plugins/select2/js/select2.full.min.js"></script>
+    <!-- Duallistbox  -->
+    @* <script src="~/admin/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.js"></script> *@
+
+    @*  <script>
+    //Bootstrap Duallistbox
+    $('.duallistbox').bootstrapDualListbox({
+    nonSelectedListLabel: 'Thực đơn nhà hàng',
+    selectedListLabel: 'Thực đơn khách',
+    preserveSelectionOnMove: 'moved',
+    moveOnSelect: false
+    })
+    </script> *@
 
     <script>
         $(document).ready(function () {
@@ -147,10 +161,26 @@
                     url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/vi.json',
                 },
                 responsive: true,
-                // processing: true,
-                // fixedHeader: true,
-                // scrollCollapse: true,
-                // scrollY: '50vh'
+                orderCellsTop: true,
+                initComplete: function () {
+                    this.api().columns('.filterhead').every(function () {
+                        var column = this;
+                        var select = $('<select><option value=""></option></select>')
+                            .appendTo($("#table-data thead tr:eq(1) th").eq(column.index()).empty())
+                            .on('change', function () {
+                                var val = $.fn.dataTable.util.escapeRegex(
+                                    $(this).val()
+                                );
+
+                                column
+                                    .search(val ? '^' + val + '$' : '', true, false)
+                                    .draw();
+                            });
+
+                        column.data().unique().sort().each(function (d, j) {
+                            select.append('<option value="' + d + '">' + d + '</option>');});
+                    });
+                }
             });
         });
     </script>

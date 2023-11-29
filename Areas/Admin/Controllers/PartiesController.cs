@@ -263,6 +263,8 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
                 return Empty;
             }
 
+            //ViewData["DishTypeList"] = new SelectList(_context.DishTypes, "DishTypeId", "TypeName");
+
             return View(newMenu);
         }
         // POST
@@ -277,6 +279,8 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
                     menu.Items.Add(item);
                 }
             }
+
+            //ViewData["DishTypeList"] = new SelectList(_context.DishTypes, "DishTypeId", "TypeName");
 
             return View(menu);
         }
