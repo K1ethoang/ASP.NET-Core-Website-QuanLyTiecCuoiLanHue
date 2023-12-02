@@ -1,4 +1,6 @@
-﻿@model ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels.Menu
+﻿@* @model ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels.Menu *@
+@using ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels
+@model CreateMenuViewModel
 @{
 	ViewData["Title"] = "Chọn món ăn";
 }
@@ -12,13 +14,13 @@
 	<div class="container-fluid">
 		<div class="row mb-2">
 			<div class="col-sm-6">
-				<h1 class="m-0">@ViewData["Title"]</h1>
+				<h1 class="m-0">@ViewData["Title"] | @ViewBag.DateAndTime</h1>
 			</div>
 			<div class="col-sm-6">
 				<div class="float-sm-right">
 					<a asp-area="admin" asp-controller="parties" asp-action="index">
 						@* <i class="fas fa-arrow-left"></i> *@
-						Danh sách tiệc
+						Chọn thực đơn
 					</a>
 				</div>
 			</div>
@@ -31,9 +33,9 @@
 	<div class="container-fluid">
 		<div class="card">
 			<div class="card-body">
-				<form asp-action="CreateMenu" asp-controller="Parties" method="post" id="frmMenu">
+				<form asp-action="createmenu" asp-controller="parties" method="post" id="frmMenu" asp-route-id="@ViewBag.Id">
 					<div class="form-group">
-						<input type="submit" value="Lưu" class="btn btn-primary" />
+						<input type="submit" value="Lưu" class="btn btn-primary">
 					</div>
 					<table id="table-data" class="table table-bordered table-striped tablas">
 						<thead>
@@ -41,6 +43,7 @@
 								<th>Tên món ăn</th>
 								<th class="filterhead">Loại món ăn</th>
 								<th>Đơn vị</th>
+								<th>Đơn giá</th>
 								<th>Số lượng</th>
 								<th>Thành tiền</th>
 							</tr>
@@ -50,23 +53,80 @@
 								<th></th>
 								<th></th>
 								<th></th>
+								<th></th>
 							</tr>
 						</thead>
 						<tbody>
-							@for (int i = 0; i < Model.AvailableItems.Count; i++)
+						@* 	@for (int i = 0; i < Model.Items.Count ; i++)
+							
 							{
-								<tr id="tr-@i">
+								<tr>
 									<td>
-										<label id="lb-cb-@i" asp-for="@Model.AvailableItems[i].DishId" for="cb-@i">
-											<input type="checkbox" id="cb-@i" value="@Model.AvailableItems[i].DishId" />
-											<span style="margin:10px">@Model.AvailableItems[i].DishName</span>
-										</label>
+										<label for="cb-@Model.Items[i].DishId">
+											<input type="checkbox" asp-for="@Model.Items[i].Selected" id="cb-@Model.Items[i].DishId" value="@Model.Items[i].Selected">
+											@Model.Items[i].DishName
+											<input type="hidden" asp-for="@Model.Items[i].DishId" value="@Model.Items[i].DishId">
+											<input type="hidden" asp-for="@Model.Items[i].DishName" value="@Model.Items[i].DishName">
+											<input type="hidden" asp-for="@Model.Items[i].DishType" value="@Model.Items[i].DishType">
+											<input type="hidden" asp-for="@Model.Items[i].UnitName" value="@Model.Items[i].UnitName">
+											<input type="hidden" asp-for="@Model.Items[i].Price" value="@Model.Items[i].Price">
+										</label>										
+									</td>
+									<td>@Model.Items[i].DishType</td>
+									<td>@Model.Items[i].UnitName</td>
+									<td>@Model.Items[i].Price</td>
+									<td>
+										
+										<input type="number" asp-for="@Model.Items[i].Qty" min="0" disabled id="qty-@Model.Items[i].DishId" value="@Model.Items[i].Qty" />
+									</td>
+									<td id="thanhtien-@Model.Items[i].DishId"></td>
+								</tr>
+							} *@
+							@* 	@foreach (var item in Model)
+							
+							{
+								<tr>
+									<td>
+
+											<input type="checkbox" asp-for="@item.Selected" id="cb-@item.DishId" value="@item.Selected">
+											<label for="cb-@item.DishId" asp-for="@item.DishName">@item.DishName</label>
+											<input type="hidden" asp-for="@item.DishId" value="@item.DishId">
+									</td>
+									<td>@Html.Display(item.DishType)</td>
+									<td>@Html.Display(item.UnitName)</td>
+									<td>@Html.Display(item.Price.ToString())</td>
+									<td>
+										<input type="number" asp-for="@item.Qty" min="0" disabled id="qty-@item.DishId" value="@item.Qty" />									
+									</td>
+									<td id="thanhtien-@item.DishId"></td>
+								</tr>
+							} *@
+							@for (int i = 0; i < Model.Items.Count; i++)
+
+							{
+								<tr class="form-group">
+									<td>
+										
+									
+
+										<input type="checkbox" asp-for="@Model.Items[i].Selected" id="cb-@Model.Items[i].DishId" checked="@Model.Items[i].Selected">
+										@Html.Label("cb-"+@Model.Items[i].DishId.ToString(),Model.Items[i].DishName)
+
+										<input type="hidden" asp-for="@Model.Items[i].DishId" value="@Model.Items[i].DishId">
+										<input type="hidden" asp-for="@Model.Items[i].DishName" value="@Model.Items[i].DishName">
+										<input type="hidden" asp-for="@Model.Items[i].DishType" value="@Model.Items[i].DishType">
+										<input type="hidden" asp-for="@Model.Items[i].UnitName" value="@Model.Items[i].UnitName">
+										<input type="hidden" asp-for="@Model.Items[i].Price" value="@Model.Items[i].Price">
 
 									</td>
-									<td>@Model.AvailableItems[i].DishType</td>
-									<td>@Model.AvailableItems[i].UnitName</td>
-									<td><input type="number" id="qty-@i" value="@Model.AvailableItems[i].Qty" min="0" asp-for="@Model.AvailableItems[i].Qty" disabled /></td>
-									<td id="thanhtien-@i"></td>
+									<td>@Model.Items[i].DishType</td>
+									<td>@Model.Items[i].UnitName</td>
+									<td>@Model.Items[i].Price</td>
+									<td>
+
+										<input type="number" asp-for="@Model.Items[i].Qty" min="0" disabled id="qty-@Model.Items[i].DishId" value="@Model.Items[i].Qty" />
+									</td>
+									<td id="thanhtien-@Model.Items[i].DishId"></td>
 								</tr>
 							}
 						</tbody>
@@ -119,8 +179,9 @@
 					const $qty = $('input[type="number"]#qty-' + id)
 					if ($(this).prop('checked')) {
 
-						$qty.attr('value', @Model.MinQty);
-						$qty.attr('min', @Model.MinQty);
+
+						$qty.attr('value', @ViewBag.MinQty);
+						$qty.attr('min', @ViewBag.MinQty);
 						$qty.prop('disabled', false);
 					}
 					else {
