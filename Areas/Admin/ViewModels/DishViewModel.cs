@@ -21,7 +21,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels
             get; set;
         }
         [Required(ErrorMessage ="{0} không được trống")]
-        [Range(10000, 1000000, ErrorMessage = "{0} trong khoảng [{1} và {2}]")]
+        [Range(10000, 999999999, ErrorMessage = "{0} trong khoảng [{1} và {2}]")]
         [Display(Name ="Giá", Prompt ="Vd: 250000")]
         public int Price
         {

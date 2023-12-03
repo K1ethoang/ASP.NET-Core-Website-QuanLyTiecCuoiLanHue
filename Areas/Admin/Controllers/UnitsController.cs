@@ -66,7 +66,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
                 Unit unit = vm.ToUnit(_context);
                 unit.UnitName = unit.UnitName.Trim();
 
-                bool existUnit = UnitExists(unit.UnitName);
+                bool existUnit = UnitExistsWithName(unit.UnitName);
 
                 if (!existUnit)
                 {
@@ -122,9 +122,18 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
                     var newUnit = vm.ToUnit(context: _context);
                     newUnit.UnitId = unit.UnitId;
                     _context.Entry(unit).CurrentValues.SetValues(newUnit);
-                    _context.Update(unit);
 
-                    await _context.SaveChangesAsync();
+
+                    bool existUnit = UnitExistsWithName(unit.UnitName, id);
+
+                    if (!existUnit)
+                    {
+                        _context.Update(unit);
+                        await _context.SaveChangesAsync();
+                        TempData["SuccessMessage"] = "Lưu thành công";
+                        return RedirectToAction(nameof(Index));
+                    }
+                    TempData["ErrorMessage"] = "Tên đơn vị tính đã có";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -137,10 +146,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
                         throw;
                     }
                 }
-                TempData["SuccessMessage"] = "Lưu thành công";
-                return RedirectToAction(nameof(Index));
             }
-            TempData["ErrorMessage"] = "Có lỗi khi lưu";
             return View(vm);
         }
 
@@ -188,9 +194,9 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
             return (_context.Units?.Any(e => e.UnitId == id)).GetValueOrDefault();
         }
 
-        private bool UnitExists(string name)
+        private bool UnitExistsWithName(string name, int id = -1)
         {
-            return (_context.Units?.Any(e => e.UnitName.ToLower() == name.ToLower())).GetValueOrDefault();
+            return (_context.Units?.Any(e => e.UnitName.ToLower() == name.ToLower() && e.UnitId != id)).GetValueOrDefault();
         }
     }
 }

@@ -32,6 +32,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 		[Route("admin/parties")]
 		public async Task<IActionResult> Index()
 		{
+			await _context.Database.ExecuteSqlRawAsync("EXEC SP_Update_HappentStatus_In_Party");
 			var qlDichVuNauTiecLanHueContext = _context.Parties
 				.Include(p => p.Customer)
 				.Include(p => p.PartyType);
@@ -92,7 +93,8 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 				Party party = vm.ToParty(context: _context);
 				_context.Add(party);
 				await _context.SaveChangesAsync();
-				return RedirectToAction(nameof(Index));
+                TempData["SuccessMessage"] = "Thêm thành công";
+                return RedirectToAction(nameof(Index));
 			}
 
 			var customerSelectList = _context.Customers
@@ -174,9 +176,8 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 					var newParty = vm.ToParty(context: _context);
 					newParty.PartyId = party.PartyId;
 					_context.Entry(party).CurrentValues.SetValues(newParty);
-					//_context.Update(party);
-
-					await _context.SaveChangesAsync();
+                    //_context.Update(party);
+                    await _context.SaveChangesAsync();
 				}
 				catch (DbUpdateConcurrencyException)
 				{
@@ -189,7 +190,8 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 						throw;
 					}
 				}
-				return RedirectToAction(nameof(Index));
+                TempData["SuccessMessage"] = "Lưu thành công";
+                return RedirectToAction(nameof(Index));
 			}
 
 			var customerSelectList = _context.Customers
@@ -202,7 +204,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 			ViewData["CustomerList"] = customerSelectList;
 
 			ViewData["PartyTypeId"] = new SelectList(_context.PartyTypes, "PartyTypeId", "Name", party.PartyTypeId);
-			return View(vm);
+            return View(vm);
 		}
 
 		// GET: Admin/Parties/Delete/5
@@ -241,7 +243,8 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 			}
 
 			await _context.SaveChangesAsync();
-			return RedirectToAction(nameof(Index));
+            TempData["SuccessMessage"] = "Xoá thành công";
+            return RedirectToAction(nameof(Index));
 		}
 
 		private bool PartyExists(int id)

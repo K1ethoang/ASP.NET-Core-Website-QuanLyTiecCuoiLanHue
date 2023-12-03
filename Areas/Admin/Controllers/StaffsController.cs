@@ -74,7 +74,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 
                 staff.StaffName = staff.StaffName.Trim();
 
-                bool existCusWithPhoneNum = StaffExists(staff.PhoneNumber);
+                bool existCusWithPhoneNum = StaffExistsWithPhoneNumber(staff.PhoneNumber);
                 bool existCusWithCitizenNum = StaffExistsWithCitizenNum(staff.CitizenNumber);
 
                 if (!existCusWithPhoneNum && !existCusWithCitizenNum)
@@ -84,7 +84,6 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
                     TempData["SuccessMessage"] = "Thêm thành công";
                     return RedirectToAction(nameof(Index));
                 }
-
                 if (existCusWithPhoneNum)
                     TempData["ErrorMessage"] = "Số điện thoại đã có";
                 if (existCusWithCitizenNum)
@@ -139,9 +138,22 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
                     var newStaff = vm.ToStaff(context: _context);
                     newStaff.StaffId = staff.StaffId;
                     _context.Entry(staff).CurrentValues.SetValues(newStaff);
-                    _context.Update(staff);
 
-                    await _context.SaveChangesAsync();
+                    bool existCusWithPhoneNum = StaffExistsWithPhoneNumber(staff.PhoneNumber, id);
+                    bool existCusWithCitizenNum = StaffExistsWithCitizenNum(staff.CitizenNumber, id);
+
+                    if (!existCusWithPhoneNum && !existCusWithCitizenNum)
+                    {
+                        _context.Update(staff);
+                        await _context.SaveChangesAsync();
+                        TempData["SuccessMessage"] = "Lưu thành công";
+                        return RedirectToAction(nameof(Index));
+                    }
+
+                    if (existCusWithPhoneNum)
+                        TempData["ErrorMessage"] = "Số điện thoại đã có";
+                    if (existCusWithCitizenNum)
+                        TempData["ErrorMessage1"] = "Số CCCD đã có";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -154,12 +166,9 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
                         throw;
                     }
                 }
-                TempData["SuccessMessage"] = "Lưu thành công";
-                return RedirectToAction(nameof(Index));
             }
             ViewData["StaffTypeId"] = new SelectList(_context.StaffTypes, "StaffTypeId", "Name", vm.StaffTypeId);
             //ViewData["UsersId"] = new SelectList(_context.AspNetUsers, "Id", "Id", staff.UsersId);
-            TempData["ErrorMessage"] = "Có lỗi khi lưu";
             return View(vm);
         }
 
@@ -208,14 +217,14 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
             return (_context.Staff?.Any(e => e.StaffId == id)).GetValueOrDefault();
         }
 
-        private bool StaffExists(string phoneNumber)
+        private bool StaffExistsWithPhoneNumber(string phoneNumber, int id = -1)
         {
-            return (_context.Staff?.Any(e => e.PhoneNumber == phoneNumber)).GetValueOrDefault();
+            return (_context.Staff?.Any(e => e.PhoneNumber == phoneNumber && e.StaffId != id)).GetValueOrDefault();
         }
 
-        private bool StaffExistsWithCitizenNum(string citizenNumber)
+        private bool StaffExistsWithCitizenNum(string citizenNumber, int id = -1)
         {
-            return (_context.Staff?.Any(e => e.CitizenNumber == citizenNumber)).GetValueOrDefault();
+            return (_context.Staff?.Any(e => e.CitizenNumber == citizenNumber && e.StaffId != id)).GetValueOrDefault();
         }
     }
 }
