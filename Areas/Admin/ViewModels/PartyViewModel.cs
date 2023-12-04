@@ -127,4 +127,15 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels
 
         public ICollection<DetailInvoice> DetailInvoices { get; set; } = new List<DetailInvoice>();
     }
+    [Keyless]
+    public class InvoiceDetailsViewModel
+    {
+		[DisplayName("Mã tiệc")]
+		public int PartyId { get; set; }
+        [DisplayName("")]
+		public int InvoiceId { get; set; }
+
+        public Invoice Invoice { get; set; } = null;
+		public ICollection<DetailInvoice> DetailInvoices { get; set; } = new List<DetailInvoice>();
+	}
 }

@@ -1,7 +1,8 @@
-﻿--DROP DATABASE QL_dichVuNauTiecLanHue
+﻿
 
-USE QL_dichVuNauTiecLanHue
-GO
+--USE QL_dichVuNauTiecLanHue
+--GO
+
 
 INSERT INTO CUSTOMER (CUS_NAME, PHONE_NUMBER , SEX, ADDRESS, CITIZEN_NUMBER) 
 VALUES
@@ -96,32 +97,31 @@ VALUES
 
 INSERT INTO Party(PARTY_NAME, QUANTITY , DATE , TIME, LOCATION, NOTE, STATUS, HAS_MENU, CUSTOMER_ID, PARTY_TYPE_ID)
 VALUES 
-	(N'Đám cưới Huy và An', 100, '2023-12-16', '20:00:00', N'78 đường 17, Phường Trảng Dài, Thành phố Biên Hòa, Tỉnh Đồng Nai', N'Note for Party A', N'Đang diễn ra', 0, 1, 1),
+	(N'Đám cưới Kiệt và Hậu', 100, '2023-12-16', '20:00:00', N'78 đường 17, Phường Trảng Dài, Thành phố Biên Hòa, Tỉnh Đồng Nai', N'Note for Party A', N'Sắp diễn ra', 0, 1, 1),
 	(N'Khai trương Phát Đạt', 8, '2023-12-22','18:30:00', N'64/2 đường 18, Phường Trảng Dài, Thành phố Biên Hòa, Tỉnh Đồng Nai', N'Note for Party B', N'Sắp diễn ra', 0 ,2, 2),
-	(N'Sinh nhật Gia Bảo', 10, '2023-12-10','12:00:00', N'66/2 đường 18, Phường Trảng Dài, Thành phố Biên Hòa, Tỉnh Đồng Nai', N'Note for Party C', N'Đã xong', 1, 3, 1),
-	(N'Khai trương Thuận Phát', 6, '2023-12-05', '19:00:00', N'66 Trần Quang Diệu, Phường Trảng Dài, Thành phố Biên Hòa, Tỉnh Đồng Nai', N'Note for Party D', N'Sắp diễn ra',1, 4, 3),
-	(N'Đám cưới Tần và Thủy', 120, '2023-12-02', '16:00:00', N'25 Phạm Văn Đồng, Phường Trảng Dài, Thành phố Biên Hòa, Tỉnh Đồng Nai', N'Note for Party E', N'Sắp diễn ra',1,  5, 4),
-    (N'Đám cưới Thảo và Nghĩa', 37, '2023-12-30', ' 16:00:00', N'78 đường 17, Phường Trảng Dài, Thành phố Biên Hòa, Tỉnh Đồng Nai', N'Note for Party A', N'Đã xong', 0, 1, 1);
+	(N'Sinh nhật Kim Thỏa', 10, '2023-12-12','12:00:00', N'66/2 đường 18, Phường Trảng Dài, Thành phố Biên Hòa, Tỉnh Đồng Nai', N'Note for Party C', N'Đã xong', 1, 3, 1),
+	(N'Khai trương Thuận Phát', 6, '2023-12-05', '19:00:00', N'66 Trần Quang Diệu, Phường Trảng Dài, Thành phố Biên Hòa, Tỉnh Đồng Nai', N'Note for Party D', N'Đang diễn ra',1, 4, 3),
+	(N'Đám cưới Tần và Thủy', 120, '2023-12-22', '16:00:00', N'25 Phạm Văn Đồng, Phường Trảng Dài, Thành phố Biên Hòa, Tỉnh Đồng Nai', N'Note for Party E', N'Sắp diễn ra',1,  5, 4),
+    (N'Đám cưới Thảo và Nghĩa', 37, '2023-12-30', ' 16:00:00', N'78 đường 17, Phường Trảng Dài, Thành phố Biên Hòa, Tỉnh Đồng Nai', N'Note for Party A', N'Sắp diễn ra', 0, 1, 1);
     
 
 INSERT INTO INVOICE(INVOICE_DATE, PAYMENT_TIME , TOTAL_PRICE , DEPOSIT, TOTAL, PARTY_ID)
 VALUES 
-	 ('2023-02-02', null, 10000000, 3000000, 7000000, 1),
-	 ('2023-02-20', null, 20000000, 6000000,  14000000, 2),
-	 ('2023-02-05', null, 7000000, 2100000, 4900000, 3),
-	 ('2023-02-11', null, 10000000, 3000000, 7000000, 4),
-	 ('2023-02-14', null, 20000000, 6000000,  14000000, 5),
-	 ('2023-02-23', null, 10000000, 3000000, 7000000, 6)
+	 ('2023-02-02', '2023-02-01 20:00:00', 10000000, 3000000, 7000000, 1),
+	 ('2023-02-20', '2023-02-25 08:00:00', 20000000, 6000000,  14000000, 2),
+	 ('2023-02-05', '2023-02-07 16:00:00', 7000000, 2100000, 4900000, 3),
+	 ('2023-02-11', '2023-02-13 19:00:00', 10000000, 3000000, 7000000, 4),
+	 ('2023-02-14', '2023-02-15 19:00:00', 20000000, 6000000,  14000000, 5),
+	 ('2023-02-23', '2023-02-24 20:00:00', 10000000, 3000000, 7000000, 6)
 
 
 INSERT INTO DETAIL_INVOICE(NUMBER, PRICE, AMOUNT, DISH_ID, INVOICE_ID)
 VALUES
-	(6, 170000, 8500000, 2, 2),
 	(6, 120000, 10000000, 5, 4),
+	(7, 125000, 8000000, 6, 4),
 	(7, 200000, 1500000, 1, 3),
-	(7, 120000, 7000000, 1, 1),
-	(5, 100000, 8000000, 7, 5),
-	(7, 125000, 8000000, 2, 6);
+	(5, 100000, 8000000, 7, 5)
+go
 
 
 --INSERT INTO ACCOUNT(USERNAME, PASSWORD, EMAIL)

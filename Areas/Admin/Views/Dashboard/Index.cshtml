@@ -91,6 +91,67 @@
             <!-- ./col -->
         </div>
         <!-- /.row -->
+       
+        <!-- row -->
+        <div class="row">
+            <!-- col -->
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="info-box">
+                    <div class="info-box-icon bg-purple">
+                        <i class="fa fa-money-bill"></i>
+                    </div>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Số tiệc chưa thanh toán</span>
+                        <span class="info-box-number">@ViewBag.NotPaidPartyCount</span>
+                    </div>
+                </div>
+            </div>
+            <!-- ./col -->
+            <!-- col -->
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="info-box">
+                    <div class="info-box-icon bg-maroon">
+                        <i class="fa fa-cloud"></i>
+                    </div>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Số tiệc sắp tới</span>
+                        <span class="info-box-number">@ViewBag.ComingSoonPartyCount</span>
+                    </div>
+                </div>
+            </div>
+            <!-- ./col -->
+            <!-- col -->
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="info-box">
+                    <div class="info-box-icon bg-olive">
+                        <i class="fa fa-check"></i>
+                    </div>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Số tiệc đã xong</span>
+                        <span class="info-box-number">@ViewBag.DonePartyCount</span>
+                    </div>
+                </div>
+            </div>
+            <!-- ./col -->
+            <!-- col -->
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="info-box">
+                    <div class="info-box-icon bg-lightblue">
+                        <i class="fa fa-play"></i>
+                    </div>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Số tiệc đang tổ chức</span>
+                        <span class="info-box-number">@ViewBag.GoingOnPartyCount</span>
+                    </div>
+                </div>
+            </div>
+            <!-- ./col -->
+        </div>
+        <!-- /.row -->
     </div>
     <!-- /.container-fluid -->
 </section>

@@ -145,6 +145,11 @@
                     htmlAttributes: new{@class="btn btn-outline-primary mx-2",partyId=@Model.PartyId}
                     )
                     }
+                    @Html.ActionLink(linkText:"Xem hóa đơn",
+                    actionName: "Get_Invoice",
+                    controllerName:"Parties",
+                    routeValues: new {id=@Model.PartyId},
+                    htmlAttributes: new{@class="btn btn-outline-primary mx-2",partyId=@Model.PartyId})
                 </div>
             </div>
         </div>

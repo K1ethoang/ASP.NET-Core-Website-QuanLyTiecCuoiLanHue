@@ -1,0 +1,39 @@
+﻿@using ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels
+@model InvoiceDetailsViewModel
+
+@{
+	ViewData["Title"] = "";
+}
+
+@Html.DisplayNameFor(m=>m.PartyId)
+@Html.DisplayFor(m=>m.PartyId)
+@Html.DisplayNameFor(m=>m.InvoiceId)
+@Html.DisplayFor(m=>m.InvoiceId)
+
+
+Tổng tiền
+@Html.DisplayFor(m=>m.Invoice.TotalPrice)
+
+<table>
+	<thead>
+		<tr>
+			<th>Tên món</th>
+			<th>Đơn giá</th>
+			<th>Số lượng</th>
+			<th>Thành tiền</th>
+		</tr>
+	</thead>
+	<tbody>
+
+@foreach (var item in Model.DetailInvoices)
+{
+	<tr>
+		<td>@item.Dish.DishName</td>
+		<td>@item.Dish.Price</td>
+		<td>@item.Number</td>
+		<td>@item.Amount</td>
+
+	</tr>
+}
+	</tbody>
+</table>
