@@ -259,14 +259,9 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 			var party = _context.Parties.Where(p => p.PartyId == id).FirstOrDefault();
 			ViewData["DateAndTime"] = party!.Date.ToString();
 
-			CreateMenuViewModel model = new CreateMenuViewModel();
-
-
-			//ViewData["DishTypeList"] = new SelectList(_context.DishTypes, "DishTypeId", "TypeName");
 			Console.ForegroundColor = ConsoleColor.Yellow;
 			Console.WriteLine(id);
 			Console.ResetColor();
-			//return View(menu);
 
 			List<MenuItem> items = await _context.Dishes
 				.Select(d => new MenuItem()
@@ -282,35 +277,31 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 				.ToListAsync();
 
 			ViewBag.MinQty = party!.Quantity;
-			ViewBag.Id = id;
 
-			model.Id = id;
-			model.Items = items;
-
-			return View(model);
+			return View(items);
 		}
 		// POST
 		[HttpPost]
-		public async Task<IActionResult> CreateMenu( CreateMenuViewModel model)
+		public async Task<IActionResult> CreateMenu( int id, List<MenuItem> items)
 		{
 			Console.ForegroundColor = ConsoleColor.Yellow;
-			Console.WriteLine("SEND {0}",model.Id);
+
+			Console.WriteLine("SEND {0}",id);
 			if (ModelState.IsValid)
 			{
 
 				Console.WriteLine("VALID");
-				foreach (var item in model.Items)
-				{
+				foreach (var item in items)
+
+					{
 					if (item.Selected )
 					{
 						Console.WriteLine(item.DishId.ToString()+"-"+item.DishName+"-"+item.Qty.ToString());
 					}
 				}
-				RedirectToAction("Details",  new {id = model.Id});
+				return RedirectToAction("Details",  new {id = id});
 			}
 			Console.ResetColor();
-
-			//ViewData["DishTypeList"] = new SelectList(_context.DishTypes, "DishTypeId", "TypeName");
 
 			return RedirectToAction("Index");
 		}

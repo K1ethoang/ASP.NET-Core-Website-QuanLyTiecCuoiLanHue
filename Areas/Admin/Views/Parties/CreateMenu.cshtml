@@ -1,12 +1,9 @@
-﻿@* @model ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels.Menu *@
+﻿
 @using ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels
-@model CreateMenuViewModel
+@model List<MenuItem>
 @{
 	ViewData["Title"] = "Chọn món ăn";
 }
-@*
-@Html.BeginForm(actionName: "CreateMenu", controllerName: "Parties",FormMethod.Post,new{id="frmMenu"})
-    { *@
 
 
 <!-- Content Header (Page header) -->
@@ -33,7 +30,7 @@
 	<div class="container-fluid">
 		<div class="card">
 			<div class="card-body">
-				<form asp-action="createmenu" asp-controller="parties" method="post" id="frmMenu" asp-route-id="@ViewBag.Id">
+				<form asp-action="createmenu" asp-controller="parties" method="post" id="frmMenu" >
 					<div class="form-group">
 						<input type="submit" value="Lưu" class="btn btn-primary">
 					</div>
@@ -57,76 +54,35 @@
 							</tr>
 						</thead>
 						<tbody>
-						@* 	@for (int i = 0; i < Model.Items.Count ; i++)
-							
+							@for (int i = 0; i < Model.Count; i++)
 							{
 								<tr>
 									<td>
-										<label for="cb-@Model.Items[i].DishId">
-											<input type="checkbox" asp-for="@Model.Items[i].Selected" id="cb-@Model.Items[i].DishId" value="@Model.Items[i].Selected">
-											@Model.Items[i].DishName
-											<input type="hidden" asp-for="@Model.Items[i].DishId" value="@Model.Items[i].DishId">
-											<input type="hidden" asp-for="@Model.Items[i].DishName" value="@Model.Items[i].DishName">
-											<input type="hidden" asp-for="@Model.Items[i].DishType" value="@Model.Items[i].DishType">
-											<input type="hidden" asp-for="@Model.Items[i].UnitName" value="@Model.Items[i].UnitName">
-											<input type="hidden" asp-for="@Model.Items[i].Price" value="@Model.Items[i].Price">
-										</label>										
+										@{
+											string cb_id = "cb-" + Model[i].DishId;
+										}
+
+										@Html.CheckBoxFor(m=>m[i].Selected,new{@id=cb_id})
+										@Html.Label(cb_id,Model[i].DishName)
+										@Html.HiddenFor(m=>m[i].DishName,new{@value=Model[i].DishName})
+										@Html.HiddenFor(m=>m[i].DishId,new{@value=Model[i].DishId})
 									</td>
-									<td>@Model.Items[i].DishType</td>
-									<td>@Model.Items[i].UnitName</td>
-									<td>@Model.Items[i].Price</td>
 									<td>
-										
-										<input type="number" asp-for="@Model.Items[i].Qty" min="0" disabled id="qty-@Model.Items[i].DishId" value="@Model.Items[i].Qty" />
+										@Html.DisplayFor(m=>m[i].DishType)
+										@Html.HiddenFor(m=>m[i].DishType,new{@value=Model[i].DishType})
 									</td>
-									<td id="thanhtien-@Model.Items[i].DishId"></td>
-								</tr>
-							} *@
-							@* 	@foreach (var item in Model)
-							
-							{
-								<tr>
 									<td>
-
-											<input type="checkbox" asp-for="@item.Selected" id="cb-@item.DishId" value="@item.Selected">
-											<label for="cb-@item.DishId" asp-for="@item.DishName">@item.DishName</label>
-											<input type="hidden" asp-for="@item.DishId" value="@item.DishId">
+										@Html.DisplayFor(m=>m[i].UnitName)
+										@Html.HiddenFor(m=>m[i].UnitName,new{@value=Model[i].UnitName})
 									</td>
-									<td>@Html.Display(item.DishType)</td>
-									<td>@Html.Display(item.UnitName)</td>
-									<td>@Html.Display(item.Price.ToString())</td>
 									<td>
-										<input type="number" asp-for="@item.Qty" min="0" disabled id="qty-@item.DishId" value="@item.Qty" />									
+										@Html.DisplayFor(m=>m[i].Price)
+										@Html.HiddenFor(m=>m[i].Price,new{@value=Model[i].Price})
 									</td>
-									<td id="thanhtien-@item.DishId"></td>
-								</tr>
-							} *@
-							@for (int i = 0; i < Model.Items.Count; i++)
-
-							{
-								<tr class="form-group">
 									<td>
-										
-									
-
-										<input type="checkbox" asp-for="@Model.Items[i].Selected" id="cb-@Model.Items[i].DishId" checked="@Model.Items[i].Selected">
-										@Html.Label("cb-"+@Model.Items[i].DishId.ToString(),Model.Items[i].DishName)
-
-										<input type="hidden" asp-for="@Model.Items[i].DishId" value="@Model.Items[i].DishId">
-										<input type="hidden" asp-for="@Model.Items[i].DishName" value="@Model.Items[i].DishName">
-										<input type="hidden" asp-for="@Model.Items[i].DishType" value="@Model.Items[i].DishType">
-										<input type="hidden" asp-for="@Model.Items[i].UnitName" value="@Model.Items[i].UnitName">
-										<input type="hidden" asp-for="@Model.Items[i].Price" value="@Model.Items[i].Price">
-
+										<input type="number" asp-for="@Model[i].Qty" min="0" disabled id="qty-@Model[i].DishId" value="@Model[i].Qty" />
 									</td>
-									<td>@Model.Items[i].DishType</td>
-									<td>@Model.Items[i].UnitName</td>
-									<td>@Model.Items[i].Price</td>
-									<td>
-
-										<input type="number" asp-for="@Model.Items[i].Qty" min="0" disabled id="qty-@Model.Items[i].DishId" value="@Model.Items[i].Qty" />
-									</td>
-									<td id="thanhtien-@Model.Items[i].DishId"></td>
+									<td id="thanhtien-@Model[i].DishId"></td>
 								</tr>
 							}
 						</tbody>
