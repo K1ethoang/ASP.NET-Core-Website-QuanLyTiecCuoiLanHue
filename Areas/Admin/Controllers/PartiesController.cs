@@ -434,13 +434,13 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 			try
 			{
 				await _context.SaveChangesAsync();
-			}
+            }
 			catch
 			{
 				return Problem("Error from saving changes");
 			}
-
-			return RedirectToAction("Details", new { id = id });
+            TempData["SuccessMessage"] = "Chọn thực đơn thành công";
+            return RedirectToAction("Details", new { id = id });
 		}
 
 
