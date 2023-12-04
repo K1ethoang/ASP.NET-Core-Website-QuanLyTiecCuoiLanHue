@@ -290,11 +290,13 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 			model.Id = id;
 			model.Items = items;
 
+			ViewData["partyId"] = id;
+
 			return View(model);
 		}
 		// POST
 		[HttpPost]
-		public async Task<IActionResult> CreateMenu( CreateMenuViewModel model)
+		public async Task<IActionResult> CreateMenu(CreateMenuViewModel model)
 		{
 			Console.ForegroundColor = ConsoleColor.Yellow;
 			Console.WriteLine("SEND {0}",model.Id);

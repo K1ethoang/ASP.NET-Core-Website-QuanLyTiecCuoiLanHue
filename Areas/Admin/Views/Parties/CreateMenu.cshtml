@@ -2,7 +2,7 @@
 @using ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels
 @model CreateMenuViewModel
 @{
-	ViewData["Title"] = "Chọn món ăn";
+    ViewData["Title"] = "Chọn món ăn";
 }
 @*
 @Html.BeginForm(actionName: "CreateMenu", controllerName: "Parties",FormMethod.Post,new{id="frmMenu"})
@@ -11,131 +11,153 @@
 
 <!-- Content Header (Page header) -->
 <div class="content-header">
-	<div class="container-fluid">
-		<div class="row mb-2">
-			<div class="col-sm-6">
-				<h1 class="m-0">@ViewData["Title"] | @ViewBag.DateAndTime</h1>
-			</div>
-			<div class="col-sm-6">
-				<div class="float-sm-right">
-					<a asp-area="admin" asp-controller="parties" asp-action="index">
-						@* <i class="fas fa-arrow-left"></i> *@
-						Chọn thực đơn
-					</a>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">@ViewData["Title"] | @ViewBag.DateAndTime</h1>
+            </div>
+            <div class="col-sm-6">
+                <div class="float-sm-right">
+                    <a asp-area="admin" asp-controller="parties" asp-action="details" asp-route-id="@ViewBag.partyId">
+                        @* <i class="fas fa-arrow-left"></i> *@
+                        Chi tiết tiệc
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- /.container-fluid -->
 <!-- Main content -->
 <section class="content">
-	<div class="container-fluid">
-		<div class="card">
-			<div class="card-body">
-				<form asp-action="createmenu" asp-controller="parties" method="post" id="frmMenu" asp-route-id="@ViewBag.Id">
-					<div class="form-group">
-						<input type="submit" value="Lưu" class="btn btn-primary">
-					</div>
-					<table id="table-data" class="table table-bordered table-striped tablas">
-						<thead>
-							<tr>
-								<th>Tên món ăn</th>
-								<th class="filterhead">Loại món ăn</th>
-								<th>Đơn vị</th>
-								<th>Đơn giá</th>
-								<th>Số lượng</th>
-								<th>Thành tiền</th>
-							</tr>
-							<tr>
-								<th></th>
-								<th></th>
-								<th></th>
-								<th></th>
-								<th></th>
-								<th></th>
-							</tr>
-						</thead>
-						<tbody>
-						@* 	@for (int i = 0; i < Model.Items.Count ; i++)
-							
-							{
-								<tr>
-									<td>
-										<label for="cb-@Model.Items[i].DishId">
-											<input type="checkbox" asp-for="@Model.Items[i].Selected" id="cb-@Model.Items[i].DishId" value="@Model.Items[i].Selected">
-											@Model.Items[i].DishName
-											<input type="hidden" asp-for="@Model.Items[i].DishId" value="@Model.Items[i].DishId">
-											<input type="hidden" asp-for="@Model.Items[i].DishName" value="@Model.Items[i].DishName">
-											<input type="hidden" asp-for="@Model.Items[i].DishType" value="@Model.Items[i].DishType">
-											<input type="hidden" asp-for="@Model.Items[i].UnitName" value="@Model.Items[i].UnitName">
-											<input type="hidden" asp-for="@Model.Items[i].Price" value="@Model.Items[i].Price">
-										</label>										
-									</td>
-									<td>@Model.Items[i].DishType</td>
-									<td>@Model.Items[i].UnitName</td>
-									<td>@Model.Items[i].Price</td>
-									<td>
-										
-										<input type="number" asp-for="@Model.Items[i].Qty" min="0" disabled id="qty-@Model.Items[i].DishId" value="@Model.Items[i].Qty" />
-									</td>
-									<td id="thanhtien-@Model.Items[i].DishId"></td>
-								</tr>
-							} *@
-							@* 	@foreach (var item in Model)
-							
-							{
-								<tr>
-									<td>
+    <div class="container-fluid">
+        <div class="card card-primary">
+            <div class="card-header">
+                <h5>THỰC ĐƠN ĐANG CHỌN</h5>
+            </div>
+            <div class="card-body-menu">
+                <div class="row">
+                    <div class="col-12 table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Tên món ăn</th>
+                                    <th>Số lượng</th>
+                                </tr>
+                            </thead>
+                            <tbody class="list-menu">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-											<input type="checkbox" asp-for="@item.Selected" id="cb-@item.DishId" value="@item.Selected">
-											<label for="cb-@item.DishId" asp-for="@item.DishName">@item.DishName</label>
-											<input type="hidden" asp-for="@item.DishId" value="@item.DishId">
-									</td>
-									<td>@Html.Display(item.DishType)</td>
-									<td>@Html.Display(item.UnitName)</td>
-									<td>@Html.Display(item.Price.ToString())</td>
-									<td>
-										<input type="number" asp-for="@item.Qty" min="0" disabled id="qty-@item.DishId" value="@item.Qty" />									
-									</td>
-									<td id="thanhtien-@item.DishId"></td>
-								</tr>
-							} *@
-							@for (int i = 0; i < Model.Items.Count; i++)
+        <div class="card">
+            <div class="card-body">
+                <form asp-action="createmenu" asp-controller="parties" method="post" id="frmMenu" asp-route-id="@ViewBag.Id">
+                    <div class="form-group">
+                        <input type="submit" value="Lưu" class="btn btn-primary">
+                    </div>
+                    <table id="table-data" class="table table-bordered table-striped tablas">
+                        <thead>
+                            <tr>
+                                <th>Tên món ăn</th>
+                                <th class="filterhead">Loại món ăn</th>
+                                <th>Đơn vị</th>
+                                <th>Đơn giá</th>
+                                <th>Số lượng</th>
+                                <th>Thành tiền</th>
+                            </tr>
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @* 	@for (int i = 0; i < Model.Items.Count ; i++)
 
-							{
-								<tr class="form-group">
-									<td>
-										
-									
+                            {
+                            <tr>
+                            <td>
+                            <label for="cb-@Model.Items[i].DishId">
+                            <input type="checkbox" asp-for="@Model.Items[i].Selected" id="cb-@Model.Items[i].DishId" value="@Model.Items[i].Selected">
+                            @Model.Items[i].DishName
+                            <input type="hidden" asp-for="@Model.Items[i].DishId" value="@Model.Items[i].DishId">
+                            <input type="hidden" asp-for="@Model.Items[i].DishName" value="@Model.Items[i].DishName">
+                            <input type="hidden" asp-for="@Model.Items[i].DishType" value="@Model.Items[i].DishType">
+                            <input type="hidden" asp-for="@Model.Items[i].UnitName" value="@Model.Items[i].UnitName">
+                            <input type="hidden" asp-for="@Model.Items[i].Price" value="@Model.Items[i].Price">
+                            </label>
+                            </td>
+                            <td>@Model.Items[i].DishType</td>
+                            <td>@Model.Items[i].UnitName</td>
+                            <td>@Model.Items[i].Price</td>
+                            <td>
 
-										<input type="checkbox" asp-for="@Model.Items[i].Selected" id="cb-@Model.Items[i].DishId" checked="@Model.Items[i].Selected">
-										@Html.Label("cb-"+@Model.Items[i].DishId.ToString(),Model.Items[i].DishName)
+                            <input type="number" asp-for="@Model.Items[i].Qty" min="0" disabled id="qty-@Model.Items[i].DishId" value="@Model.Items[i].Qty" />
+                            </td>
+                            <td id="thanhtien-@Model.Items[i].DishId"></td>
+                            </tr>
+                            } *@
+                            @* 	@foreach (var item in Model)
 
-										<input type="hidden" asp-for="@Model.Items[i].DishId" value="@Model.Items[i].DishId">
-										<input type="hidden" asp-for="@Model.Items[i].DishName" value="@Model.Items[i].DishName">
-										<input type="hidden" asp-for="@Model.Items[i].DishType" value="@Model.Items[i].DishType">
-										<input type="hidden" asp-for="@Model.Items[i].UnitName" value="@Model.Items[i].UnitName">
-										<input type="hidden" asp-for="@Model.Items[i].Price" value="@Model.Items[i].Price">
+                            {
+                            <tr>
+                            <td>
 
-									</td>
-									<td>@Model.Items[i].DishType</td>
-									<td>@Model.Items[i].UnitName</td>
-									<td>@Model.Items[i].Price</td>
-									<td>
+                            <input type="checkbox" asp-for="@item.Selected" id="cb-@item.DishId" value="@item.Selected">
+                            <label for="cb-@item.DishId" asp-for="@item.DishName">@item.DishName</label>
+                            <input type="hidden" asp-for="@item.DishId" value="@item.DishId">
+                            </td>
+                            <td>@Html.Display(item.DishType)</td>
+                            <td>@Html.Display(item.UnitName)</td>
+                            <td>@Html.Display(item.Price.ToString())</td>
+                            <td>
+                            <input type="number" asp-for="@item.Qty" min="0" disabled id="qty-@item.DishId" value="@item.Qty" />
+                            </td>
+                            <td id="thanhtien-@item.DishId"></td>
+                            </tr>
+                            } *@
+                            @for (int i = 0; i < Model.Items.Count; i++)
 
-										<input type="number" asp-for="@Model.Items[i].Qty" min="0" disabled id="qty-@Model.Items[i].DishId" value="@Model.Items[i].Qty" />
-									</td>
-									<td id="thanhtien-@Model.Items[i].DishId"></td>
-								</tr>
-							}
-						</tbody>
-					</table>
-				</form>
-			</div>
-		</div>
-	</div>
-	<!-- /.container-fluid -->
+                            {
+                                <tr class="form-group">
+                                    <td>
+
+
+
+                                        <input type="checkbox" asp-for="@Model.Items[i].Selected" id="cb-@Model.Items[i].DishId" checked="@Model.Items[i].Selected">
+                                        @Html.Label("cb-"+@Model.Items[i].DishId.ToString(),Model.Items[i].DishName)
+
+                                        <input type="hidden" asp-for="@Model.Items[i].DishId" value="@Model.Items[i].DishId">
+                                        <input type="hidden" asp-for="@Model.Items[i].DishName" value="@Model.Items[i].DishName">
+                                        <input type="hidden" asp-for="@Model.Items[i].DishType" value="@Model.Items[i].DishType">
+                                        <input type="hidden" asp-for="@Model.Items[i].UnitName" value="@Model.Items[i].UnitName">
+                                        <input type="hidden" asp-for="@Model.Items[i].Price" value="@Model.Items[i].Price">
+
+                                    </td>
+                                    <td>@Model.Items[i].DishType</td>
+                                    <td>@Model.Items[i].UnitName</td>
+                                    <td>@Model.Items[i].Price</td>
+                                    <td>
+
+                                        <input type="number" asp-for="@Model.Items[i].Qty" min="0" disabled id="qty-@Model.Items[i].DishId" value="@Model.Items[i].Qty" />
+                                    </td>
+                                    <td id="thanhtien-@Model.Items[i].DishId"></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
 </section>
 <!-- /.content -->
 @* } *@
@@ -168,30 +190,62 @@
 
 
 @section scripts{
-	@* <script src="~/lib/jquery/dist/jquery.min.js"></script> *@
+    @* <script src="~/lib/jquery/dist/jquery.min.js"></script> *@
 
-	<script>
-		$(document).ready(
-			function () {
+    <script>
+        $(document).ready(
+            function () {
 
-				$('input:checkbox').on('click', function () {
-					const id = $(this).attr('id').split('-')[1];
-					const $qty = $('input[type="number"]#qty-' + id)
-					if ($(this).prop('checked')) {
+                $('input:checkbox').on('click', function () {
+                    const id = $(this).attr('id').split('-')[1];
+                    const $qty = $('input[type="number"]#qty-' + id)
 
+                    const $listMenu = $(".list-menu");
+                    const dishName = $(`label[for="cb-${id}"]`).text()
 
-						$qty.attr('value', @ViewBag.MinQty);
-						$qty.attr('min', @ViewBag.MinQty);
-						$qty.prop('disabled', false);
-					}
-					else {
-						$qty.attr('value', 0);
-						$qty.attr('min', 0);
-						$qty.prop('disabled', true);
-					}
-				});
-			}
-		);
-	</script>
+                    if ($(this).prop('checked')) {
+                        $qty.attr('value', @ViewBag.MinQty);
+                        $qty.attr('min', @ViewBag.MinQty);
+                        $qty.prop('disabled', false);
+
+                        $listMenu.append(`
+                                                <tr class="dish-${id}">
+                                                                    <td> ${dishName} </td>
+                                                                            <td> ${$qty.attr('value')} </td>
+                                                </tr>
+                                                `);
+                    }
+                    else {
+                        $qty.attr('value', 0);
+                        $qty.attr('min', 0);
+                        $qty.prop('disabled', true);
+
+                        $listMenu.find(`.dish-${id}`).remove();
+                    }
+                });
+            }
+        );
+
+        $(document).ready(function () {
+            $('input[type="number"]').on('change', function () {
+                // Lấy id của món ăn từ id của phần tử input
+                const id = $(this).attr('id').split('-')[1];
+                const $qty = $(this);
+
+                // Lấy giá trị và giá trị tối thiểu từ input
+                const newValue = $qty.val();
+                const minValue = $qty.attr('min');
+
+                // Cập nhật giá trị trong $listMenu
+                const $listMenu = $(".list-menu");
+                const $dishRow = $listMenu.find(`.dish-${id}`);
+
+                if ($dishRow.length > 0) {
+                    // Nếu hàng tồn tại, cập nhật giá trị
+                    $dishRow.find('td:nth-child(2)').text(newValue);
+                }
+            });
+        });
+    </script>
 }
 
