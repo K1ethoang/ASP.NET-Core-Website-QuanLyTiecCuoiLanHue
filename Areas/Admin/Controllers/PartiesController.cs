@@ -308,5 +308,31 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 
 			return RedirectToAction("Index");
 		}
+		// POST
+		[HttpPost]
+		public async Task<IActionResult> CreateMenu_Mini(int id,[FromBody] List<MiniMenuItem> items)
+		{
+			Console.ForegroundColor = ConsoleColor.Yellow;
+
+			Console.WriteLine("SEND {0}", id);
+			if (ModelState.IsValid)
+			{
+
+				Console.WriteLine("VALID");
+				Console.WriteLine("count {0}",items.Count);
+				//foreach (var item in items)
+
+				//{
+				//	if (item.Qty > 0)
+				//	{
+				//		Console.WriteLine(item.DishId.ToString() + "-" + item.DishName + "-" + item.Qty.ToString());
+				//	}
+				//}
+				return RedirectToAction("Details", new { id = id });
+			}
+			Console.ResetColor();
+
+			return RedirectToAction("Index");
+		}
 	}
 }

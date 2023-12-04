@@ -28,14 +28,15 @@
 <section class="content">
 
 	<div class="container-fluid">
+			<button class="btn btn-warning">Lưu</button>
 		<div class="card card-primary">
 			<div class="card-header">
 				<h5>THỰC ĐƠN ĐANG CHỌN</h5>
 			</div>
 			<div class="card-body-menu">
 				<div class="row form-group">
-					<form asp-action="createmenu" asp-controller="parties" method="post">
-						<input type="submit" value="Lưu" class="btn btn-primary">
+					@* <form asp-action="createmenu" asp-controller="parties" method="post"> *@
+						
 						<div class="col-12 table-responsive">
 							<table class="table table-striped">
 								<thead>
@@ -48,7 +49,7 @@
 								</tbody>
 							</table>
 						</div>
-					</form>
+					@* </form> *@
 				</div>
 			</div>
 		</div>
@@ -159,32 +160,42 @@
 					}
 				});
 
-			// 	$('form').on('submit', (){
-			// 		const items = [];
-			// 		$('.list-menu').each($('tr'), (){
-			// 			// Selects elements that have the specified attribute with a value ending exactly with a given string.The comparison is case sensitive.
-			// 			const DishId = $("input[name$='DishId']").value;
-			// 			const DishName = $("input[name$='DishName']").value;
-			// 			const Qty = $("input[type='number']").value;
+				$('button').on('click',function (){
+					const items = [];
+					$('.list-menu > tr').each( function(){
+						// Selects elements that have the specified attribute with a value ending exactly with a given string.The comparison is case sensitive.
+						const DishId = $(this).find("input[name$='DishId']").value;
+					const DishName = $(this).find("input[name$='DishName']").value;
+					const Qty = $(this).find("input[type='number']").value;
 
-			// 			items.push({
-			// 				"DishId": DishId,
-			// 				"DishName": DishName,
-			// 				"Qty": Qty
-			// 			})
-			// 		})
+						items.push({
+							"DishId": DishId,
+							"DishName": DishName,
+							"Qty": Qty
+						})
+					})
 
-			// 		$.ajax({
-			// 			"type": "POST",
-			// 			"url": '/Parties/CreateMenu/',
-			// 			"dataType": "json",
-			// 			"contentType": "application/json;charset=utf-8",
-			// 			"data": JSON.stringify(items),
-			// 			success: (){
-			// 				alert("success");
-			// 			}
-			// 		})
-			// 	})
+					console.log(items);
+
+					$.ajax({
+						"type": "POST",
+					"url": "@Url.Action(action:"createmenu_mini")/@ViewBag.partyId",
+						"dataType": "json",
+						"contentType": "application/json;charset=utf-8",
+						// "data": JSON.stringify(items),
+					"data": {  items: items },
+						success: function(response){
+							alert("success!"+response)
+						},
+					failure: function (response) {
+						alert("failure!" + response);
+						}
+					})
+
+				// $.post("@Url.Action(action:"createmenu_mini")", { items: items }, function (response) {
+				// 	alert("success!" + response)
+				// },"json",)
+				})
 		});
 
 				// $(document).ready(function () {
