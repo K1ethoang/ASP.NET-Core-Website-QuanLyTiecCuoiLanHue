@@ -33,9 +33,9 @@
 				<h5>THỰC ĐƠN ĐANG CHỌN</h5>
 			</div>
 			<div class="card-body-menu">
+				<div class="row form-group">
 					<form asp-action="createmenu" asp-controller="parties" method="post">
 						<input type="submit" value="Lưu" class="btn btn-primary">
-				<div class="row">
 						<div class="col-12 table-responsive">
 							<table class="table table-striped">
 								<thead>
@@ -48,8 +48,8 @@
 								</tbody>
 							</table>
 						</div>
-				</div>
 					</form>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -148,7 +148,7 @@
 							value: @ViewBag.MinQty
 						}));
 
-						const $newRow = $('<tr>').prop('class', 'dish-' + id);
+					const $newRow = $('<tr>').attr('class', `dish-${id} form-group`);
 						$newRow.append($nameCell);
 						$newRow.append($qtyCell);
 
