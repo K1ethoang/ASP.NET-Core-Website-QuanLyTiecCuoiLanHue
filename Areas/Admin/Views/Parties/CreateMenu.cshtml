@@ -28,7 +28,7 @@
 <section class="content">
 
 	<div class="container-fluid">
-			<button class="btn btn-warning">Lưu</button>
+		<button class="btn btn-warning">Lưu</button>
 		<div class="card card-primary">
 			<div class="card-header">
 				<h5>THỰC ĐƠN ĐANG CHỌN</h5>
@@ -36,19 +36,19 @@
 			<div class="card-body-menu">
 				<div class="row form-group">
 					@* <form asp-action="createmenu" asp-controller="parties" method="post"> *@
-						
-						<div class="col-12 table-responsive">
-							<table class="table table-striped">
-								<thead>
-									<tr>
-										<th>Tên món ăn</th>
-										<th>Số lượng</th>
-									</tr>
-								</thead>
-								<tbody class="list-menu">
-								</tbody>
-							</table>
-						</div>
+
+					<div class="col-12 table-responsive">
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th>Tên món ăn</th>
+									<th>Số lượng</th>
+								</tr>
+							</thead>
+							<tbody class="list-menu">
+							</tbody>
+						</table>
+					</div>
 					@* </form> *@
 				</div>
 			</div>
@@ -76,7 +76,7 @@
 							<th></th>
 							<th></th>
 							<th></th>
-						@* 	<th></th>
+							@* 	<th></th>
 							<th></th> *@
 						</tr>
 					</thead>
@@ -130,94 +130,113 @@
 
 	<script>
 		$(document).ready(function () {
-				$('input:checkbox').on('click', function () {
-					const id = $(this).attr('id').split('-')[1];
+			$('input:checkbox').on('click', function () {
+				const id = $(this).attr('id').split('-')[1];
 
-					const $listMenu = $(".list-menu");
-					const dishName = $(`label[for="cb-${id}"]`).text()
+				const $listMenu = $(".list-menu");
+				const dishName = $(`label[for="cb-${id}"]`).text()
 
-					if ($(this).prop('checked')) {
+				if ($(this).prop('checked')) {
 
-						const $nameCell = $('<td>').text(dishName);
-						$nameCell.append($('input[type="hidden"][name^="[' + (id - 1) + ']"]').clone());
+					const $nameCell = $('<td>').append($("<p>").text(dishName));
 
-						const $qtyCell = $('<td>');
-						$qtyCell.append($('<input>').attr({
-							type: 'number',
-							name: `[${id - 1}].Qty`,
-							min: @ViewBag.MinQty,
-							value: @ViewBag.MinQty
-						}));
+					const DishId = $(`input[type="hidden"][name='[${id - 1}].DishId']`).attr('value');
+					console.log("dishid = " + DishId);
+
+					$nameCell.append($('<input>').attr(
+						{
+						type:'hidden',
+						value: DishId,
+						id: `id-${id - 1}`
+					}					)
+					);
+					// $nameCell.append($('input[type="hidden"][name^="[' + (id - 1) + ']"]').clone());
+
+					const $qtyCell = $('<td>');
+					// $qtyCell.append($('<input>').attr({
+					// 	type: 'number',
+					// 	name: `[${id - 1}].Qty`,
+					// 	min: @ViewBag.MinQty,
+					// 	value: @ViewBag.MinQty
+					// }));
+					$qtyCell.append($('<input>').attr({
+						type: 'number',
+						name: `${id - 1}-Qty`,
+						min: @ViewBag.MinQty,
+						value: @ViewBag.MinQty
+										}));
 
 					const $newRow = $('<tr>').attr('class', `dish-${id} form-group`);
-						$newRow.append($nameCell);
-						$newRow.append($qtyCell);
+					$newRow.append($nameCell);
+					$newRow.append($qtyCell);
 
-						$listMenu.append($newRow);
-					}
-					else {
-						$listMenu.find(`.dish-${id}`).remove();
-					}
-				});
+					$listMenu.append($newRow);
+				}
+				else {
+					$listMenu.find(`.dish-${id}`).remove();
+				}
+			});
 
-				$('button').on('click',function (){
-					const items = [];
-					$('.list-menu > tr').each( function(){
-						// Selects elements that have the specified attribute with a value ending exactly with a given string.The comparison is case sensitive.
-						const DishId = $(this).find("input[name$='DishId']").value;
-					const DishName = $(this).find("input[name$='DishName']").value;
-					const Qty = $(this).find("input[type='number']").value;
+			$('button').on('click', function () {
+				const items = [];
+				$('.list-menu > tr').each(function () {
+					// Selects elements that have the specified attribute with a value ending exactly with a given string.The comparison is case sensitive.
+					const DishId = $(this).find("input[type='hidden']").attr('value');
+					const DishName = $(this).find("p").text();
+					const Qty = $(this).find("input[type='number']").attr('value');
 
-						items.push({
-							"DishId": DishId,
-							"DishName": DishName,
-							"Qty": Qty
-						})
+					items.push({
+						"DishId": DishId,
+						"DishName": DishName,
+						"Qty": Qty
 					})
+				})
 
-					console.log(items);
+				console.log(JSON.stringify(items));
 
-					$.ajax({
-						"type": "POST",
+				$.ajax({
+					"type": "POST",
 					"url": "@Url.Action(action:"createmenu_mini")/@ViewBag.partyId",
-						"dataType": "json",
-						"contentType": "application/json;charset=utf-8",
-						// "data": JSON.stringify(items),
-					"data": {  items: items },
-						success: function(response){
-							alert("success!"+response)
-						},
+					"dataType": "json",
+					"contentType": "application/json;charset=utf-8",
+					// "data": JSON.stringify(items),
+					"data": JSON.stringify(items),
+					success: function (response) {
+						// alert("success!" + response.responseText);
+						// console.log("success!" + response.responseText);
+						window.location.href = "@Url.ActionLink(action:"Details",controller:"Parties")/@ViewBag.partyId";
+					},
 					failure: function (response) {
 						alert("failure!" + response);
-						}
-					})
+					}
+				})
 
 				// $.post("@Url.Action(action:"createmenu_mini")", { items: items }, function (response) {
 				// 	alert("success!" + response)
 				// },"json",)
-				})
+			})
 		});
 
-				// $(document).ready(function () {
-				// 	$('input[type="number"]').on('change', function () {
-				// 		// Lấy id của món ăn từ id của phần tử input
-				// 		const id = $(this).attr('id').split('-')[1];
-				// 		const $qty = $(this);
+						// $(document).ready(function () {
+						// 	$('input[type="number"]').on('change', function () {
+						// 		// Lấy id của món ăn từ id của phần tử input
+						// 		const id = $(this).attr('id').split('-')[1];
+						// 		const $qty = $(this);
 
-				// 		// Lấy giá trị và giá trị tối thiểu từ input
-				// 		const newValue = $qty.val();
-				// 		const minValue = $qty.attr('min');
+						// 		// Lấy giá trị và giá trị tối thiểu từ input
+						// 		const newValue = $qty.val();
+						// 		const minValue = $qty.attr('min');
 
-				// 		// Cập nhật giá trị trong $listMenu
-				// 		const $listMenu = $(".list-menu");
-				// 		const $dishRow = $listMenu.find(`.dish-${id}`);
+						// 		// Cập nhật giá trị trong $listMenu
+						// 		const $listMenu = $(".list-menu");
+						// 		const $dishRow = $listMenu.find(`.dish-${id}`);
 
-				// 		if ($dishRow.length > 0) {
-				// 			// Nếu hàng tồn tại, cập nhật giá trị
-				// 			$dishRow.find('td:nth-child(2)').text(newValue);
-				// 		}
-				// 	});
-				// });
+						// 		if ($dishRow.length > 0) {
+						// 			// Nếu hàng tồn tại, cập nhật giá trị
+						// 			$dishRow.find('td:nth-child(2)').text(newValue);
+						// 		}
+						// 	});
+						// });
 	</script>
 }
 

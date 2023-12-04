@@ -314,21 +314,23 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 		{
 			Console.ForegroundColor = ConsoleColor.Yellow;
 
-			Console.WriteLine("SEND {0}", id);
+			Console.WriteLine("MINI SEND {0}", id);
 			if (ModelState.IsValid)
 			{
 
 				Console.WriteLine("VALID");
 				Console.WriteLine("count {0}",items.Count);
-				//foreach (var item in items)
+				foreach (var item in items)
 
-				//{
-				//	if (item.Qty > 0)
-				//	{
-				//		Console.WriteLine(item.DishId.ToString() + "-" + item.DishName + "-" + item.Qty.ToString());
-				//	}
-				//}
-				return RedirectToAction("Details", new { id = id });
+				{
+					
+						Console.WriteLine(item.DishId.ToString() + "-" + item.DishName + "-" + item.Qty.ToString());
+					
+				}
+
+				return
+					RedirectToAction("Details", new { id = id });
+				//Json(Url.Action("Details", "Parties", new {id = id}));
 			}
 			Console.ResetColor();
 
