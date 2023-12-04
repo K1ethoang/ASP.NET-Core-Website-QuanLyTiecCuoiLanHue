@@ -329,8 +329,8 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 				}
 
 				return
-					RedirectToAction("Details", new { id = id });
-				//Json(Url.Action("Details", "Parties", new {id = id}));
+				//RedirectToAction("Details", new { id = id });
+				Json(Url.Action("Details", "Parties", new { id = id }));
 			}
 			Console.ResetColor();
 
