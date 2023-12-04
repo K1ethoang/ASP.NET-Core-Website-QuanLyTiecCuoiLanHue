@@ -115,7 +115,7 @@
                     @if (!Model.Status.Equals(Party.DONE))
                     {
                         @Html.ActionLink(
-                    linkText:"Chỉnh sửa",
+                    linkText:"Chỉnh sửa tiệc",
                     actionName: "edit",
                     controllerName:"Parties",
                     routeValues: new {id=@Model.PartyId},
@@ -135,32 +135,56 @@
                     htmlAttributes: new{@class="btn btn-outline-primary mx-2",partyId=@Model.PartyId}
                         )
                     }
+                    else
+                    {
+                        @Html.ActionLink(
+                    linkText:"Chỉnh sửa thực đơn",
+                    actionName: "CreateMenu",
+                    controllerName:"Parties",
+                    routeValues: new {id=@Model.PartyId},
+                    htmlAttributes: new{@class="btn btn-outline-primary mx-2",partyId=@Model.PartyId}
+                    )
+                    }
                 </div>
             </div>
         </div>
+
+      
+
         @if (Model.DetailInvoices.Count() > 0)
         {
-            <section id="menu-list">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Tên món ăn</th>
-                            <th>Số lượng</th>
-                            <th>Thành tiền</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model.DetailInvoices)
-                        {
-                            <tr>
-                                <td>@item.Dish.DishName</td>
-                                <td>@item.Number</td>
-                                <td>@item.Amount</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </section>
+            <div class="container-fluid">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h5>THỰC ĐƠN</h5>
+                    </div>
+                    <div class="card-body-menu">
+                        <div class="row">
+                            <div class="col-12 table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Tên món ăn</th>
+                                            <th>Số lượng</th>
+                                            <th>Thành tiền</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.DetailInvoices)
+                                        {
+                                            <tr>
+                                                <td>@item.Dish.DishName</td>
+                                                <td>@item.Number</td>
+                                                <td>@item.Amount.ToString("#,##").Replace(",",".") đ</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         }
     </div>
     <!-- /.container-fluid -->

@@ -381,7 +381,7 @@ END
 go
 
 -- 3. đếm số lượng khách hàng - done
-CREATE PROCEDURE GetCustomerCount
+CREATE OR ALTER PROCEDURE GetCustomerCount
 AS
 BEGIN
     SELECT COUNT(*) AS CustomerCount
@@ -390,7 +390,7 @@ END
 go
 
 -- 4. đếm số lượng tiệc - done
-CREATE PROCEDURE GetPartyCount
+CREATE OR ALTER PROCEDURE GetPartyCount
 AS
 BEGIN
     SELECT COUNT(*) AS PartyCount
@@ -399,7 +399,7 @@ END
 go
 
 -- 5. đếm số lượng món ăn - done
-CREATE PROCEDURE GetDishCount
+CREATE OR ALTER PROCEDURE GetDishCount
 AS
 BEGIN
     SELECT COUNT(*) AS DishCount
@@ -407,6 +407,24 @@ BEGIN
 END
 go
 
-exec GetDishCount
+-- 6. đếm số lượng tiệc chưa thanh toán
+CREATE OR ALTER PROCEDURE GetUnpaidPartyCount
+AS
+BEGIN
+    SELECT COUNT(*) AS SoLuongTiecChuaThanhToan
+    FROM INVOICE
+    WHERE PAYMENT_TIME IS NULL
+END
+go
+
+-- 7. đếm số lượng tiệc chưa tổ chức 
+CREATE OR ALTER PROCEDURE GetUnorganizedPartyCount
+AS
+BEGIN
+    SELECT COUNT(*) AS SoLuongTiecChuaToChuc
+    FROM PARTY
+    WHERE (DATE > GETDATE() OR (DATE = GETDATE() AND TIME > CONVERT(TIME, GETDATE())));
+END
+go
 
 --drop database QL_dichVuNauTiecLanHue

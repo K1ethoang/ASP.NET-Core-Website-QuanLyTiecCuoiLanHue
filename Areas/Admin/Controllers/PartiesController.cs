@@ -72,15 +72,14 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
                 HasMenu = party.HasMenu
             };
 
-            var invoice = _context.Invoices.FirstOrDefault(iv => iv.PartyId == party.PartyId);
+            var invoice = await _context.Invoices.Include(iv => iv.DetailInvoices).ThenInclude(di => di.Dish).FirstOrDefaultAsync(iv => iv.PartyId == party.PartyId);
             if (invoice != null)
             {
 
-            viewModel.DetailInvoices = invoice!
-                .DetailInvoices;
+            viewModel.DetailInvoices = invoice.DetailInvoices;
 
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("DETAILS LIST: {0}",viewModel.DetailInvoices.ToJson());
+                //Console.WriteLine("DETAILS LIST: {0}",viewModel.DetailInvoices.ToJson());
                 Console.ResetColor();
             }
 
