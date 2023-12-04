@@ -53,8 +53,9 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels
         //PartyTypeId
         [DisplayName("Loại tiệc")]
         public int PartyTypeId { get; set; }
-        // HASMENU
-        public bool HasMenu
+		// HASMENU
+		[DisplayName("Thực đơn")]
+		public bool HasMenu
         {
             get; set;
         } = false;

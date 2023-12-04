@@ -298,7 +298,9 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
             var party = _context.Parties.Where(p => p.PartyId == id).FirstOrDefault();
 
 
-            if (party.HasMenu)
+            if (party.HasMenu 
+				//|| _context.Invoices.Any(iv=>iv.PartyId == id)
+				)
             {
                 TempData["ErrorMessage1"] = "Đã có thực đơn";
                 return RedirectToAction(nameof(Index));
@@ -365,13 +367,18 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 				Console.WriteLine("VALID");
 				Console.WriteLine("count {0}",items.Count);
 				Console.OutputEncoding = Encoding.UTF8;
-				foreach (var item in items)
 
-				{
-					
-						Console.WriteLine(item.DishId.ToString() + "-" + item.DishName + "-" + item.Qty.ToString());
-					
+				foreach (var item in items)				{
+					Console.WriteLine(item.DishId.ToString() + "-" + item.DishName + "-" + item.Qty.ToString());
 				}
+
+				Console.ResetColor();
+				var party = await _context.Parties.FirstOrDefaultAsync(p => p.PartyId.Equals(id));
+				party.HasMenu = true;
+				_context.Update(party);
+				await _context.SaveChangesAsync();
+
+				 CreateInvoice(id,items.ToImmutableArray());
 
 				return Json(Ok());
 					//Ok();
@@ -382,5 +389,60 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 
 			return RedirectToAction("Index");
 		}
+
+
+		public async Task<IActionResult> CreateInvoice(int id,  ImmutableArray<MiniMenuItem> items)
+		{
+			try
+			{
+
+			 _context.Add(new Invoice()
+			 {
+				 PartyId = id,
+				 InvoiceDate = DateTime.Now,
+			 });
+
+			}
+			catch (DbUpdateConcurrencyException) { 
+				return Problem("Cannot add new invoice"); }
+
+			var invoiceId = _context.Invoices.Where(p => p.PartyId == id).First().InvoiceId;
+			var allDish =  _context.Dishes;
+
+
+			foreach (var item in items.ToImmutableArray())
+			{
+				var dish = await allDish.Where(d=>d.DishId.Equals(item.DishId)).FirstAsync();
+				try
+				{
+
+				await _context.AddAsync(new DetailInvoice()
+				{
+					InvoiceId = invoiceId,
+					DishId = item.DishId,
+					Number = item.Qty,
+					Price = dish.Price,
+					Amount = dish.Price * item.Qty,
+				});
+				}
+				catch {
+					return Problem("Cannot add new invoice_detail");
+				}
+
+			}
+
+			try
+			{
+				await _context.SaveChangesAsync();
+			}
+			catch
+			{
+				return Problem("Error from saving changes");
+			}
+
+			return RedirectToAction("Details", new { id = id });
+		}
+
+
 	}
 }
