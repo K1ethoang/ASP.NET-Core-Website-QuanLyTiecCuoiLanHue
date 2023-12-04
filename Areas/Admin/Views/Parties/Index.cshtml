@@ -118,7 +118,7 @@
                                                 }
                                                 else
                                                 {
-                                                    <span class="badge badge-warning">@Party.NO_MENU</span>
+                                                    <span class="badge badge-danger">@Party.NO_MENU</span>
                                                 }
                                             }
                                         </td>
@@ -140,13 +140,6 @@
                                                         <a asp-action="CreateMenu" asp-controller="parties" asp-route-id="@item.PartyId" class="dropdown-item bg-gradient-primary">
                                                             <i class="fas fa-utensils"></i>
                                                             Chọn thực đơn
-                                                        </a>
-                                                    }
-                                                    else
-                                                    {
-                                                        <a asp-action="details" asp-controller="menu" asp-route-id="@item.PartyId" class="dropdown-item bg-gradient-teal">
-                                                            <i class="fas fa-utensils"></i>
-                                                            Xem thực đơn
                                                         </a>
                                                     }
                                                     <a asp-action="delete" asp-route-id="@item.PartyId" class="dropdown-item bg-gradient-danger">
