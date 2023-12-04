@@ -10,7 +10,7 @@ go
 use QL_dichVuNauTiecLanHue
 go
 
-/****** Object:  Table [dbo].[AspNetRoleClaims]    Script Date: 18/10/2023 14:20:46 ******/
+/****** Object:  Table [dbo].[AspNetRoleClaims] ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -260,7 +260,7 @@ create table PARTY (
    PARTY_TYPE_ID        int                  not null,
    CUSTOMER_ID          int                  not null,
    constraint PK_PARTY primary key (PARTY_ID),
-   constraint CK_PARTY_DATE check (DATE > getdate()),
+   --constraint CK_PARTY_DATE check (DATE > getdate()),
    constraint FK_PARTY_PARTY_TYPE_ID foreign key (PARTY_TYPE_ID) references PARTY_TYPE (PARTY_TYPE_ID),
    constraint FK_PARTY_CUSTOMER_ID foreign key (CUSTOMER_ID) references CUSTOMER (CUSTOMER_ID)
 )
@@ -342,181 +342,71 @@ go
 /*==============================================================*/
 /* Table: WORK                                                  */
 /*==============================================================*/
-create table WORK (
-   STAFF_ID             int                  not null,
-   PARTY_ID             int                  not null,
-   SALARY               money                null default 0,
-   constraint PK_WORK primary key (STAFF_ID, PARTY_ID),
-   constraint PK_WORK_SLARY check (SALARY >= 0),
-   constraint FK_WORK_STAFF_ID foreign key (STAFF_ID) references STAFF (STAFF_ID),
-   constraint FK_WORK_PARTY_ID foreign key (PARTY_ID) references PARTY (PARTY_ID),
-)
-go
-
-
-
------------------------------------------------------------
---/*==============================================================*/
---/* Phân quyền: Admin                                            */
---/*==============================================================*/
---drop login LH_Admin
---GO
-
---USE master
---GO
---CREATE LOGIN LH_Admin
---	WITH PASSWORD = N'123456',
---	CHECK_EXPIRATION = OFF,
---	CHECK_POLICY = OFF,
---	DEFAULT_DATABASE = QL_dichVuNauTiecLanHue
---GO
-
---USE QL_dichVuNauTiecLanHue
---GO
---CREATE USER LH_Admin
---	FOR LOGIN LH_Admin
---GO
-
---USE QL_dichVuNauTiecLanHue
---GO
---Sp_addrolemember 'db_owner', 'LH_Admin'
---Go
-
-
---/*==============================================================*/
---/* Thêm nhóm quyền:                                             */
---/*==============================================================*/
-
----- Xem: DISH
---USE QL_dichVuNauTiecLanHue
---GO
---Sp_addrole 'see_dish'
-
---GRANT SELECT 
---ON DISH
---TO see_dish
---GO
-
-
-
----- Xem: PARTY
---USE QL_dichVuNauTiecLanHue
---GO
---Sp_addrole 'see_party'
-
---GRANT SELECT 
---ON PARTY
---TO see_party
---GO
-
-
---/*==============================================================*/
---/* Phân quyền: Staff                                            */
---/*==============================================================*/
---drop login LH_Staff
---GO
-
---USE master
---GO
---CREATE LOGIN LH_Staff
---	WITH PASSWORD = N'123456',
---	CHECK_EXPIRATION = OFF,
---	CHECK_POLICY = OFF,
---	DEFAULT_DATABASE = QL_dichVuNauTiecLanHue
---GO
-
---USE QL_dichVuNauTiecLanHue
---GO
---CREATE USER LH_Staff
---	FOR LOGIN LH_Staff
---GO
-
----- Thêm vào nhóm quyền
---USE QL_dichVuNauTiecLanHue
---GO
---Sp_addrolemember 'see_dish', 'LH_Staff'
-
---GO
---Sp_addrolemember 'see_party', 'LH_Staff'
---GO
-
----- Gán quyền: Xem, Cập nhật STAFF
---GRANT SELECT, UPDATE
---ON STAFF TO LH_Staff
---GO
-
----- Gán quyền: Thêm, Xem, Cập nhật, Xoá WORK
---GRANT INSERT, SELECT, UPDATE, DELETE
---ON WORK TO LH_Staff
---GO
-
---/*==============================================================*/
---/* Phân quyền: Staff                                            */
---/*==============================================================*/
---drop login LH_Guest
---GO
-
---USE master
---GO
---CREATE LOGIN LH_Guest
---	WITH PASSWORD = N'123456',
---	CHECK_EXPIRATION = OFF,
---	CHECK_POLICY = OFF,
---	DEFAULT_DATABASE = QL_dichVuNauTiecLanHue
---GO
-
---USE QL_dichVuNauTiecLanHue
---GO
---CREATE USER LH_Guest
---	FOR LOGIN LH_Guest
---GO
-
----- Thêm vào nhóm quyền
---USE QL_dichVuNauTiecLanHue
---GO
---Sp_addrolemember 'see_dish', 'LH_Guest'
---GO
-
-
-
-/*==============================================================*/
-/* Trigger                                                      */
-/*==============================================================*/
-
--- Trigger: DETAIL_INVOICE
-
-
--- Trigger: DETAIL_INVOICE
---CREATE TRIGGER Trg_After_DetailInvoice_Update
---ON DETAIL_INVOICE
---AFTER UPDATE
---AS
---BEGIN
---	UPDATE INVOICE
---	SET TOTAL_PRICE = (
---		SELECT SUM(INS.AMOUNT)
---		FROM DETAIL_INVOICE DI
---		JOIN inserted INS ON INS.DETAIL_INVOICE_ID = DI.DETAIL_INVOICE_ID
---	)
---	FROM INVOICE INV
---	JOIN inserted INS ON INV.INVOICE_ID = INS.INVOICE_ID
---END
-
+--create table WORK (
+--   STAFF_ID             int                  not null,
+--   PARTY_ID             int                  not null,
+--   SALARY               money                null default 0,
+--   constraint PK_WORK primary key (STAFF_ID, PARTY_ID),
+--   constraint PK_WORK_SLARY check (SALARY >= 0),
+--   constraint FK_WORK_STAFF_ID foreign key (STAFF_ID) references STAFF (STAFF_ID),
+--   constraint FK_WORK_PARTY_ID foreign key (PARTY_ID) references PARTY (PARTY_ID),
+--)
+--go
 
 
 /*==============================================================*/
 /* Procedure                                                    */
 /*==============================================================*/
 -- 1. cập nhật trạng thái tiệc
-CREATE OR ALTER PROC SP_Update_HappentStatus_In_Party
+CREATE OR ALTER PROCEDURE SP_Update_HappentStatus_In_Party
 AS
 BEGIN
-	UPDATE Party
-	SET STATUS = 
-		(CASE
-			WHEN DATE < GETDATE() THEN N'Đã xong'
-			WHEN DATE >  GETDATE() THEN N'Sắp diễn ra'
-			ELSE N'Đang diễn ra'
-		END)
+    UPDATE Party
+    SET STATUS = 
+        CASE
+            WHEN DATE < GETDATE() THEN N'Đã xong'
+            WHEN DATE > GETDATE() THEN N'Sắp diễn ra'
+            ELSE N'Đang diễn ra'
+        END
 END
 Go
+
+-- 2. đếm số lượng nhân viên
+CREATE OR ALTER PROCEDURE GetStaffCount
+AS
+BEGIN
+    SELECT COUNT(*) AS StaffCount
+    FROM STAFF
+END
+go
+
+-- 3. đếm số lượng khách hàng - done
+CREATE PROCEDURE GetCustomerCount
+AS
+BEGIN
+    SELECT COUNT(*) AS CustomerCount
+    FROM CUSTOMER
+END
+go
+
+-- 4. đếm số lượng tiệc - done
+CREATE PROCEDURE GetPartyCount
+AS
+BEGIN
+    SELECT COUNT(*) AS PartyCount
+    FROM PARTY
+END
+go
+
+-- 5. đếm số lượng món ăn - done
+CREATE PROCEDURE GetDishCount
+AS
+BEGIN
+    SELECT COUNT(*) AS DishCount
+    FROM DISH
+END
+go
+
+exec GetDishCount
+
+--drop database QL_dichVuNauTiecLanHue
