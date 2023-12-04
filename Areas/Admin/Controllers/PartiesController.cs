@@ -126,6 +126,12 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 				return NotFound();
 			}
 
+			if (party.Status.Equals(Party.DONE))
+			{
+                TempData["ErrorMessage1"] = "Tiệc đã tổ chức xong";
+                return RedirectToAction(nameof(Index));
+            }	
+
 			var customerSelectList = _context.Customers
 				.ToList()
 				.Select(c => new SelectListItem(
@@ -259,8 +265,17 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 			{
 				return NotFound();
 			}
-			var party = _context.Parties.Where(p => p.PartyId == id).FirstOrDefault();
-			ViewData["DateAndTime"] = party!.Date.ToString();
+
+            var party = _context.Parties.Where(p => p.PartyId == id).FirstOrDefault();
+
+
+            if (party.HasMenu)
+            {
+                TempData["ErrorMessage1"] = "Đã có thực đơn";
+                return RedirectToAction(nameof(Index));
+            }
+
+            ViewData["DateAndTime"] = party!.Date.ToString();
 
 			Console.ForegroundColor = ConsoleColor.Yellow;
 			Console.WriteLine(id);
