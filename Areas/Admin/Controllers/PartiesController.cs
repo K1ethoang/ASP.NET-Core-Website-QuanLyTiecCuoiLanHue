@@ -286,6 +286,27 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 		{
 			return (_context.Parties?.Any(e => e.PartyId == id)).GetValueOrDefault();
 		}
+        //[ActionName("Invoice")]
+        //[Area("Admin/parties")]
+        [Route("/invoice/{id}")]
+		public async Task<IActionResult> Get_Invoice(int id)
+		{
+			if (!PartyExists(id))
+			{
+				return RedirectToAction(nameof(Index));
+			}
+			var party = _context.Parties?.Include(p=>p.Invoices).ThenInclude(iv=>iv.DetailInvoices).ThenInclude(di=>di.Dish).FirstOrDefault(e => e.PartyId == id);
+
+			 InvoiceDetailsViewModel viewModel = new InvoiceDetailsViewModel()
+			{
+				PartyId = id,
+				Invoice = party.Invoices.FirstOrDefault(),
+				InvoiceId = party.Invoices.FirstOrDefault().InvoiceId,
+				DetailInvoices = party.Invoices.FirstOrDefault().DetailInvoices
+			};
+
+			return View(viewModel);
+		}
 		// GET
 		[HttpGet]
 		public async Task<IActionResult> CreateMenu(int id)
