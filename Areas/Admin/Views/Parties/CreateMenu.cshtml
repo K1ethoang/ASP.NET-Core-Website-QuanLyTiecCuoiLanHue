@@ -33,89 +33,93 @@
 				<h5>THỰC ĐƠN ĐANG CHỌN</h5>
 			</div>
 			<div class="card-body-menu">
+					<form asp-action="createmenu" asp-controller="parties" method="post">
+						<input type="submit" value="Lưu" class="btn btn-primary">
 				<div class="row">
-					<div class="col-12 table-responsive">
-						<table class="table table-striped">
-							<thead>
-								<tr>
-									<th>Tên món ăn</th>
-									<th>Số lượng</th>
-								</tr>
-							</thead>
-							<tbody class="list-menu">
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div>
-		</div>
-		</div>
-		<div class="container-fluid">
-			<div class="card">
-				<div class="card-body">
-					<form asp-action="createmenu" asp-controller="parties" method="post" id="frmMenu">
-						<div class="form-group">
-							<input type="submit" value="Lưu" class="btn btn-primary">
-						</div>
-						<table id="table-data" class="table table-bordered table-striped tablas">
-							<thead>
-								<tr>
-									<th>Tên món ăn</th>
-									<th class="filterhead">Loại món ăn</th>
-									<th>Đơn vị</th>
-									<th>Đơn giá</th>
-									<th>Số lượng</th>
-									<th>Thành tiền</th>
-								</tr>
-								<tr>
-									<th></th>
-									<th></th>
-									<th></th>
-									<th></th>
-									<th></th>
-									<th></th>
-								</tr>
-							</thead>
-							<tbody>
-								@for (int i = 0; i < Model.Count; i++)
-								{
+						<div class="col-12 table-responsive">
+							<table class="table table-striped">
+								<thead>
 									<tr>
-										<td>
-											@{
-												string cb_id = "cb-" + Model[i].DishId;
-											}
-
-											@Html.CheckBoxFor(m=>m[i].Selected,new{@id=cb_id})
-											@Html.Label(cb_id,Model[i].DishName)
-											@Html.HiddenFor(m=>m[i].DishName,new{@value=Model[i].DishName})
-											@Html.HiddenFor(m=>m[i].DishId,new{@value=Model[i].DishId})
-										</td>
-										<td>
-											@Html.DisplayFor(m=>m[i].DishType)
-											@Html.HiddenFor(m=>m[i].DishType,new{@value=Model[i].DishType})
-										</td>
-										<td>
-											@Html.DisplayFor(m=>m[i].UnitName)
-											@Html.HiddenFor(m=>m[i].UnitName,new{@value=Model[i].UnitName})
-										</td>
-										<td>
-											@Html.DisplayFor(m=>m[i].Price)
-											@Html.HiddenFor(m=>m[i].Price,new{@value=Model[i].Price})
-										</td>
-										<td>
-											<input type="number" asp-for="@Model[i].Qty" min="0" disabled id="qty-@Model[i].DishId" value="@Model[i].Qty" />
-										</td>
-										<td id="thanhtien-@Model[i].DishId"></td>
+										<th>Tên món ăn</th>
+										<th>Số lượng</th>
 									</tr>
-								}
-							</tbody>
-						</table>
-					</form>
+								</thead>
+								<tbody class="list-menu">
+								</tbody>
+							</table>
+						</div>
 				</div>
+					</form>
 			</div>
 		</div>
-		<!-- /.container-fluid -->
-		<!-- /.container-fluid -->
+	</div>
+	<div class="container-fluid">
+		<div class="card">
+			<div class="card-body">
+				@* <form asp-action="createmenu" asp-controller="parties" method="post" id="frmMenu"> *@
+				<div class="form-group">
+					@* <input type="submit" value="Lưu" class="btn btn-primary"> *@
+				</div>
+				<table id="table-data" class="table table-bordered table-striped tablas">
+					<thead>
+						<tr>
+							<th>Tên món ăn</th>
+							<th class="filterhead">Loại món ăn</th>
+							<th>Đơn vị</th>
+							<th>Đơn giá</th>
+							@* 	<th>Số lượng</th>
+							<th>Thành tiền</th> *@
+						</tr>
+						<tr>
+							<th></th>
+							<th></th>
+							<th></th>
+							<th></th>
+						@* 	<th></th>
+							<th></th> *@
+						</tr>
+					</thead>
+					<tbody>
+						@for (int i = 0; i < Model.Count; i++)
+						{
+							<tr>
+								<td>
+									@{
+										string cb_id = "cb-" + Model[i].DishId;
+									}
+
+									@* @Html.CheckBoxFor(m=>m[i].Selected,new{@id=cb_id}) *@
+									<input type="checkbox" id=@cb_id>
+									@Html.Label(cb_id,Model[i].DishName)
+									@Html.HiddenFor(m=>m[i].DishName,new{@value=Model[i].DishName})
+									@Html.HiddenFor(m=>m[i].DishId,new{@value=Model[i].DishId})
+								</td>
+								<td>
+									@Html.DisplayFor(m=>m[i].DishType)
+									@Html.HiddenFor(m=>m[i].DishType,new{@value=Model[i].DishType})
+								</td>
+								<td>
+									@Html.DisplayFor(m=>m[i].UnitName)
+									@Html.HiddenFor(m=>m[i].UnitName,new{@value=Model[i].UnitName})
+								</td>
+								<td>
+									@Html.DisplayFor(m=>m[i].Price)
+									@Html.HiddenFor(m=>m[i].Price,new{@value=Model[i].Price})
+								</td>
+								@* <td>
+							<input type="number" asp-for="@Model[i].Qty" min="0" disabled id="qty-@Model[i].DishId" value="@Model[i].Qty" />
+							</td>
+							<td id="thanhtien-@Model[i].DishId"></td> *@
+							</tr>
+						}
+					</tbody>
+				</table>
+				@* </form> *@
+			</div>
+		</div>
+	</div>
+	<!-- /.container-fluid -->
+	<!-- /.container-fluid -->
 
 </section>
 
@@ -124,59 +128,85 @@
 	@* <script src="~/lib/jquery/dist/jquery.min.js"></script> *@
 
 	<script>
-		$(document).ready(
-			function () {
-
+		$(document).ready(function () {
 				$('input:checkbox').on('click', function () {
 					const id = $(this).attr('id').split('-')[1];
-					const $qty = $('input[type="number"]#qty-' + id)
 
 					const $listMenu = $(".list-menu");
 					const dishName = $(`label[for="cb-${id}"]`).text()
 
 					if ($(this).prop('checked')) {
-						$qty.attr('value', @ViewBag.MinQty);
-						$qty.attr('min', @ViewBag.MinQty);
-						$qty.prop('disabled', false);
 
-						$listMenu.append(`
-														<tr class="dish-${id}">
-																			<td> ${dishName} </td>
-																					<td> ${$qty.attr('value')} </td>
-														</tr>
-														`);
+						const $nameCell = $('<td>').text(dishName);
+						$nameCell.append($('input[type="hidden"][name^="[' + (id - 1) + ']"]').clone());
+
+						const $qtyCell = $('<td>');
+						$qtyCell.append($('<input>').attr({
+							type: 'number',
+							name: `[${id - 1}].Qty`,
+							min: @ViewBag.MinQty,
+							value: @ViewBag.MinQty
+						}));
+
+						const $newRow = $('<tr>').prop('class', 'dish-' + id);
+						$newRow.append($nameCell);
+						$newRow.append($qtyCell);
+
+						$listMenu.append($newRow);
 					}
 					else {
-						$qty.attr('value', 0);
-						$qty.attr('min', 0);
-						$qty.prop('disabled', true);
-
 						$listMenu.find(`.dish-${id}`).remove();
 					}
 				});
-			}
-		);
 
-		$(document).ready(function () {
-			$('input[type="number"]').on('change', function () {
-				// Lấy id của món ăn từ id của phần tử input
-				const id = $(this).attr('id').split('-')[1];
-				const $qty = $(this);
+			// 	$('form').on('submit', (){
+			// 		const items = [];
+			// 		$('.list-menu').each($('tr'), (){
+			// 			// Selects elements that have the specified attribute with a value ending exactly with a given string.The comparison is case sensitive.
+			// 			const DishId = $("input[name$='DishId']").value;
+			// 			const DishName = $("input[name$='DishName']").value;
+			// 			const Qty = $("input[type='number']").value;
 
-				// Lấy giá trị và giá trị tối thiểu từ input
-				const newValue = $qty.val();
-				const minValue = $qty.attr('min');
+			// 			items.push({
+			// 				"DishId": DishId,
+			// 				"DishName": DishName,
+			// 				"Qty": Qty
+			// 			})
+			// 		})
 
-				// Cập nhật giá trị trong $listMenu
-				const $listMenu = $(".list-menu");
-				const $dishRow = $listMenu.find(`.dish-${id}`);
-
-				if ($dishRow.length > 0) {
-					// Nếu hàng tồn tại, cập nhật giá trị
-					$dishRow.find('td:nth-child(2)').text(newValue);
-				}
-			});
+			// 		$.ajax({
+			// 			"type": "POST",
+			// 			"url": '/Parties/CreateMenu/',
+			// 			"dataType": "json",
+			// 			"contentType": "application/json;charset=utf-8",
+			// 			"data": JSON.stringify(items),
+			// 			success: (){
+			// 				alert("success");
+			// 			}
+			// 		})
+			// 	})
 		});
+
+				// $(document).ready(function () {
+				// 	$('input[type="number"]').on('change', function () {
+				// 		// Lấy id của món ăn từ id của phần tử input
+				// 		const id = $(this).attr('id').split('-')[1];
+				// 		const $qty = $(this);
+
+				// 		// Lấy giá trị và giá trị tối thiểu từ input
+				// 		const newValue = $qty.val();
+				// 		const minValue = $qty.attr('min');
+
+				// 		// Cập nhật giá trị trong $listMenu
+				// 		const $listMenu = $(".list-menu");
+				// 		const $dishRow = $listMenu.find(`.dish-${id}`);
+
+				// 		if ($dishRow.length > 0) {
+				// 			// Nếu hàng tồn tại, cập nhật giá trị
+				// 			$dishRow.find('td:nth-child(2)').text(newValue);
+				// 		}
+				// 	});
+				// });
 	</script>
 }
 

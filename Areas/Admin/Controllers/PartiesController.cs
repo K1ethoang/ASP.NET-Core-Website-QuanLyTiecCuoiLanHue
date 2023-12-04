@@ -274,7 +274,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 					UnitName = d.Unit.UnitName,
 					DishType = d.DishType.TypeName,
 					Qty = 0,
-					Selected = false,
+					//Selected = false,
 					Price = (int)d.Price,
 				})
 				.ToListAsync();
@@ -286,7 +286,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 		}
 		// POST
 		[HttpPost]
-		public async Task<IActionResult> CreateMenu( int id, List<MenuItem> items) { 
+		public async Task<IActionResult> CreateMenu(int id, List<MenuItem> items) { 
 			Console.ForegroundColor = ConsoleColor.Yellow;
 
 			Console.WriteLine("SEND {0}",id);
@@ -297,7 +297,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 				foreach (var item in items)
 
 					{
-					if (item.Selected )
+					if (item.Qty>0 )
 					{
 						Console.WriteLine(item.DishId.ToString()+"-"+item.DishName+"-"+item.Qty.ToString());
 					}
