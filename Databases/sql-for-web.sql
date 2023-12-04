@@ -501,3 +501,22 @@ go
 --	FROM INVOICE INV
 --	JOIN inserted INS ON INV.INVOICE_ID = INS.INVOICE_ID
 --END
+
+
+
+/*==============================================================*/
+/* Procedure                                                    */
+/*==============================================================*/
+-- 1. cập nhật trạng thái tiệc
+CREATE OR ALTER PROC SP_Update_HappentStatus_In_Party
+AS
+BEGIN
+	UPDATE Party
+	SET STATUS = 
+		(CASE
+			WHEN DATE < GETDATE() THEN N'Đã xong'
+			WHEN DATE >  GETDATE() THEN N'Sắp diễn ra'
+			ELSE N'Đang diễn ra'
+		END)
+END
+Go

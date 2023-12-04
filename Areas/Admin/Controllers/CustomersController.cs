@@ -70,7 +70,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
                 customer.CusName = customer.CusName.Trim();
                 customer.Address = customer.Address.Trim();
 
-                bool existCusWithPhoneNum = CustomerExists(customer.PhoneNumber);
+                bool existCusWithPhoneNum = CustomerExistsWithPhoneNumber(customer.PhoneNumber);
                 bool existCusWithCitizenNum = CustomerExistsWithCitizenNum(customer.CitizenNumber);
 
                 if (!existCusWithPhoneNum && !existCusWithCitizenNum)
@@ -130,9 +130,21 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
                     var newCustomer = vm.ToCustomer(context: _context);
                     newCustomer.CustomerId = customer.CustomerId;
                     _context.Entry(customer).CurrentValues.SetValues(newCustomer);
-                    _context.Update(customer);
 
-                    await _context.SaveChangesAsync();
+                    bool existCusWithPhoneNum = CustomerExistsWithPhoneNumber(customer.PhoneNumber, id);
+                    bool existCusWithCitizenNum = CustomerExistsWithCitizenNum(customer.CitizenNumber, id);
+
+                    if (!existCusWithPhoneNum && !existCusWithCitizenNum)
+                    {
+                        _context.Update(customer);
+                        await _context.SaveChangesAsync();
+                        TempData["SuccessMessage"] = "Lưu thành công";
+                        return RedirectToAction(nameof(Index));
+                    }
+                    if (existCusWithPhoneNum)
+                        TempData["ErrorMessage"] = "Số điện thoại đã có";
+                    if (existCusWithCitizenNum)
+                        TempData["ErrorMessage1"] = "Số CCCD đã có";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -145,10 +157,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
                         throw;
                     }
                 }
-                TempData["SuccessMessage"] = "Lưu thành công";
-                return RedirectToAction(nameof(Index));
             }
-            TempData["ErrorMessage"] = "Có lỗi khi lưu";
             return View(vm);
         }
 
@@ -195,14 +204,14 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
             return (_context.Customers?.Any(e => e.CustomerId == id)).GetValueOrDefault();
         }
 
-        private bool CustomerExists(string phoneNumber)
+        private bool CustomerExistsWithPhoneNumber(string phoneNumber, int id = -1)
         {
-            return (_context.Customers?.Any(e => e.PhoneNumber == phoneNumber)).GetValueOrDefault();
+            return (_context.Customers?.Any(e => e.PhoneNumber == phoneNumber && e.CustomerId != id)).GetValueOrDefault();
         }
 
-        private bool CustomerExistsWithCitizenNum(string citizenNumber)
+        private bool CustomerExistsWithCitizenNum(string citizenNumber, int id = -1)
         {
-            return (_context.Customers?.Any(e => e.CitizenNumber == citizenNumber)).GetValueOrDefault();
+            return (_context.Customers?.Any(e => e.CitizenNumber == citizenNumber && e.CustomerId != id)).GetValueOrDefault();
         }
     }
 }

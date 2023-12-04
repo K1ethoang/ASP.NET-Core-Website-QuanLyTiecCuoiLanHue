@@ -141,6 +141,7 @@
     <script src="~/admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
     <!-- Select 2-->
     <script src="~/admin/plugins/select2/js/select2.full.min.js"></script>
+    <script src="~/admin/plugins/select2/js//i18n/vi.js"></script>
     <!-- Duallistbox  -->
     @* <script src="~/admin/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.js"></script> *@
 
@@ -187,7 +188,10 @@
 
     <script>
         $(document).ready(function () {
-            $(".select2").select2()
+            $(".select2").select2({
+                dropdownAutoWidth: true,
+                language: "vi"
+            })
         });
     </script>
     @await RenderSectionAsync("Scripts", required: false);
