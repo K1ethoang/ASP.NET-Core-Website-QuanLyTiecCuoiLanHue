@@ -364,8 +364,8 @@ BEGIN
     UPDATE Party
     SET STATUS = 
         CASE
-            WHEN DATE < GETDATE() THEN N'Đã xong'
-            WHEN DATE > GETDATE() THEN N'Sắp diễn ra'
+            WHEN DATE < CONVERT(DATE, GETDATE()) THEN N'Đã xong'
+            WHEN DATE > CONVERT(DATE, GETDATE()) THEN N'Sắp diễn ra'
             ELSE N'Đang diễn ra'
         END
 END
