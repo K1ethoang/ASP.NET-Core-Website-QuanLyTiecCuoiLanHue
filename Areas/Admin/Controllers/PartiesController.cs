@@ -15,6 +15,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Runtime.Intrinsics.X86;
 using Microsoft.AspNetCore.Razor.Language.Intermediate;
 using static ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels.Menu;
+using System.Collections.Immutable;
 
 namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 {
@@ -57,7 +58,35 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 				return NotFound();
 			}
 
-			return View(party);
+            PartyDetailsViewModel viewModel = new PartyDetailsViewModel()
+            {
+                PartyId = party.PartyId,
+                PartyName = party.PartyName,
+                CustomerName = party.Customer.CusName!,
+                Quantity = party.Quantity,
+                PartyTypeName = party.PartyType.Name,
+                Date = party.Date,
+                Time = party.Time,
+                Location= party.Location,
+                Status = party.Status!,
+                HasMenu = party.HasMenu
+            };
+
+            var invoice = _context.Invoices.FirstOrDefault(iv => iv.PartyId == party.PartyId);
+            if (invoice != null)
+            {
+
+            viewModel.DetailInvoices = invoice!
+                .DetailInvoices;
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("DETAILS LIST: {0}",viewModel.DetailInvoices.ToJson());
+                Console.ResetColor();
+            }
+
+
+
+            return View(viewModel);
 		}
 
 		// GET: Admin/Parties/Create
