@@ -15,6 +15,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Runtime.Intrinsics.X86;
 using Microsoft.AspNetCore.Razor.Language.Intermediate;
 using static ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels.Menu;
+using System.Text;
 
 namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 {
@@ -320,6 +321,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 
 				Console.WriteLine("VALID");
 				Console.WriteLine("count {0}",items.Count);
+				Console.OutputEncoding = Encoding.UTF8;
 				foreach (var item in items)
 
 				{
@@ -328,9 +330,10 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 					
 				}
 
-				return
+				return Json(Ok());
+					//Ok();
 				//RedirectToAction("Details", new { id = id });
-				Json(Url.Action("Details", "Parties", new { id = id }));
+				//Json(Url.Action("Details", "Parties", new { id = id }));
 			}
 			Console.ResetColor();
 
