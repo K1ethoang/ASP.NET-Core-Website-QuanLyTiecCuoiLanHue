@@ -255,7 +255,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 		[HttpGet]
 		public async Task<IActionResult> CreateMenu(int id)
 		{
-			if (id == null || !PartyExists(id))
+			if ( !PartyExists(id))
 			{
 				return NotFound();
 			}
@@ -280,14 +280,13 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 				.ToListAsync();
 
 			ViewBag.MinQty = party!.Quantity;
-
-<<<<<<< HEAD
+			ViewBag.partyId = id;
+		
 			return View(items);
 		}
 		// POST
 		[HttpPost]
-		public async Task<IActionResult> CreateMenu( int id, List<MenuItem> items)
-		{
+		public async Task<IActionResult> CreateMenu( int id, List<MenuItem> items) { 
 			Console.ForegroundColor = ConsoleColor.Yellow;
 
 			Console.WriteLine("SEND {0}",id);
