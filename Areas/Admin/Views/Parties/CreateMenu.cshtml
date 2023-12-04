@@ -183,7 +183,7 @@
 					// Selects elements that have the specified attribute with a value ending exactly with a given string.The comparison is case sensitive.
 					const DishId = $(this).find("input[type='hidden']").attr('value');
 					const DishName = $(this).find("p").text();
-					const Qty = $(this).find("input[type='number']").attr('value');
+					const Qty = $(this).find("input[type='number']").val();
 
 					items.push({
 						"DishId": DishId,
