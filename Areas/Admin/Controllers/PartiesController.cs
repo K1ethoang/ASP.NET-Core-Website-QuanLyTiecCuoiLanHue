@@ -16,6 +16,7 @@ using System.Runtime.Intrinsics.X86;
 using Microsoft.AspNetCore.Razor.Language.Intermediate;
 using static ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels.Menu;
 using System.Collections.Immutable;
+using System.Text;
 
 namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 {
@@ -317,7 +318,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 					UnitName = d.Unit.UnitName,
 					DishType = d.DishType.TypeName,
 					Qty = 0,
-					Selected = false,
+					//Selected = false,
 					Price = (int)d.Price,
 				})
 				.ToListAsync();
@@ -329,7 +330,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 		}
 		// POST
 		[HttpPost]
-		public async Task<IActionResult> CreateMenu( int id, List<MenuItem> items) { 
+		public async Task<IActionResult> CreateMenu(int id, List<MenuItem> items) { 
 			Console.ForegroundColor = ConsoleColor.Yellow;
 
 			Console.WriteLine("SEND {0}",id);
@@ -340,12 +341,42 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 				foreach (var item in items)
 
 					{
-					if (item.Selected )
+					if (item.Qty>0 )
 					{
 						Console.WriteLine(item.DishId.ToString()+"-"+item.DishName+"-"+item.Qty.ToString());
 					}
 				}
 				return RedirectToAction("Details",  new {id = id});
+			}
+			Console.ResetColor();
+
+			return RedirectToAction("Index");
+		}
+		// POST
+		[HttpPost]
+		public async Task<IActionResult> CreateMenu_Mini(int id,[FromBody] List<MiniMenuItem> items)
+		{
+			Console.ForegroundColor = ConsoleColor.Yellow;
+
+			Console.WriteLine("MINI SEND {0}", id);
+			if (ModelState.IsValid)
+			{
+
+				Console.WriteLine("VALID");
+				Console.WriteLine("count {0}",items.Count);
+				Console.OutputEncoding = Encoding.UTF8;
+				foreach (var item in items)
+
+				{
+					
+						Console.WriteLine(item.DishId.ToString() + "-" + item.DishName + "-" + item.Qty.ToString());
+					
+				}
+
+				return Json(Ok());
+					//Ok();
+				//RedirectToAction("Details", new { id = id });
+				//Json(Url.Action("Details", "Parties", new { id = id }));
 			}
 			Console.ResetColor();
 

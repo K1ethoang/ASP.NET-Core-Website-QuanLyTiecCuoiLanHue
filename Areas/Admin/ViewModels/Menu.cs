@@ -79,7 +79,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels
 		public string? DishName {  get; set; }
 		public string? UnitName {  get; set; }
 		public string? DishType {  get; set; }
-		public bool Selected {  get; set; }
+		//public bool Selected {  get; set; }
 		[DisplayName("Số lượng")]
 		public int Qty { get; set; }
 
@@ -105,6 +105,13 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels
 				Qty = 0
 			};
 		}
+
+	}
+	public class MiniMenuItem
+	{
+		public int DishId { get; set; }
+		public int Qty { get; set; }
+		public string? DishName { get; set; }
 
 	}
 	public class CreateMenuViewModel
