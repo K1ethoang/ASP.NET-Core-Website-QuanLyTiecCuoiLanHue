@@ -135,15 +135,11 @@
                                                         <i class="fas fa-eye"></i>
                                                         Chi tiết
                                                     </a>
-                                                    <a asp-action="delete" asp-route-id="@item.PartyId" class="dropdown-item bg-gradient-danger">
-                                                        <i class="fas fa-trash"></i>
-                                                        Xoá
-                                                    </a>
                                                     @if (!item.HasMenu)
                                                     {
-                                                        <a asp-action="create" asp-controller="menu" asp-route-id="@item.PartyId" class="dropdown-item bg-gradient-primary">
+                                                        <a asp-action="CreateMenu" asp-controller="parties" asp-route-id="@item.PartyId" class="dropdown-item bg-gradient-primary">
                                                             <i class="fas fa-utensils"></i>
-                                                            Chọn món
+                                                            Chọn thực đơn
                                                         </a>
                                                     }
                                                     else
@@ -153,6 +149,10 @@
                                                             Xem thực đơn
                                                         </a>
                                                     }
+                                                    <a asp-action="delete" asp-route-id="@item.PartyId" class="dropdown-item bg-gradient-danger">
+                                                        <i class="fas fa-trash"></i>
+                                                        Xoá
+                                                    </a>
                                                 </div>
                                             </div>
                                         </td>

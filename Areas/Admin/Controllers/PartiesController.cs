@@ -281,6 +281,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 
 			ViewBag.MinQty = party!.Quantity;
 
+<<<<<<< HEAD
 			return View(items);
 		}
 		// POST
