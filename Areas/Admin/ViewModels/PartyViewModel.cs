@@ -136,6 +136,13 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels
 		public int InvoiceId { get; set; }
 
         public Invoice Invoice { get; set; } = null;
+
 		public ICollection<DetailInvoice> DetailInvoices { get; set; } = new List<DetailInvoice>();
+
+        public Party Party { get; set; } = null;
+
+        public Customer Customer { get; set; } = null;
+
+        
 	}
 }

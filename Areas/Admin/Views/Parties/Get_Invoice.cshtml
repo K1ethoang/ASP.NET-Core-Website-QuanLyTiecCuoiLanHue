@@ -184,15 +184,15 @@ Tổng tiền
 	</thead>
 	<tbody>
 
-@foreach (var item in Model.DetailInvoices)
-{
-	<tr>
-		<td>@item.Dish.DishName</td>
-		<td>@item.Dish.Price</td>
-		<td>@item.Number</td>
-		<td>@item.Amount</td>
+		@foreach (var item in Model.DetailInvoices)
+		{
+			<tr>
+				<td>@item.Dish.DishName</td>
+				<td>@item.Dish.Price</td>
+				<td>@item.Number</td>
+				<td>@item.Amount</td>
 
-	</tr>
-}
+			</tr>
+		}
 	</tbody>
 </table> *@
