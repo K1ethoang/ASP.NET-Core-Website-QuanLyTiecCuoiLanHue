@@ -4,11 +4,32 @@
 @{
 	ViewData["Title"] = "";
 }
-
-@Html.DisplayNameFor(m=>m.PartyId)
-@Html.DisplayFor(m=>m.PartyId)
-@Html.DisplayNameFor(m=>m.InvoiceId)
-@Html.DisplayFor(m=>m.InvoiceId)
+<table>
+	<tr>
+		<td>
+			@Html.DisplayNameFor(m=>m.PartyId)
+		</td>
+		<td>
+			@Html.DisplayFor(m=>m.PartyId)
+		</td>
+	</tr>
+	<tr>
+		<td>
+			@Html.DisplayNameFor(m=>m.InvoiceId)
+		</td>
+		<td>
+			@Html.DisplayFor(m=>m.InvoiceId)
+		</td>
+	</tr>
+	<tr>
+		<td>
+			@Html.DisplayNameFor(m=>m.Customer.CusName)
+		</td>
+		<td>
+			@Html.DisplayFor(m=>m.Customer.CusName)
+		</td>
+	</tr>
+</table>
 
 
 Tổng tiền
@@ -25,15 +46,15 @@ Tổng tiền
 	</thead>
 	<tbody>
 
-@foreach (var item in Model.DetailInvoices)
-{
-	<tr>
-		<td>@item.Dish.DishName</td>
-		<td>@item.Dish.Price</td>
-		<td>@item.Number</td>
-		<td>@item.Amount</td>
+		@foreach (var item in Model.DetailInvoices)
+		{
+			<tr>
+				<td>@item.Dish.DishName</td>
+				<td>@item.Dish.Price</td>
+				<td>@item.Number</td>
+				<td>@item.Amount</td>
 
-	</tr>
-}
+			</tr>
+		}
 	</tbody>
 </table>
