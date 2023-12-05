@@ -424,19 +424,27 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 						PartyId = id,
 						InvoiceDate = DateTime.Now,
 					});
-				}
+                     Console.Out.WriteLineAsync("INVOICE CREATED");
+                }
 
-				var invoice = _context.Invoices.Where(iv => iv.PartyId == id).FirstAsync();
-				
+				var invoice = await _context.Invoices.Where(iv => iv.PartyId == id).FirstOrDefaultAsync();
+
+				if (invoice != null)
+				{
+                    await Console.Out.WriteLineAsync("INVOICE NOT FOUND");
+                    return;
+				}
+				var imvoiceId = invoice!.InvoiceId;
+				var dishList = _context.Dishes;
 
 				ICollection<DetailInvoice> di_list = items.Select(  item =>
 				{
-					var dish =  _context.Dishes.First(d => d.DishId.Equals(item.DishId));
+					var dish =  dishList.First(d => d.DishId.Equals(item.DishId));
 					Console.WriteLine(item.DishId.ToString() + "-" + item.DishName + "-" + item.Qty.ToString());
-					Task.WaitAny(invoice);
+			
 						return new DetailInvoice()
 						{
-							InvoiceId = invoice.Result!.InvoiceId,
+							InvoiceId = imvoiceId,
 							DishId = item.DishId,
 							Number = item.Qty,
 							Price = dish!.Price,
