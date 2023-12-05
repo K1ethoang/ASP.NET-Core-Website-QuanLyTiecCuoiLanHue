@@ -295,14 +295,21 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 			{
 				return RedirectToAction(nameof(Index));
 			}
-			var party = _context.Parties?.Include(p=>p.Invoices).ThenInclude(iv=>iv.DetailInvoices).ThenInclude(di=>di.Dish).FirstOrDefault(e => e.PartyId == id);
+			var party = _context.Parties?
+				.Include(p=>p.Customer)
+				.Include(p=>p.Invoices)
+				.ThenInclude(iv=>iv.DetailInvoices)
+				.ThenInclude(di=>di.Dish)
+				.FirstOrDefault(e => e.PartyId == id);
 
 			 InvoiceDetailsViewModel viewModel = new InvoiceDetailsViewModel()
 			{
 				PartyId = id,
+				Party = party,
 				Invoice = party.Invoices.FirstOrDefault(),
 				InvoiceId = party.Invoices.FirstOrDefault().InvoiceId,
-				DetailInvoices = party.Invoices.FirstOrDefault().DetailInvoices
+				DetailInvoices = party.Invoices.FirstOrDefault().DetailInvoices,
+				Customer = party.Customer,
 			};
 
 			return View(viewModel);
