@@ -59,34 +59,34 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 				return NotFound();
 			}
 
-            PartyDetailsViewModel viewModel = new PartyDetailsViewModel()
-            {
-                PartyId = party.PartyId,
-                PartyName = party.PartyName,
-                CustomerName = party.Customer.CusName!,
-                Quantity = party.Quantity,
-                PartyTypeName = party.PartyType.Name,
-                Date = party.Date,
-                Time = party.Time,
-                Location= party.Location,
-                Status = party.Status!,
-                HasMenu = party.HasMenu
-            };
+			PartyDetailsViewModel viewModel = new PartyDetailsViewModel()
+			{
+				PartyId = party.PartyId,
+				PartyName = party.PartyName,
+				CustomerName = party.Customer.CusName!,
+				Quantity = party.Quantity,
+				PartyTypeName = party.PartyType.Name,
+				Date = party.Date,
+				Time = party.Time,
+				Location = party.Location,
+				Status = party.Status!,
+				HasMenu = party.HasMenu
+			};
 
-            var invoice = await _context.Invoices.Include(iv => iv.DetailInvoices).ThenInclude(di => di.Dish).FirstOrDefaultAsync(iv => iv.PartyId == party.PartyId);
-            if (invoice != null)
-            {
+			var invoice = await _context.Invoices.Include(iv => iv.DetailInvoices).ThenInclude(di => di.Dish).FirstOrDefaultAsync(iv => iv.PartyId == party.PartyId);
+			if (invoice != null)
+			{
 
-            viewModel.DetailInvoices = invoice.DetailInvoices;
+				viewModel.DetailInvoices = invoice.DetailInvoices;
 
-                Console.ForegroundColor = ConsoleColor.Green;
-                //Console.WriteLine("DETAILS LIST: {0}",viewModel.DetailInvoices.ToJson());
-                Console.ResetColor();
-            }
+				Console.ForegroundColor = ConsoleColor.Green;
+				//Console.WriteLine("DETAILS LIST: {0}",viewModel.DetailInvoices.ToJson());
+				Console.ResetColor();
+			}
 
 
 
-            return View(viewModel);
+			return View(viewModel);
 		}
 
 		// GET: Admin/Parties/Create
@@ -122,8 +122,8 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 				Party party = vm.ToParty(context: _context);
 				_context.Add(party);
 				await _context.SaveChangesAsync();
-                TempData["SuccessMessage"] = "Thêm thành công";
-                return RedirectToAction(nameof(Index));
+				TempData["SuccessMessage"] = "Thêm thành công";
+				return RedirectToAction(nameof(Index));
 			}
 
 			var customerSelectList = _context.Customers
@@ -157,9 +157,9 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 
 			if (party.Status.Equals(Party.DONE))
 			{
-                TempData["ErrorMessage1"] = "Tiệc đã tổ chức xong";
-                return RedirectToAction(nameof(Index));
-            }	
+				TempData["ErrorMessage1"] = "Tiệc đã tổ chức xong";
+				return RedirectToAction(nameof(Index));
+			}
 
 			var customerSelectList = _context.Customers
 				.ToList()
@@ -211,8 +211,8 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 					var newParty = vm.ToParty(context: _context);
 					newParty.PartyId = party.PartyId;
 					_context.Entry(party).CurrentValues.SetValues(newParty);
-                    //_context.Update(party);
-                    await _context.SaveChangesAsync();
+					//_context.Update(party);
+					await _context.SaveChangesAsync();
 				}
 				catch (DbUpdateConcurrencyException)
 				{
@@ -225,8 +225,8 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 						throw;
 					}
 				}
-                TempData["SuccessMessage"] = "Lưu thành công";
-                return RedirectToAction(nameof(Index));
+				TempData["SuccessMessage"] = "Lưu thành công";
+				return RedirectToAction(nameof(Index));
 			}
 
 			var customerSelectList = _context.Customers
@@ -239,7 +239,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 			ViewData["CustomerList"] = customerSelectList;
 
 			ViewData["PartyTypeId"] = new SelectList(_context.PartyTypes, "PartyTypeId", "Name", party.PartyTypeId);
-            return View(vm);
+			return View(vm);
 		}
 
 		// GET: Admin/Parties/Delete/5
@@ -278,17 +278,17 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 			}
 
 			await _context.SaveChangesAsync();
-            TempData["SuccessMessage"] = "Xoá thành công";
-            return RedirectToAction(nameof(Index));
+			TempData["SuccessMessage"] = "Xoá thành công";
+			return RedirectToAction(nameof(Index));
 		}
 
 		private bool PartyExists(int id)
 		{
 			return (_context.Parties?.Any(e => e.PartyId == id)).GetValueOrDefault();
 		}
-        //[ActionName("Invoice")]
-        //[Area("Admin/parties")]
-        [Route("/invoice/{id}")]
+		//[ActionName("Invoice")]
+		//[Area("Admin/parties")]
+		[Route("/invoice/{id}")]
 		public async Task<IActionResult> Get_Invoice(int id)
 		{
 			if (!PartyExists(id))
@@ -296,13 +296,13 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 				return RedirectToAction(nameof(Index));
 			}
 			var party = _context.Parties?
-				.Include(p=>p.Customer)
-				.Include(p=>p.Invoices)
-				.ThenInclude(iv=>iv.DetailInvoices)
-				.ThenInclude(di=>di.Dish)
+				.Include(p => p.Customer)
+				.Include(p => p.Invoices)
+				.ThenInclude(iv => iv.DetailInvoices)
+				.ThenInclude(di => di.Dish)
 				.FirstOrDefault(e => e.PartyId == id);
 
-			 InvoiceDetailsViewModel viewModel = new InvoiceDetailsViewModel()
+			InvoiceDetailsViewModel viewModel = new InvoiceDetailsViewModel()
 			{
 				PartyId = id,
 				Party = party,
@@ -318,23 +318,23 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 		[HttpGet]
 		public async Task<IActionResult> CreateMenu(int id)
 		{
-			if ( !PartyExists(id))
+			if (!PartyExists(id))
 			{
 				return NotFound();
 			}
 
-            var party = _context.Parties.Where(p => p.PartyId == id).FirstOrDefault();
+			var party = _context.Parties.Where(p => p.PartyId == id).FirstOrDefault();
 
 
-            if (party.HasMenu 
+			if (party.HasMenu
 				//|| _context.Invoices.Any(iv=>iv.PartyId == id)
 				)
-            {
-                TempData["ErrorMessage1"] = "Đã có thực đơn";
-                return RedirectToAction(nameof(Index));
-            }
+			{
+				TempData["ErrorMessage1"] = "Đã có thực đơn";
+				return RedirectToAction(nameof(Index));
+			}
 
-            ViewData["DateAndTime"] = party!.Date.ToString();
+			ViewData["DateAndTime"] = party!.Date.ToString();
 
 			Console.ForegroundColor = ConsoleColor.Yellow;
 			Console.WriteLine(id);
@@ -355,28 +355,29 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 
 			ViewBag.MinQty = party!.Quantity;
 			ViewBag.partyId = id;
-		
+
 			return View(items);
 		}
 		// POST
 		[HttpPost]
-		public async Task<IActionResult> CreateMenu(int id, List<MenuItem> items) { 
+		public async Task<IActionResult> CreateMenu(int id, List<MenuItem> items)
+		{
 			Console.ForegroundColor = ConsoleColor.Yellow;
 
-			Console.WriteLine("SEND {0}",id);
+			Console.WriteLine("SEND {0}", id);
 			if (ModelState.IsValid)
 			{
 
 				Console.WriteLine("VALID");
 				foreach (var item in items)
 
+				{
+					if (item.Qty > 0)
 					{
-					if (item.Qty>0 )
-					{
-						Console.WriteLine(item.DishId.ToString()+"-"+item.DishName+"-"+item.Qty.ToString());
+						Console.WriteLine(item.DishId.ToString() + "-" + item.DishName + "-" + item.Qty.ToString());
 					}
 				}
-				return RedirectToAction("Details",  new {id = id});
+				return RedirectToAction("Details", new { id = id });
 			}
 			Console.ResetColor();
 
@@ -384,7 +385,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 		}
 		// POST
 		[HttpPost]
-		public async Task<IActionResult> CreateMenu_Mini(int id,[FromBody] List<MiniMenuItem> items)
+		public async Task<IActionResult> CreateMenu_Mini(int id, [FromBody] List<MiniMenuItem> items)
 		{
 			Console.ForegroundColor = ConsoleColor.Yellow;
 
@@ -393,82 +394,70 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 			{
 
 				Console.WriteLine("VALID");
-				Console.WriteLine("count {0}",items.Count);
-				Console.OutputEncoding = Encoding.UTF8;
+				Console.WriteLine("count {0}", items.Count);
 
-				foreach (var item in items)				{
-					Console.WriteLine(item.DishId.ToString() + "-" + item.DishName + "-" + item.Qty.ToString());
-				}
 
 				Console.ResetColor();
-				var party = await _context.Parties.FirstOrDefaultAsync(p => p.PartyId.Equals(id));
-				party.HasMenu = true;
-				_context.Update(party);
-				await _context.SaveChangesAsync();
-
-				 CreateInvoice(id,items.ToImmutableArray());
+				if (!items.Any())
+				{
+					Console.WriteLine("NO ITEMS");
+					return Problem("NO ITEMS");
+				}
+				await CreateInvoice(id, items);
 
 				return Json(Ok());
-					//Ok();
-				//RedirectToAction("Details", new { id = id });
-				//Json(Url.Action("Details", "Parties", new { id = id }));
 			}
-			Console.ResetColor();
 
+			Console.ResetColor();
 			return RedirectToAction("Index");
 		}
 
 
-		public async Task<IActionResult> CreateInvoice(int id,  ImmutableArray<MiniMenuItem> items)
+		public async Task CreateInvoice(int id, ICollection<MiniMenuItem> items)
 		{
 			try
 			{
-
-			 _context.Add(new Invoice()
-			 {
-				 PartyId = id,
-				 InvoiceDate = DateTime.Now,
-			 });
-
-			}
-			catch (DbUpdateConcurrencyException) { 
-				return Problem("Cannot add new invoice"); }
-
-			var invoiceId = _context.Invoices.Where(p => p.PartyId == id).First().InvoiceId;
-			var allDish =  _context.Dishes;
-
-
-			foreach (var item in items.ToImmutableArray())
-			{
-				var dish = await allDish.Where(d=>d.DishId.Equals(item.DishId)).FirstAsync();
-				try
+				if (!_context.Invoices.Any(p => p.PartyId == id))
 				{
-
-				await _context.AddAsync(new DetailInvoice()
-				{
-					InvoiceId = invoiceId,
-					DishId = item.DishId,
-					Number = item.Qty,
-					Price = dish.Price,
-					Amount = dish.Price * item.Qty,
-				});
-				}
-				catch {
-					return Problem("Cannot add new invoice_detail");
+					await _context.AddAsync(new Invoice()
+					{
+						PartyId = id,
+						InvoiceDate = DateTime.Now,
+					});
 				}
 
-			}
+				var invoice = _context.Invoices.Where(iv => iv.PartyId == id).FirstAsync();
+				
 
-			try
-			{
+				ICollection<DetailInvoice> di_list = items.Select(  item =>
+				{
+					var dish =  _context.Dishes.First(d => d.DishId.Equals(item.DishId));
+					Console.WriteLine(item.DishId.ToString() + "-" + item.DishName + "-" + item.Qty.ToString());
+					Task.WaitAny(invoice);
+						return new DetailInvoice()
+						{
+							InvoiceId = invoice.Result!.InvoiceId,
+							DishId = item.DishId,
+							Number = item.Qty,
+							Price = dish!.Price,
+							Amount = dish!.Price * item.Qty,
+						};
+				})
+				.ToImmutableArray();
+
+				Task add_list = _context.DetailInvoices.AddRangeAsync(di_list);
+
+				var party = await _context.Parties.FirstOrDefaultAsync(p => p.PartyId.Equals(id));
+				party!.HasMenu = true;
+				Task.WaitAny(add_list);
 				await _context.SaveChangesAsync();
-            }
-			catch
-			{
-				return Problem("Error from saving changes");
 			}
-            TempData["SuccessMessage"] = "Chọn thực đơn thành công";
-            return RedirectToAction("Details", new { id = id });
+			catch (DbUpdateConcurrencyException)
+			{
+				throw;
+			}
+			Console.ResetColor();
+
 		}
 
 
