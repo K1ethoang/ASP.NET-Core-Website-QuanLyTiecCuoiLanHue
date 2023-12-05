@@ -38,13 +38,16 @@
                     <h4>
                         Tiệc cưới Lan Huệ
                         <small class="ml-2">
-                            @if ( Model.Invoice.Deposit > 0)
+                            @if (Model.Invoice.PaymentTime == null)
                             {
-                                <span class="badge badge-success">Đã đặt cọc</span>
-                            }
-                            else
-                            {
-                                <span class="badge badge-danger">Chưa đặt cọc</span>
+                                @if (Model.Invoice.Deposit > 0)
+                                {
+                                    <span class="badge badge-success">Đã đặt cọc</span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-danger">Chưa đặt cọc</span>
+                                }
                             }
                         </small>
                         <small class="ml-2">
@@ -94,13 +97,13 @@
                                 int count = 1;
                                 foreach (var item in Model.DetailInvoices)
                                 {
-                                    <tr>
-                                        <th>@count</th>
-                                        <td class="text-left">@item.Dish.DishName</td>
-                                        <td>@item.Number</td>
-                                        <td class="text-right">@Helper.FormatMoney(item.Price, false)</td>
-                                        <td class="text-right">@Helper.FormatMoney(item.Amount, false)</td>
-                                    </tr>
+                                                <tr>
+                                                    <th>@count</th>
+                                                    <td class="text-left">@item.Dish.DishName</td>
+                                                    <td>@item.Number</td>
+                                                    <td class="text-right">@Helper.FormatMoney(item.Price, false)</td>
+                                                    <td class="text-right">@Helper.FormatMoney(item.Amount, false)</td>
+                                                </tr>
 
                                 }
                                 count++;
@@ -130,8 +133,21 @@
                                 <td>@Helper.FormatMoney(Model.Invoice.Deposit??0, true)</td>
                             </tr>
                             <tr>
-                                <th>Tổng tiền cần thanh toán:</th>
-                                <th>@Helper.FormatMoney(Model.Invoice.Total??0, true)</th>
+                                @if (Model.Invoice.PaymentTime != null)
+                                {
+                                    <th>
+                                        Ngày thanh toán
+                                    </th>
+                                    <td>
+                                        @Model.Invoice.PaymentTime
+                                    </td>
+                                }
+                                else
+                                {
+                                    <th>Tổng tiền cần thanh toán:</th>
+                                    <th>@Helper.FormatMoney(Model.Invoice.Total??0, true)</th>
+                                }
+                            
                             </tr>
                         </table>
                     </div>
@@ -144,14 +160,14 @@
                 <div class="col-12">
                     @if (Model.Invoice.PaymentTime == null)
                     {
-                        <button type="button" class="btn btn-success float-right mr-2">
+                        <button type="button" class="btn btn-success float-right mr-2" id="thanhtoan">
                             <i class="far fa-credit-card"></i> Thanh toán
                         </button>
                     }
 
-                    @if (Model.Invoice.Deposit == 0 || Model.Invoice.Deposit==null)
+                    @if (Model.Invoice.PaymentTime == null && Model.Invoice.Deposit == 0)
                     {
-                        <button type="button" class="btn btn-success float-right mr-2">
+                        <button type="button" class="btn btn-success float-right mr-2" id="datcoc">
                             <i class="far fa-flag"></i> Đặt cọc 30%
                         </button>
                     }
@@ -163,3 +179,39 @@
     <!-- /.container-fluid -->
 
 </section>
+@section scripts {
+    <script>
+        $(document).ready(function () {
+
+            const id = @Model.InvoiceId;
+            $('button#thanhtoan').on('click', function () {
+                console.log("click!");
+                send(id, "@Url.Action(action:"thanhtoan")");
+            });
+
+            $('button#datcoc').on('click', function () {
+                console.log("datcoc");
+                send(id, "@Url.Action(action:"datcoc")");
+            });
+
+            function send(data, url) {
+                $.ajax({
+                    "type": "POST",
+                    "url": url,
+                    "dataType": "json",
+                    "contentType": "application/json;charset=utf-8",
+                    "data": JSON.stringify(data),
+                    success: function (response) {
+
+                        console.log("success!" + response);
+                        window.location.href = "@Url.ActionLink(action:"Details",controller:"Parties")/@Model.PartyId";
+                    },
+                    failure: function (response) {
+                        window.location.href = "@Url.ActionLink(action:"Details",controller:"Parties")/@Model.PartyId";
+                    }
+                });
+            }
+        });
+
+    </script>
+}

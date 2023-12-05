@@ -18,6 +18,7 @@ using static ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels.Me
 using System.Collections.Immutable;
 using System.Text;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 {
@@ -38,7 +39,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
             await _context.Database.ExecuteSqlRawAsync("EXEC SP_Update_HappentStatus_In_Party");
             var qlDichVuNauTiecLanHueContext = _context.Parties
                 .Include(p => p.Customer)
-                .Include(p => p.PartyType);
+                .Include(p => p.PartyType).Include(p => p.Invoices);
             return View(await qlDichVuNauTiecLanHueContext.ToListAsync());
         }
 
@@ -469,6 +470,21 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
             }
             Console.ResetColor();
 
+        }
+
+        public async Task<IActionResult> ThanhToan([FromBody]int id)
+        {
+            await _context.Database.ExecuteSqlRawAsync("EXEC proc_CapNhatTienConLai " + id);
+            await Console.Out.WriteLineAsync("INVOICE ID"+id);
+            return Json(Ok());
+        }
+        public async Task<IActionResult> DatCoc([FromBody] int id)
+        {
+            await _context.Database.ExecuteSqlRawAsync("EXEC proc_CapNhatTienDatCoc " + id);
+            Console.ForegroundColor = ConsoleColor.Red;
+            await Console.Out.WriteLineAsync("DATCOC" + id);
+            Console.ResetColor();
+            return Json(Ok());
         }
 
 

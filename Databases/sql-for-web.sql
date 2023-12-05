@@ -484,10 +484,27 @@ AS
 BEGIN
     IF (SELECT COUNT(*) FROM inserted) > 0 
     BEGIN
-        INSERT INTO INVOICE (INVOICE_DATE, PARTY_ID)
-        (SELECT GETDATE(), PARTY_ID FROM inserted)
+        INSERT INTO INVOICE (INVOICE_DATE, PARTY_ID, DEPOSIT, TOTAL, TOTAL_PRICE)
+        (SELECT GETDATE(), PARTY_ID, 0, 0, 0 FROM inserted)
     END
 END
 go
+
+-- 3. Xoá tiệc thì hoá đơn của tiệc cũng được xoá
+--CREATE OR ALTER TRIGGER trg_XoaHoaDonKhiXoaTiec
+--ON PARTY
+--FOR DELETE
+--AS
+--BEGIN
+--    -- Delete the corresponding invoice when a party is deleted
+--    DELETE FROM INVOICE
+--    WHERE PARTY_ID IN (SELECT PARTY_ID FROM deleted);
+--END
+--go
+
+--drop trigger trg_XoaHoaDonKhiXoaTiec
+
+--delete PARTY where PARTY_ID = 7
+
 
 --drop database QL_dichVuNauTiecLanHue

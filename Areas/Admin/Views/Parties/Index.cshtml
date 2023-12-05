@@ -60,6 +60,10 @@
                                         @Html.DisplayNameFor(model => model.HasMenu)
                                     </th>
                                     <th>
+                                        @* @Html.DisplayNameFor(model => model.Invoices.FirstOrDefault().PaymentTime) *@
+                                        Trạng thái thanh toán
+                                    </th>
+                                    <th>
                                         Tuỳ chỉnh
                                     </th>
                                 </tr>
@@ -89,6 +93,7 @@
                                         <td>
                                             @Html.DisplayFor(modelItem => item.PartyType.Name)
                                         </td>
+                                      
                                         <td>
                                             @{
                                                 string status = item.Status ?? Party.COMING_SOON;
@@ -119,6 +124,20 @@
                                                 else
                                                 {
                                                     <span class="badge badge-danger">@Party.NO_MENU</span>
+                                                }
+                                            }
+                                        </td>
+                                        <td>
+                                            @{
+                                                var payment = item.Invoices.FirstOrDefault()!.PaymentTime;
+
+                                                if (payment != null)
+                                                {
+                                                    <span class="badge badge-success">Đã thanh toán</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge badge-danger">Chưa thanh toán</span>
                                                 }
                                             }
                                         </td>
