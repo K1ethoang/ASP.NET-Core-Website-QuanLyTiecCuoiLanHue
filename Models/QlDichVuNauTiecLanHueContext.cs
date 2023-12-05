@@ -140,7 +140,7 @@ public partial class QlDichVuNauTiecLanHueContext : DbContext
 
         modelBuilder.Entity<DetailInvoice>(entity =>
         {
-            entity.ToTable("DETAIL_INVOICE");
+            entity.ToTable("DETAIL_INVOICE", tb => tb.HasTrigger("trg_CapNhatHoaDonTheoCTHD"));
 
             entity.Property(e => e.DetailInvoiceId).HasColumnName("DETAIL_INVOICE_ID");
             entity.Property(e => e.Amount)
@@ -230,7 +230,7 @@ public partial class QlDichVuNauTiecLanHueContext : DbContext
 
         modelBuilder.Entity<Party>(entity =>
         {
-            entity.ToTable("PARTY");
+            entity.ToTable("PARTY", tb => tb.HasTrigger("trg_CapNhatInvoiceTheoParty"));
 
             entity.Property(e => e.PartyId).HasColumnName("PARTY_ID");
             entity.Property(e => e.CustomerId).HasColumnName("CUSTOMER_ID");

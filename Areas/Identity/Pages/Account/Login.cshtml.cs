@@ -14,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using System.ComponentModel;
 using Microsoft.AspNetCore.Identity.UI.V4.Pages.Account.Manage.Internal;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
+using NuGet.Protocol;
 
 namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Identity.Pages.Account
 {
@@ -109,22 +110,27 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Identity.Pages.Account
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
 
-                var user = await _userManager.FindByEmailAsync(Input.Email);
-                var roles = await _userManager.GetRolesAsync(user);
+        
                 if (result.Succeeded)
                 {
-                    if(returnUrl != null)
-                        return LocalRedirect(returnUrl);
-                    if (roles.Contains("Admin"))
+                    var user = await _userManager.FindByEmailAsync(Input.Email);
+
+                    if (user != null)
                     {
-                        return RedirectToAction("index", "dashboard", new
+                        var roles = await _userManager.GetRolesAsync(user);
+                        if (roles.Contains("Admin"))
                         {
-                            area = "admin"
-                        });
+                            return RedirectToAction("index", "dashboard", new
+                            {
+                                area = "admin"
+                            });
+                        }
                     }
-                    else if (roles.Contains("Staff"))
-                    {
-                    }
+                    
+
+                    if (returnUrl != null)
+                        return LocalRedirect(returnUrl);
+                  
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }

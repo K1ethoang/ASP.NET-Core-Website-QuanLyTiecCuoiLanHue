@@ -427,4 +427,67 @@ BEGIN
 END
 go
 
+-- 8. cập nhật tiền đặt cọc
+CREATE OR ALTER PROCEDURE proc_CapNhatTienDatCoc
+    @InvoiceID INT
+AS
+BEGIN
+    UPDATE INVOICE
+    SET DEPOSIT = 0.3 * TOTAL_PRICE,
+        TOTAL = 0.7 * TOTAL_PRICE
+    WHERE INVOICE_ID = @InvoiceID
+END
+go
+
+-- 9. cập nhật tiền còn lại
+CREATE OR ALTER PROCEDURE proc_CapNhatTienConLai
+    @InvoiceID INT
+AS
+BEGIN
+    DECLARE @CurrentDateTime DATETIME = GETDATE();
+
+    UPDATE INVOICE
+    SET PAYMENT_TIME = CASE 
+                           WHEN PAYMENT_TIME IS NULL THEN @CurrentDateTime 
+                           ELSE PAYMENT_TIME
+                       END,
+        TOTAL = 0 
+    WHERE INVOICE_ID = @InvoiceID
+END
+go
+
+/*==============================================================*/
+/* Trigger                                                      */
+/*==============================================================*/
+-- 1. Cập nhật hoá đơn theo CTHD
+CREATE OR ALTER TRIGGER trg_CapNhatHoaDonTheoCTHD
+ON DETAIL_INVOICE
+AFTER INSERT, UPDATE
+AS
+BEGIN
+
+    UPDATE INVOICE
+    SET 
+        TOTAL_PRICE = (SELECT SUM(AMOUNT) FROM DETAIL_INVOICE WHERE INVOICE_ID = inserted.INVOICE_ID),
+        DEPOSIT = 0,
+        TOTAL = (SELECT SUM(AMOUNT) FROM DETAIL_INVOICE WHERE INVOICE_ID = inserted.INVOICE_ID)
+    FROM inserted
+    WHERE INVOICE.INVOICE_ID = inserted.INVOICE_ID;
+END
+go
+
+-- 2. Thêm Hoá đơn khi thêm tiệc
+CREATE OR ALTER TRIGGER trg_CapNhatInvoiceTheoParty
+ON PARTY
+AFTER INSERT
+AS
+BEGIN
+    IF (SELECT COUNT(*) FROM inserted) > 0 
+    BEGIN
+        INSERT INTO INVOICE (INVOICE_DATE, PARTY_ID)
+        (SELECT GETDATE(), PARTY_ID FROM inserted)
+    END
+END
+go
+
 --drop database QL_dichVuNauTiecLanHue
