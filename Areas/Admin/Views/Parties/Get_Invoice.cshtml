@@ -38,7 +38,7 @@
                     <h4>
                         Tiệc cưới Lan Huệ
                         <small class="ml-2">
-                            @if (Model.Invoice.Deposit != null)
+                            @if ( Model.Invoice.Deposit > 0)
                             {
                                 <span class="badge badge-success">Đã đặt cọc</span>
                             }
@@ -142,14 +142,14 @@
             <!-- this row will not appear when printing -->
             <div class="row">
                 <div class="col-12">
-                    @if (Model.Invoice.PaymentTime == null && Model.Invoice.DetailInvoices.Count() > 0)
+                    @if (Model.Invoice.PaymentTime == null)
                     {
                         <button type="button" class="btn btn-success float-right mr-2">
                             <i class="far fa-credit-card"></i> Thanh toán
                         </button>
                     }
 
-                    @if (Model.Invoice.Deposit == null && Model.Invoice.DetailInvoices.Count() > 0)
+                    @if (Model.Invoice.Deposit == 0 || Model.Invoice.Deposit==null)
                     {
                         <button type="button" class="btn btn-success float-right mr-2">
                             <i class="far fa-flag"></i> Đặt cọc 30%

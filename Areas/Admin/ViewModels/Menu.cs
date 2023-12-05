@@ -112,6 +112,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels
 		public int DishId { get; set; }
 		public int Qty { get; set; }
 		public string? DishName { get; set; }
+		public int Price { get; set; }
 
 	}
 	public class CreateMenuViewModel

@@ -27,216 +27,187 @@
 <!-- Main content -->
 <section class="content">
 
-	<div class="container-fluid">
-		<button class="btn btn-warning mb-2">Lưu</button>
-		<div class="card card-primary">
-			<div class="card-header">
-				<h5>THỰC ĐƠN ĐANG CHỌN</h5>
-			</div>
-			<div class="card-body-menu">
-				<div class="row form-group">
-					@* <form asp-action="createmenu" asp-controller="parties" method="post"> *@
+    <div class="container-fluid">
+        <button class="btn btn-warning mb-2">Lưu</button>
+        <div class="card card-primary">
+            <div class="card-header">
+                <h5>THỰC ĐƠN ĐANG CHỌN</h5>
+            </div>
+            <div class="card-body-menu">
+                <div class="row form-group">
+                    @* <form asp-action="createmenu" asp-controller="parties" method="post"> *@
 
-					<div class="col-12 table-responsive">
-						<table class="table table-striped">
-							<thead>
-								<tr>
-									<th>Tên món ăn</th>
-									<th>Số lượng</th>
-								</tr>
-							</thead>
-							<tbody class="list-menu">
-							</tbody>
-						</table>
-					</div>
-					@* </form> *@
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="container-fluid">
-		<div class="card">
-			<div class="card-body">
-				@* <form asp-action="createmenu" asp-controller="parties" method="post" id="frmMenu"> *@
-				<div class="form-group">
-					@* <input type="submit" value="Lưu" class="btn btn-primary"> *@
-				</div>
-				<table id="table-data" class="table table-bordered table-striped tablas">
-					<thead>
-						<tr>
-							<th>Tên món ăn</th>
-							<th class="filterhead">Loại món ăn</th>
-							<th>Đơn vị</th>
-							<th>Đơn giá</th>
-							@* 	<th>Số lượng</th>
-							<th>Thành tiền</th> *@
-						</tr>
-						<tr>
-							<th></th>
-							<th></th>
-							<th></th>
-							<th></th>
-							@* 	<th></th>
-							<th></th> *@
-						</tr>
-					</thead>
-					<tbody>
-						@for (int i = 0; i < Model.Count; i++)
-						{
-							<tr>
-								<td>
-									@{
-										string cb_id = "cb-" + Model[i].DishId;
-									}
+                    <div class="col-12 table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Tên món ăn</th>
+                                    <th>Số lượng</th>
+                                </tr>
+                            </thead>
+                            <tbody class="list-menu">
+                            </tbody>
+                        </table>
+                    </div>
+                    @* </form> *@
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-body">
+                @* <form asp-action="createmenu" asp-controller="parties" method="post" id="frmMenu"> *@
+                <div class="form-group">
+                    @* <input type="submit" value="Lưu" class="btn btn-primary"> *@
+                </div>
+                <table id="table-data" class="table table-bordered table-striped tablas">
+                    <thead>
+                        <tr>
+                            <th>Tên món ăn</th>
+                            <th class="filterhead">Loại món ăn</th>
+                            <th>Đơn vị</th>
+                            <th>Đơn giá</th>
+                            @* 	<th>Số lượng</th>
+                            <th>Thành tiền</th> *@
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            @* 	<th></th>
+                            <th></th> *@
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.Count; i++)
+                        {
+                            <tr>
+                                <td>
+                                    @{
+                                        string cb_id = "cb-" + Model[i].DishId;
+                                    }
 
-									@* @Html.CheckBoxFor(m=>m[i].Selected,new{@id=cb_id}) *@
-									<input type="checkbox" id=@cb_id>
-									@Html.Label(cb_id,Model[i].DishName)
-									@Html.HiddenFor(m=>m[i].DishName,new{@value=Model[i].DishName})
-									@Html.HiddenFor(m=>m[i].DishId,new{@value=Model[i].DishId})
-								</td>
-								<td>
-									@Html.DisplayFor(m=>m[i].DishType)
-									@Html.HiddenFor(m=>m[i].DishType,new{@value=Model[i].DishType})
-								</td>
-								<td>
-									@Html.DisplayFor(m=>m[i].UnitName)
-									@Html.HiddenFor(m=>m[i].UnitName,new{@value=Model[i].UnitName})
-								</td>
-								<td>
-									@Html.DisplayFor(m=>m[i].Price)
-									@Html.HiddenFor(m=>m[i].Price,new{@value=Model[i].Price})
-								</td>
-								@* <td>
-							<input type="number" asp-for="@Model[i].Qty" min="0" disabled id="qty-@Model[i].DishId" value="@Model[i].Qty" />
-							</td>
-							<td id="thanhtien-@Model[i].DishId"></td> *@
-							</tr>
-						}
-					</tbody>
-				</table>
-				@* </form> *@
-			</div>
-		</div>
-	</div>
-	<!-- /.container-fluid -->
-	<!-- /.container-fluid -->
+                                    @* @Html.CheckBoxFor(m=>m[i].Selected,new{@id=cb_id}) *@
+                                    <input type="checkbox" id=@cb_id>
+                                    @Html.Label(cb_id,Model[i].DishName)
+                                    @Html.HiddenFor(m=>m[i].DishName,new{@value=Model[i].DishName})
+                                    @Html.HiddenFor(m=>m[i].DishId,new{@value=Model[i].DishId})
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(m=>m[i].DishType)
+                                    @Html.HiddenFor(m=>m[i].DishType,new{@value=Model[i].DishType})
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(m=>m[i].UnitName)
+                                    @Html.HiddenFor(m=>m[i].UnitName,new{@value=Model[i].UnitName})
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(m=>m[i].Price)
+                                    @Html.HiddenFor(m=>m[i].Price,new{@value=Model[i].Price,@class="dish-price"})
+                                </td>
+                                @* <td>
+                            <input type="number" asp-for="@Model[i].Qty" min="0" disabled id="qty-@Model[i].DishId" value="@Model[i].Qty" />
+                            </td>
+                            <td id="thanhtien-@Model[i].DishId"></td> *@
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                @* </form> *@
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+    <!-- /.container-fluid -->
 
 </section>
 
 
 @section scripts{
-    @* <script src="~/lib/jquery/dist/jquery.min.js"></script> *@
+    <script>
+        $(document).ready(function () {
+            $('input:checkbox').on('click', function () {
+                const id = $(this).attr('id').split('-')[1];
 
-	<script>
-		$(document).ready(function () {
-			$('input:checkbox').on('click', function () {
-				const id = $(this).attr('id').split('-')[1];
+                const $listMenu = $(".list-menu");
+                const dishName = $(`label[for="cb-${id}"]`).text()
 
-				const $listMenu = $(".list-menu");
-				const dishName = $(`label[for="cb-${id}"]`).text()
+                if ($(this).prop('checked')) {
 
-				if ($(this).prop('checked')) {
+                    const $nameCell = $('<td>').attr('class','name-cell').append($("<p>").text(dishName));
 
-					const $nameCell = $('<td>').append($("<p>").text(dishName));
+                    const DishId = $(`input[type="hidden"][name='[${id - 1}].DishId']`).attr('value');
+                    console.log("dishid = " + DishId);
 
-					const DishId = $(`input[type="hidden"][name='[${id - 1}].DishId']`).attr('value');
-					console.log("dishid = " + DishId);
+                    $nameCell.append($('<input>').attr({
+                        type: 'hidden',
+                        value: DishId,
+                        id: `id-${id - 1}`,
+                        class: 'dish-id'
+                    })
+                    );
+                    // $nameCell.append($('input[type="hidden"][name^="[' + (id - 1) + ']"]').clone());
 
-					$nameCell.append($('<input>').attr(
-						{
-						type:'hidden',
-						value: DishId,
-						id: `id-${id - 1}`
-					}					)
-					);
-					// $nameCell.append($('input[type="hidden"][name^="[' + (id - 1) + ']"]').clone());
+                    const $DishPrice = $(`input[type="hidden"][name='[${id - 1}].Price']`).clone();
+                    $nameCell.append($DishPrice);
 
-					const $qtyCell = $('<td>');
-					// $qtyCell.append($('<input>').attr({
-					// 	type: 'number',
-					// 	name: `[${id - 1}].Qty`,
-					// 	min: @ViewBag.MinQty,
-					// 	value: @ViewBag.MinQty
-					// }));
-					$qtyCell.append($('<input>').attr({
-						type: 'number',
-						name: `${id - 1}-Qty`,
-						min: @ViewBag.MinQty,
-						value: @ViewBag.MinQty
-										}));
+                    const $qtyCell = $('<td>').attr('class','qty-cell');
+                    $qtyCell.append($('<input>').attr({
+                        type: 'number',
+                        name: `${id - 1}-Qty`,
+                        min: @ViewBag.MinQty,
+                        value: @ViewBag.MinQty
+                                                }));
 
-					const $newRow = $('<tr>').attr('class', `dish-${id} form-group`);
-					$newRow.append($nameCell);
-					$newRow.append($qtyCell);
+                    const $newRow = $('<tr>').attr('class', `dish-${id} form-group`);
+                    $newRow.append($nameCell);
+                    $newRow.append($qtyCell);
 
-					$listMenu.append($newRow);
-				}
-				else {
-					$listMenu.find(`.dish-${id}`).remove();
-				}
-			});
+                    $listMenu.append($newRow);
+                }
+                else {
+                    $listMenu.find(`.dish-${id}`).remove();
+                }
+            });
 
-			$('button').on('click', function () {
-				const items = [];
-				$('.list-menu > tr').each(function () {
-					// Selects elements that have the specified attribute with a value ending exactly with a given string.The comparison is case sensitive.
-					const DishId = $(this).find("input[type='hidden']").attr('value');
-					const DishName = $(this).find("p").text();
-					const Qty = $(this).find("input[type='number']").val();
+            $('button').on('click', function () {
+                const items = [];
+                $('.list-menu > tr').each(function () {
+                    // Selects elements that have the specified attribute with a value ending exactly with a given string.The comparison is case sensitive.
+                    const DishId = $(this).find("input[type='hidden'].dish-id").attr('value');
+                    const DishName = $(this).find("p").text();
+                    const Qty = $(this).find("input[type='number']").val();
+                    const Price = $(this).find("input[type='hidden'].dish-price").attr('value');
 
-					items.push({
-						"DishId": DishId,
-						"DishName": DishName,
-						"Qty": Qty
-					})
-				})
+                    items.push({
+                        "DishId": DishId,
+                        "DishName": DishName,
+                        "Qty": Qty,
+                        "Price": Price
+                    })
+                })
 
-				console.log(JSON.stringify(items));
+                console.log(JSON.stringify(items));
 
-				$.ajax({
-					"type": "POST",
-					"url": "@Url.Action(action:"createmenu_mini")/@ViewBag.partyId",
-					"dataType": "json",
-					"contentType": "application/json;charset=utf-8",
-					// "data": JSON.stringify(items),
-					"data": JSON.stringify(items),
-					success: function (response) {
-						
-						console.log("success!" + response);
-						window.location.href = "@Url.ActionLink(action:"Details",controller:"Parties")/@ViewBag.partyId";
-					},
-					failure: function (response) {
-						window.location.href = "@Url.ActionLink(action:"Details",controller:"Parties")/@ViewBag.partyId";
-					}
-				})
+                $.ajax({
+                    "type": "POST",
+                    "url": "@Url.Action(action:"createmenu_mini")/@ViewBag.partyId",
+                    "dataType": "json",
+                    "contentType": "application/json;charset=utf-8",
+                    "data": JSON.stringify(items),
+                    success: function (response) {
 
-				// $.post("@Url.Action(action:"createmenu_mini")", { items: items }, function (response) {
-				// 	alert("success!" + response)
-				// },"json",)
-			})
-		});
-
-						// $(document).ready(function () {
-						// 	$('input[type="number"]').on('change', function () {
-						// 		// Lấy id của món ăn từ id của phần tử input
-						// 		const id = $(this).attr('id').split('-')[1];
-						// 		const $qty = $(this);
-
-						// 		// Lấy giá trị và giá trị tối thiểu từ input
-						// 		const newValue = $qty.val();
-						// 		const minValue = $qty.attr('min');
-
-						// 		// Cập nhật giá trị trong $listMenu
-						// 		const $listMenu = $(".list-menu");
-						// 		const $dishRow = $listMenu.find(`.dish-${id}`);
-
-						// 		if ($dishRow.length > 0) {
-						// 			// Nếu hàng tồn tại, cập nhật giá trị
-						// 			$dishRow.find('td:nth-child(2)').text(newValue);
-						// 		}
-						// 	});
-						// });
-	</script>
+                        console.log("success!" + response);
+                        window.location.href = "@Url.ActionLink(action:"Details",controller:"Parties")/@ViewBag.partyId";
+                    },
+                    failure: function (response) {
+                        window.location.href = "@Url.ActionLink(action:"Details",controller:"Parties")/@ViewBag.partyId";
+                    }
+                })
+            })
+        });
+    </script>
 }
 
