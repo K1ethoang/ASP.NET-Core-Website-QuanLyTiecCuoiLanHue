@@ -1,24 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Models;
 using NuGet.Protocol;
 using ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels;
 using Microsoft.CodeAnalysis;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using Microsoft.CodeAnalysis.Differencing;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.Runtime.Intrinsics.X86;
-using Microsoft.AspNetCore.Razor.Language.Intermediate;
-using static ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels.Menu;
 using System.Collections.Immutable;
-using System.Text;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
+using Rotativa.AspNetCore;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 {
@@ -472,10 +463,10 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 
         }
 
-        public async Task<IActionResult> ThanhToan([FromBody]int id)
+        public async Task<IActionResult> ThanhToan([FromBody] int id)
         {
             await _context.Database.ExecuteSqlRawAsync("EXEC proc_CapNhatTienConLai " + id);
-            await Console.Out.WriteLineAsync("INVOICE ID"+id);
+            await Console.Out.WriteLineAsync("INVOICE ID" + id);
             return Json(Ok());
         }
         public async Task<IActionResult> DatCoc([FromBody] int id)
@@ -486,6 +477,32 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
             Console.ResetColor();
             return Json(Ok());
         }
+
+        public async Task<IActionResult> Export_Invoice(int id)
+        {
+            //var pdfResult = new ViewAsPdf("Get_Invoice");
+            //return pdfResult;
+
+            var party = _context.Parties
+            .Include(p => p.Customer)
+            .Include(p => p.Invoices)
+            .ThenInclude(iv => iv.DetailInvoices)
+            .ThenInclude(di => di.Dish)
+            .FirstOrDefault(e => e.PartyId == id);
+
+            InvoiceDetailsViewModel viewModel = new InvoiceDetailsViewModel()
+            {
+                PartyId = id,
+                Party = party,
+                Invoice = party.Invoices.FirstOrDefault(),
+                InvoiceId = party.Invoices.FirstOrDefault().InvoiceId,
+                DetailInvoices = party.Invoices.FirstOrDefault().DetailInvoices,
+                Customer = party.Customer,
+            };
+
+            return new ViewAsPdf("Get_Invoice", viewModel);
+        }
+
 
 
     }

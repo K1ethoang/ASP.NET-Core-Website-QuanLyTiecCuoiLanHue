@@ -35,13 +35,16 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.9" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.11" />
+    <PackageReference Include="Rotativa.AspNetCore" Version="1.3.2" />
+    <PackageReference Include="Select.HtmlToPdf" Version="23.2.0" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Controllers\" />
     <Folder Include="Data\" />
     <Folder Include="Databases\" />
+    <Folder Include="Microsoft\AspNetCore\Mvc\" />
     <Folder Include="Pages\" />
     <Folder Include="Views\Shared\" />
     <Folder Include="wwwroot\css\" />
@@ -1767,6 +1770,12 @@
     <None Include="wwwroot\admin\plugins\uplot\uPlot.esm.js" />
     <None Include="wwwroot\admin\plugins\uplot\uPlot.iife.js" />
     <None Include="wwwroot\admin\plugins\uplot\uPlot.iife.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\Rotativa\wkhtmltopdf.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

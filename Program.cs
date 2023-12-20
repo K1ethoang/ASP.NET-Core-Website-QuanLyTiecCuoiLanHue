@@ -6,8 +6,10 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Rotativa.AspNetCore;
 using System.Globalization;
 using System.Net;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue
 {
@@ -15,7 +17,11 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue
     {
         public static async Task Main(string[] args)
         {
+
+
             var builder = WebApplication.CreateBuilder(args);
+            // -------------------------
+            RotativaConfiguration.Setup(builder.Environment.WebRootPath, "Rotativa");
 
             // Add services to the container.
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
