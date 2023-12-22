@@ -171,6 +171,15 @@
                             <i class="far fa-flag"></i> Đặt cọc 30%
                         </button>
                     }
+
+                    @if(Model.Invoice.PaymentTime != null)
+                    {
+                         <a asp-controller="Parties"
+                        asp-action="Export_Invoice"
+                        asp-route-id = "@Model.Invoice.InvoiceId"
+                        class = class="btn btn-success float-right mr-2"
+                        > Xuất hóa đơn</a>
+                    }
                 </div>
             </div>
         </div>
@@ -200,7 +209,7 @@
                     "url": url,
                     "dataType": "json",
                     "contentType": "application/json;charset=utf-8",
-                    "data": JSON.stringify(data),
+                    "data": JSON.stringify(data),   
                     success: function (response) {
 
                         console.log("success!" + response);
