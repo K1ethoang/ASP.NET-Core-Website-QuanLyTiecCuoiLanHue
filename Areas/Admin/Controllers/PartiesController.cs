@@ -19,6 +19,7 @@ using System.Collections.Immutable;
 using System.Text;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Rotativa.AspNetCore;
 
 namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 {
@@ -487,6 +488,32 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
             return Json(Ok());
         }
 
+        public async Task<IActionResult> Export_Invoice(int id)
+        {
+            var party = _context.Parties?
+                .Include(p => p.Customer)
+                .Include(p => p.Invoices)
+                .ThenInclude(iv => iv.DetailInvoices)
+                .ThenInclude(di => di.Dish)
+                .FirstOrDefault(e => e.PartyId == id);
 
+            InvoiceDetailsViewModel viewModel = _context.Invoices.Include(dv => dv.DetailInvoices)
+                .Where(v => v.InvoiceId == id)
+                .Select(v => new InvoiceDetailsViewModel()
+                {
+                    PartyId = id,
+                    Party = party,
+                    Invoice = party.Invoices.FirstOrDefault(),
+                    InvoiceId = party.Invoices.FirstOrDefault().InvoiceId,
+                    DetailInvoices = party.Invoices.FirstOrDefault().DetailInvoices,
+                    Customer = party.Customer,
+                }).FirstOrDefault();
+            return new ViewAsPdf("Export_Invoice", viewModel)
+            {
+                FileName = $"invoice {viewModel.InvoiceId}.pdf",
+                PageOrientation = Rotativa.AspNetCore.Options.Orientation.Portrait,
+                PageSize = Rotativa.AspNetCore.Options.Size.A4
+            };
+        }
     }
 }

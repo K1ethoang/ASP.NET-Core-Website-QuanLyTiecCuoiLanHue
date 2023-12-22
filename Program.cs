@@ -123,6 +123,9 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue
 
             app.MapRazorPages();
 
+            IWebHostEnvironment env = app.Environment;
+            Rotativa.AspNetCore.RotativaConfiguration.Setup(env.WebRootPath, "../PDF/Windows");                                                      
+
             app.Run();
         }
     }

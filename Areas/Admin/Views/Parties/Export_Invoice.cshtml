@@ -1,0 +1,213 @@
+﻿@using ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels
+@using ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Helpers
+@model InvoiceDetailsViewModel
+
+@{
+    Layout = null; 
+    ViewData["Title"] = "Hoá đơn";
+}
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Hóa đơn</title>
+    <style>
+        .contenedor {
+            width: 900px !important;
+            height: 842px !important;
+            margin: auto;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif
+        }
+
+        p.title {
+            font-weight: bold;
+        }
+
+        p.title2 {
+            font-weight: bold;
+            color: #03A99F;
+            font-size: 20px;
+        }
+
+        p.text {
+            font-size: 15px;
+            font-weight: 100;
+            color: #858585;
+        }
+
+        p {
+            margin: 0px
+        }
+
+        .tbth {
+            text-align: left;
+        }
+
+        table.tbproductos {
+            border-collapse: separate;
+            border-spacing: 4px;
+        }
+
+            table.tbproductos thead tr th {
+                background-color: #03A99F;
+                padding: 10px;
+                font-size: 15px;
+                color: white;
+            }
+
+            table.tbproductos tbody tr td {
+                padding: 10px;
+            }
+
+        .item {
+            font-size: 15px;
+            font-weight: 100;
+            color: #757575;
+        }
+
+        .item-2 {
+            font-size: 15px;
+            font-weight: bold;
+            color: #757575;
+        }
+
+        .item-3 {
+            font-size: 15px;
+            font-weight: bold;
+            background-color: #03A99F;
+            color: white;
+        }
+
+        .td-item {
+            border-bottom: 2px solid #E8E8E8 !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="contenedor">
+
+        <table style="width:100%">
+            <tr>
+                <td>
+                    <img src="~/img/LanHue.png" style="width: 250px;" />
+                </td>
+                <td style="text-align:right">
+                    <table style="margin-right:0;margin-left:auto">
+                        <tr><td><p class="title2">#Hóa đơn: @(Model.Invoice.InvoiceId)</p></td></tr>        
+                        <tr><td>@Model.Party.PartyName</td></tr>
+                        <tr><td>@DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")</td></tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <br />
+        <table style="width:100%">
+            <tr>
+                <td>
+                    <table>
+                        <tr>
+                            <td>
+                                <p class="title"><b>Hóa đơn:</b> #@Model.Invoice.InvoiceId</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p class="text"><b>Tên khách hàng:</b> @Model.Party.Customer.CusName</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p class="text"><b>Tên tiệc:</b> @Model.Party.PartyName</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p class="text"><b>Ngày tổ chức:</b> @Model.Party.Date</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p class="text"><b>Địa điểm tổ chức:</b> @Model.Party.Location</p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                
+            </tr>
+        </table>
+        <br />
+        <br />
+
+        <table class="tbproductos" style="width:100%">
+            <thead>
+                <tr>
+                    <th class="tbth">Tên món ăn</th>
+                    <th class="tbth" style="width:150px">Số lượng</th>
+                    <th class="tbth" style="width:150px">Đơn giá (đồng)</th>
+                    <th class="tbth" style="width:150px">Thành tiền (đồng)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    foreach (var item in Model.DetailInvoices)
+                    {
+                        <tr>
+                            <td class="td-item"><p class="item">@item.Dish.DishName</p></td>
+                            <td class="td-item"><p class="item">@item.Number</p></td>
+                            <td class="td-item"><p class="item">@Helper.FormatMoney(item.Price, false)</p></td>
+                            <td style="background-color:#EDF6F9"><p class="item">@Helper.FormatMoney(item.Amount, false)</p></td>
+                        </tr>
+
+                    }
+                }
+                <tr>
+                    <td colspan="2" rowspan="3">
+                    </td>
+                    <td class="td-item">
+                        <p class="item-2">Tổng tiền: </p>
+                    </td>
+                    <td class="item-3">
+                        <p>@Helper.FormatMoney(Model.Invoice.TotalPrice ?? 0, true)</p>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td class="item-3">
+                        <p>Tiền đặt cọc (30%): </p>
+                    </td>
+                    <td class="item-3">
+                        <p>@Helper.FormatMoney((Model.Invoice.TotalPrice ?? 0) * Convert.ToDecimal(0.3), true)</p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="item-3">
+                        <p>Thanh toán đợt 2: </p>
+                    </td>
+                    <td class="item-3">
+                        <p>@Helper.FormatMoney((Model.Invoice.TotalPrice ?? 0) * Convert.ToDecimal(0.7), true)</p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="item-3">
+                        <p>Ngày thanh toán: </p>
+                    </td>
+                    <td class="item-3">
+                        <p>@Model.Invoice.PaymentTime</p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+</body>
+</html>
