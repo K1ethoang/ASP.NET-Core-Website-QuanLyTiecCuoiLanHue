@@ -104,9 +104,10 @@
                                                     <td class="text-right">@Helper.FormatMoney(item.Price, false)</td>
                                                     <td class="text-right">@Helper.FormatMoney(item.Amount, false)</td>
                                                 </tr>
+                                    count++;
 
                                 }
-                                count++;
+                                
                             }
                             <tr>
                                 <th colspan="5" class="text-right">Tổng: @Helper.FormatMoney(Model.Invoice.TotalPrice??0, false) </th>
