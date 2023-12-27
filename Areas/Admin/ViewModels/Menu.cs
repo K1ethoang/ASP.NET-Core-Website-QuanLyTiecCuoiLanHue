@@ -1,7 +1,9 @@
 ﻿using ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Immutable;
 using System.ComponentModel;
+using System.Linq.Expressions;
 using static ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels.Menu;
 
 namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels
@@ -120,5 +122,14 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels
 	[BindProperty]
 		public int Id { get; set; } 
 		public List<MenuItem> Items { get; set; } = new List<MenuItem>();
+	}
+	[BindProperties]
+	public class EditMenuViewModel
+	{
+		public int PartyId { get; set; }
+		public int InvoiceId { get; set; }
+		public List<MiniMenuItem> OldMenu { get; set; } = new List<MiniMenuItem>();
+		public List<MiniMenuItem> NewMenu { get; set; } = new List<MiniMenuItem>();
+
 	}
 }
