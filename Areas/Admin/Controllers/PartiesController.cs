@@ -583,24 +583,35 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
         {
 
             //await Parallel.ForEachAsync(model.OldMenu, (item, token)=> { Console.WriteLine($"DishId = {item.DishId}; Qty = {item.Qty}");  });
-            foreach(var item in model.OldMenu) Console.WriteLine($"DishId = {item.DishId}; Qty = {item.Qty}");
-            foreach(var item in model.NewMenu) Console.WriteLine($"DishId = {item.DishId}; Qty = {item.Qty}");
+            await Console.Out.WriteLineAsync("OLD MENU");
+            foreach (var item in model.OldMenu) Console.WriteLine($"DishId = {item.DishId}; Qty = {item.Qty}");
+            await Console.Out.WriteLineAsync("NEW MENU");
+            foreach (var item in model.NewMenu) Console.WriteLine($"DishId = {item.DishId}; Qty = {item.Qty}");
 
-            var compareNewToOld = model.OldMenu.Except(model.NewMenu);
-            var compareOldToNew = model.NewMenu.Except(model.OldMenu);
+            IEnumerable<MiniMenuItem> compareNewToOld = model.NewMenu.Except(model.OldMenu);
+            IEnumerable<MiniMenuItem> compareOldToNew = new List<MiniMenuItem>();
+            if (model.OldMenu.Count > model.NewMenu.Count)
+            {
+             compareOldToNew = model.OldMenu.Except(model.NewMenu);
 
-            if (!(compareNewToOld.Any() && compareOldToNew.Any()))
+            }
+
+
+            if (!compareNewToOld.Any() )
             {
                 Console.WriteLine("NO CHANGES");
                 return RedirectToAction("Index");
             }
 
-			List<MiniMenuItem> changes = compareNewToOld.Concat(compareOldToNew).ToList();
-			List<MiniMenuItem> newEntries = model.OldMenu.Where(i => changes.All(_i => _i.DishId != i.DishId)).ToList();
+			List<MiniMenuItem> changes = (compareOldToNew != null || compareOldToNew.Any())? compareNewToOld.Concat(compareOldToNew).ToList() : compareNewToOld.ToList();
+            await Console.Out.WriteLineAsync("CHANGES");
+            foreach (var item in changes) Console.WriteLine($"DishId = {item.DishId}; Qty = {item.Qty}");
+            List<MiniMenuItem> newEntries = model.OldMenu.Where(i => changes.All(_i => _i.DishId != i.DishId)).ToList();
 			if (newEntries.Any())
 			{
 				changes.RemoveAll(i => newEntries.Contains(i));
-			}
+                Console.WriteLine("RM NEW ENTRIES");
+            }
 			// list of dishIDs from changes in ascending order
 			ImmutableArray<int> changes_dishId = changes.Select(i => i.DishId).Order().ToImmutableArray();
 			// create new detail_invoice for new entries, async
@@ -612,7 +623,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 
 			foreach (var entry in UpdatingDetailInvoices)
 			{
-                if (!changes.Any()) { break; }
+                
 
                 MiniMenuItem item = changes.FirstOrDefault(i => i.DishId == entry.DishId);
 
@@ -627,7 +638,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 
             await _context.SaveChangesAsync();
 
-            return View();
+            return RedirectToAction("Details", new {id = model.PartyId});
         }
 
         private async Task CreateInvoiceDetailsRange(int id, ICollection<MiniMenuItem> items)
