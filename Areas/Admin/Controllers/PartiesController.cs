@@ -581,27 +581,51 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> EditMenu(EditMenuViewModel model)
         {
+
+            //await Parallel.ForEachAsync(model.OldMenu, (item, token)=> { Console.WriteLine($"DishId = {item.DishId}; Qty = {item.Qty}");  });
+            foreach(var item in model.OldMenu) Console.WriteLine($"DishId = {item.DishId}; Qty = {item.Qty}");
+            foreach(var item in model.NewMenu) Console.WriteLine($"DishId = {item.DishId}; Qty = {item.Qty}");
+
             var compareNewToOld = model.OldMenu.Except(model.NewMenu);
             var compareOldToNew = model.NewMenu.Except(model.OldMenu);
 
             if (!(compareNewToOld.Any() && compareOldToNew.Any()))
             {
+                Console.WriteLine("NO CHANGES");
                 return RedirectToAction("Index");
             }
 
-            List<MiniMenuItem> changes = compareNewToOld.Concat(compareOldToNew).ToList();
-            List<MiniMenuItem> newEntries = model.OldMenu.Where(i => changes.All(_i => _i.DishId != i.DishId)).ToList();
-            if (!newEntries.Any())
-            {
-                return RedirectToAction("Index");
+			List<MiniMenuItem> changes = compareNewToOld.Concat(compareOldToNew).ToList();
+			List<MiniMenuItem> newEntries = model.OldMenu.Where(i => changes.All(_i => _i.DishId != i.DishId)).ToList();
+			if (newEntries.Any())
+			{
+				changes.RemoveAll(i => newEntries.Contains(i));
+			}
+			// list of dishIDs from changes in ascending order
+			ImmutableArray<int> changes_dishId = changes.Select(i => i.DishId).Order().ToImmutableArray();
+			// create new detail_invoice for new entries, async
+			Task addNewEntries = CreateInvoiceDetailsRange(model.InvoiceId, newEntries);
+			// get entity-type entries to be updated
+			var UpdatingDetailInvoices = _context.DetailInvoices
+				.Where(i => i.InvoiceId == model.InvoiceId && changes_dishId.Contains(i.DishId))
+				.AsTracking();
+
+			foreach (var entry in UpdatingDetailInvoices)
+			{
+                if (!changes.Any()) { break; }
+
+                MiniMenuItem item = changes.FirstOrDefault(i => i.DishId == entry.DishId);
+
+                if (item == null) { break; }
+
+                entry.Number = item.Qty;
+                entry.Price = item.Price;
+                entry.Amount = item.Price * item.Qty;
             }
 
-            changes.RemoveAll(i => newEntries.Contains(i));
-            ImmutableArray<int> changes_dishId = changes.Select(i=>i.DishId).ToImmutableArray();
+            Task.WaitAll(addNewEntries);
 
-            Task addNewEntries = CreateInvoiceDetailsRange(model.InvoiceId, newEntries);
-
-            //Task<IQueryable<DetailInvoice>> getUpdatingDetailInvoices = _context.DetailInvoices.Where(i=>i.InvoiceId == model.InvoiceId && changes_dishId.Contains(i.DishId));
+            await _context.SaveChangesAsync();
 
             return View();
         }

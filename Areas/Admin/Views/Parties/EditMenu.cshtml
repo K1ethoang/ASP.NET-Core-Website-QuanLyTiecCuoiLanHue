@@ -31,15 +31,16 @@
 </div>
 <section class="container">
     <div class="container-fluid">
-        <button class="btn btn-warning mb-2">Lưu</button>
+        @Html.BeginForm(method: FormMethod.Post,actionName:"EditMenu",controllerName:"Parties",htmlAttributes:new{@class="form"}){
+
+        <input type="submit" class="btn btn-warning mb-2" value="Luu"/>
         <div class="card card-primary">
             <div class="card-header">
                 <h5>THỰC ĐƠN ĐANG CHỌN</h5>
             </div>
             <div class="card-body-menu">
                 <div class="row">
-                    @* <form asp-action="createmenu" asp-controller="parties" method="post"> *@
-
+                  
                     <div class="col-12 table-responsive">
                         <table class="table table-striped">
                             <thead>
@@ -81,9 +82,10 @@
                             </tbody>
                         </table>
                     </div>
-                    @* </form> *@
+          
                 </div>
             </div>
+        }
         </div>
     </div>
 </section>
