@@ -352,7 +352,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 					UnitName = d.Unit.UnitName,
 					DishType = d.DishType.TypeName,
 					Qty = 0,
-					//Selected = false,
+					Selected = false,
 					Price = (int)d.Price,
 				})
 				.ToListAsync();
@@ -530,14 +530,12 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 			}
 
 			int invoiceId = foundInvoice.InvoiceId;
-
-            // repo
-            var repository = _context.DetailInvoices
-				.Include(di => di.Dish)
-				.ThenInclude(di => di.Unit);
+			         
 			// get items
-			List<MiniMenuItem> items = repository
+			List<MiniMenuItem> items = _context.DetailInvoices
                 .Where(di => di.InvoiceId.Equals(invoiceId))
+                .Include(di => di.Dish)
+                .ThenInclude(di => di.Unit)
                 .Select(di => new MiniMenuItem
 				{
 					DishId = di.DishId,
@@ -558,15 +556,19 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 			IEnumerable<int> checkedList = items.Select(i => i.DishId);
 			// view data
 			ViewData["CheckedList"] = checkedList;
-			ViewData["Repository"] = repository
-				.Select(i => new MenuItem()
+			ViewData["Repository"] = _context.Dishes
+				.Include(i => i.Unit)
+				.Include(i => i.DishType)
+				.Select(i => new MenuItem
 				{
 					DishId = i.DishId,
-					DishName = i.Dish.DishName,
-					DishType = i.Dish.DishType.TypeName,
-					UnitName = i.Dish.Unit.UnitName,
-					Price = (int)i.Dish.Price
+					DishName = i.DishName,
+					Price = (int)i.Price,
+					DishType = i.DishType.TypeName,
+					UnitName = i.Unit.UnitName,
+					Selected = checkedList.Contains(i.DishId)
 				})
+				//.OrderBy(i => i.Selected)
 				.ToImmutableArray();
 
 			return View(model);
