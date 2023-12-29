@@ -21,6 +21,9 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Rotativa.AspNetCore;
 using System.Collections;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using System.Threading.Channels;
+using ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Helpers;
 
 namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 {
@@ -594,64 +597,56 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
             await Console.Out.WriteLineAsync("NEW MENU");
             foreach (var item in model.NewMenu) Console.WriteLine($"DishId = {item.DishId}; Qty = {item.Qty}");
 
-            IEnumerable<MiniMenuItem> compareNewToOld = model.NewMenu.Except(model.OldMenu);
-            IEnumerable<MiniMenuItem> compareOldToNew = new List<MiniMenuItem>();
-            if (model.OldMenu.Count > model.NewMenu.Count)
+            // count
+            int count_old = model.OldMenu.Count;
+            int count_new = model.NewMenu.Count;
+
+            // dish ids
+            ImmutableArray<int> ints_new = model.NewMenu.Select(i => i.DishId).ToImmutableArray();
+            ImmutableArray<int> ints_old = model.OldMenu.Select(i => i.DishId).ToImmutableArray();
+            // deleted entry ids
+            ImmutableArray<int> ints_deleted = ints_old.Except(ints_new).ToImmutableArray();
+            // new entry ids
+            ImmutableArray<int> ints_added = ints_new.Except(ints_old).ToImmutableArray();
+            // delete entries
+            if (ints_deleted.Any())
             {
-             compareOldToNew = model.OldMenu.Except(model.NewMenu);
+                PrivateLogger.Log("REMOVING ENTRIES");
 
+                var DeletedEntries = _context.DetailInvoices.Where(i => i.InvoiceId == model.InvoiceId && ints_deleted.Contains(i.DishId));
+                _context.RemoveRange(DeletedEntries);
             }
-
-
-            if (!compareNewToOld.Any() )
+            // add entries
+            if (ints_added.Any())
             {
-                Console.WriteLine("NO CHANGES");
-                return RedirectToAction("Index");
+                PrivateLogger.Log("ADDING ENTRIES");
+
+                IEnumerable<MiniMenuItem> newEntries = model.NewMenu.Where(i => ints_added.Contains(i.DishId));
+                // create new entries
+                await CreateInvoiceDetailsRange(invoiceId: model.InvoiceId, newEntries);
             }
+            // modified entries
+            ImmutableArray<int> ints_modified = ints_new.Except(ints_added).Order().ToImmutableArray();
 
-			List<MiniMenuItem> changes = (compareOldToNew != null || compareOldToNew.Any())? compareNewToOld.Concat(compareOldToNew).ToList() : compareNewToOld.ToList();
-            await Console.Out.WriteLineAsync("CHANGES");
-            foreach (var item in changes) Console.WriteLine($"DishId = {item.DishId}; Qty = {item.Qty}");
-            List<MiniMenuItem> newEntries = model.OldMenu.Where(i => changes.All(_i => _i.DishId != i.DishId)).ToList();
-			if (newEntries.Any())
-			{
-				changes.RemoveAll(i => newEntries.Contains(i));
-                Console.WriteLine("RM NEW ENTRIES");
+            if (ints_modified.Any())
+            {
+                PrivateLogger.Log("MODIFYING ENTRIES");
+
+                IEnumerable<MiniMenuItem> ModifiedEntries = model.NewMenu.Where(i => ints_modified.Contains(i.DishId)).OrderBy(i => i.DishId);
+
+                await ModifyInvoiceDetailsRange(invoiceId: model.InvoiceId, ints_modified, ModifiedEntries);
             }
-			// list of dishIDs from changes in ascending order
-			ImmutableArray<int> changes_dishId = changes.Select(i => i.DishId).Order().ToImmutableArray();
-			// create new detail_invoice for new entries, async
-			Task addNewEntries = CreateInvoiceDetailsRange(model.InvoiceId, newEntries);
-			// get entity-type entries to be updated
-			var UpdatingDetailInvoices = _context.DetailInvoices
-				.Where(i => i.InvoiceId == model.InvoiceId && changes_dishId.Contains(i.DishId))
-				.AsTracking();
-
-			foreach (var entry in UpdatingDetailInvoices)
-			{
-                
-
-                MiniMenuItem item = changes.FirstOrDefault(i => i.DishId == entry.DishId);
-
-                if (item == null) { break; }
-
-                entry.Number = item.Qty;
-                entry.Price = item.Price;
-                entry.Amount = item.Price * item.Qty;
-            }
-
-            Task.WaitAll(addNewEntries);
 
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("Details", new {id = model.PartyId});
+            return RedirectToAction("Details", new { id = model.PartyId });
         }
 
-        private async Task CreateInvoiceDetailsRange(int id, ICollection<MiniMenuItem> items)
+        private async Task CreateInvoiceDetailsRange(int invoiceId, IEnumerable<MiniMenuItem> items)
         {
-            ICollection<DetailInvoice> di_list = items.Select(item => new DetailInvoice()
+            IEnumerable<DetailInvoice> di_list = items.Select(item => new DetailInvoice()
             {
-                InvoiceId = id,
+                InvoiceId = invoiceId,
                 DishId = item.DishId,
                 Number = item.Qty,
                 Price = item.Price,
@@ -660,6 +655,30 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
             .ToImmutableArray();
 
             await _context.DetailInvoices.AddRangeAsync(di_list);
+            await _context.SaveChangesAsync();
+        }
+        private async Task ModifyInvoiceDetailsRange(int invoiceId, IEnumerable<int> ints, IEnumerable<MiniMenuItem> entries)
+        {
+            // get entity-type entries to be updated
+            var UpdatingDetailInvoices = _context.DetailInvoices
+                .Where(i => i.InvoiceId == invoiceId && ints.Contains(i.DishId))
+                .AsTracking();
+
+            foreach (var entry in UpdatingDetailInvoices)
+            {
+                MiniMenuItem item = entries.FirstOrDefault(i => i.DishId == entry.DishId)!;
+
+                if (item == null)
+                {
+                    PrivateLogger.LogWarning("item id not found.");
+                    continue;
+                }
+
+                entry.Number = item.Qty;
+                entry.Price = item.Price;
+                entry.Amount = item.Price * item.Qty;
+            }
+
             await _context.SaveChangesAsync();
         }
     }
