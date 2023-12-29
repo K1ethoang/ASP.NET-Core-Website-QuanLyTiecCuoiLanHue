@@ -442,6 +442,10 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 
 				await CreateInvoiceDetailsRange(invoiceId, items);
 
+				var foundParty = _context.Parties.FirstOrDefault(p=>p.PartyId == id);
+				foundParty!.HasMenu = true;
+				await _context.SaveChangesAsync();
+
 				return Json(Ok());
 			}
 
@@ -505,7 +509,7 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 				return NotFound();
 			}
 
-			if (foundInvoice.PaymentTime != null || foundInvoice.Deposit != null)
+			if (foundInvoice.PaymentTime != null || foundInvoice.Deposit >0)
 			{
 				TempData["ErrorMessage1"] = "Tiệc đã được đặt cọc hoặc đã thanh toán";
 				return RedirectToAction("Index");

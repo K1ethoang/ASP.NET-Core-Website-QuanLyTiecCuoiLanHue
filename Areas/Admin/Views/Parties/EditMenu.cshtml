@@ -204,7 +204,7 @@
 
 		function deleteItem(dish_id) {
 			$('.list-menu').find(`#menu-${dish_id}`).remove();
-			let indexToRemove = list.map(x => x.id).indexOf(dish_id);
+			let indexToRemove = list.map(x => x.dishId).indexOf(dish_id);
 			list.splice(indexToRemove, 1);
 			$(`input:checkbox#cb-${dish_id}`).prop('checked', false);
 			updateMenuList();
