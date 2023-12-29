@@ -1,199 +1,203 @@
 ﻿@using ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels
 @model PartyDetailsViewModel
 @{
-    ViewData["Title"] = "Chi tiết";
+	ViewData["Title"] = "Chi tiết";
 }
 
 <!-- Content Header (Page header) -->
 <div class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1 class="m-0">@ViewData["Title"] #@(Model.PartyId) @Model.PartyName</h1>
-            </div>
-        </div>
-    </div>
-    <!-- /.container-fluid -->
+	<div class="container-fluid">
+		<div class="row mb-2">
+			<div class="col-sm-6">
+				<h1 class="m-0">@ViewData["Title"] #@(Model.PartyId) @Model.PartyName</h1>
+			</div>
+		</div>
+	</div>
+	<!-- /.container-fluid -->
 </div>
 
 <!-- Main content -->
 <section class="content">
-    <div class="container-fluid">
-        <div class="card">
-            <div class="card-body">
-                <dl class="row mb-12">
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.PartyName)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.PartyName)
-                    </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.CustomerName)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.CustomerName)
-                    </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.Quantity)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.Quantity)
-                    </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.PartyTypeName)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.PartyTypeName)
-                    </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.Date)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.Date)
-                    </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.Time)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.Time)
-                    </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.Location)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.Location)
-                    </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.Status)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @{
-                            string status = Model.Status;
-                            string style = "";
+	<div class="container-fluid">
+		<div class="card">
+			<div class="card-body">
+				<dl class="row mb-12">
+					<dt class="col-sm-2">
+						@Html.DisplayNameFor(model => model.PartyName)
+					</dt>
+					<dd class="col-sm-10">
+						@Html.DisplayFor(model => model.PartyName)
+					</dd>
+					<dt class="col-sm-2">
+						@Html.DisplayNameFor(model => model.CustomerName)
+					</dt>
+					<dd class="col-sm-10">
+						@Html.DisplayFor(model => model.CustomerName)
+					</dd>
+					<dt class="col-sm-2">
+						@Html.DisplayNameFor(model => model.Quantity)
+					</dt>
+					<dd class="col-sm-10">
+						@Html.DisplayFor(model => model.Quantity)
+					</dd>
+					<dt class="col-sm-2">
+						@Html.DisplayNameFor(model => model.PartyTypeName)
+					</dt>
+					<dd class="col-sm-10">
+						@Html.DisplayFor(model => model.PartyTypeName)
+					</dd>
+					<dt class="col-sm-2">
+						@Html.DisplayNameFor(model => model.Date)
+					</dt>
+					<dd class="col-sm-10">
+						@Html.DisplayFor(model => model.Date)
+					</dd>
+					<dt class="col-sm-2">
+						@Html.DisplayNameFor(model => model.Time)
+					</dt>
+					<dd class="col-sm-10">
+						@Html.DisplayFor(model => model.Time)
+					</dd>
+					<dt class="col-sm-2">
+						@Html.DisplayNameFor(model => model.Location)
+					</dt>
+					<dd class="col-sm-10">
+						@Html.DisplayFor(model => model.Location)
+					</dd>
+					<dt class="col-sm-2">
+						@Html.DisplayNameFor(model => model.Status)
+					</dt>
+					<dd class="col-sm-10">
+						@{
+							string status = Model.Status;
+							string style = "";
 
-                            @switch (@status)
-                            {
-                                case Party.DONE:
-                                    style = "badge-success";
-                                    break;
-                                case Party.GOING_ON:
-                                    style = "badge-info";
-                                    break;
-                                default:
-                                    style = "badge-warning";
-                                    break;
-                            }
+							@switch (@status)
+							{
+								case Party.DONE:
+									style = "badge-success";
+									break;
+								case Party.GOING_ON:
+									style = "badge-info";
+									break;
+								default:
+									style = "badge-warning";
+									break;
+							}
 
-                            <span class="badge @style">@status</span>
-                        }
-                    </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.HasMenu)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @{
-                            if (Model.HasMenu)
-                            {
-                                <span class="badge badge-success">@Party.HAS_MENU</span>
-                            }
-                            else
-                            {
-                                <span class="badge badge-warning">@Party.NO_MENU</span>
-                            }
-                        }
-                    </dd>
+							<span class="badge @style">@status</span>
+						}
+					</dd>
+					<dt class="col-sm-2">
+						@Html.DisplayNameFor(model => model.HasMenu)
+					</dt>
+					<dd class="col-sm-10">
+						@{
+							if (Model.HasMenu)
+							{
+								<span class="badge badge-success">@Party.HAS_MENU</span>
+							}
+							else
+							{
+								<span class="badge badge-warning">@Party.NO_MENU</span>
+							}
+						}
+					</dd>
 
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.Note)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.Note)
-                    </dd>
-                </dl>
-                <div>
-                    @if (!Model.Status.Equals(Party.DONE))
-                    {
-                        @Html.ActionLink(
-                    linkText:"Chỉnh sửa tiệc",
-                    actionName: "edit",
-                    controllerName:"Parties",
-                    routeValues: new {id=@Model.PartyId},
-                    htmlAttributes: new{@class="btn btn-outline-primary mx-2",partyId=@Model.PartyId}
-                    )
-                    }
+					<dt class="col-sm-2">
+						@Html.DisplayNameFor(model => model.Note)
+					</dt>
+					<dd class="col-sm-10">
+						@Html.DisplayFor(model => model.Note)
+					</dd>
+				</dl>
+				<div>
+					@if (!Model.Status.Equals(Party.DONE))
+					{
+						@Html.ActionLink(
+					linkText:"Chỉnh sửa tiệc",
+					actionName: "edit",
+					controllerName:"Parties",
+					routeValues: new {id=@Model.PartyId},
+					htmlAttributes: new{@class="btn btn-outline-primary mx-2",partyId=@Model.PartyId}
+					)
+					}
 
-                    <a asp-action="Index" class="btn btn-outline-primary mx-2">Danh sách tiệc</a>
+					<a asp-action="Index" class="btn btn-outline-primary mx-2">Danh sách tiệc</a>
 
-                    @if (!Model.HasMenu)
-                    {
-                        @Html.ActionLink(
-                            linkText:"Chọn thực đơn",
-                            actionName: "CreateMenu",
-                            controllerName:"Parties",
-                    routeValues: new {id=@Model.PartyId},
-                    htmlAttributes: new{@class="btn btn-outline-primary mx-2",partyId=@Model.PartyId}
-                                 )
-                    }
-                    else
-                    {
-                        @Html.ActionLink(
-                    linkText:"Chỉnh sửa thực đơn",
-                    actionName: "CreateMenu",
-                    controllerName:"Parties",
-                    routeValues: new {id=@Model.PartyId},
-                    htmlAttributes: new{@class="btn btn-outline-primary mx-2",partyId=@Model.PartyId}
-                    )
-                        @Html.ActionLink(linkText:"Xem hóa đơn",
-                    actionName: "Get_Invoice",
-                    controllerName:"Parties",
-                    routeValues: new {id=@Model.PartyId},
-                    htmlAttributes: new{@class="btn btn-outline-primary mx-2",partyId=@Model.PartyId})
-                    }
+					@if (!Model.HasMenu)
+					{
+						@Html.ActionLink(
+							linkText:"Chọn thực đơn",
+					actionName: "CreateMenu",
+					controllerName:"Parties",
+					routeValues: new {id=@Model.PartyId},
+					htmlAttributes: new{@class="btn btn-outline-primary mx-2",partyId=@Model.PartyId}					)
+					}
+					else
+					{
+						if (Model.HasCharges)
+						{
+							@Html.ActionLink(
+								linkText:"Chỉnh sửa thực đơn",
+					actionName: "EditMenu",
+					controllerName:"Parties",
+					routeValues: new {id=@Model.PartyId},
+					htmlAttributes: new{@class="btn btn-outline-primary mx-2",partyId=@Model.PartyId}					)
 
-                    
-                </div>
-            </div>
-        </div>
+						}
 
-      
+						@Html.ActionLink(
+							linkText:"Xem hóa đơn",
+						actionName: "Get_Invoice",
+						controllerName:"Parties",
+						routeValues: new {id=@Model.PartyId},
+						htmlAttributes: new{@class="btn btn-outline-primary mx-2",partyId=@Model.PartyId})
+					}
 
-        @if (Model.DetailInvoices.Count() > 0)
-        {
-            <div class="container-fluid">
-                <div class="card card-primary">
-                    <div class="card-header">
-                        <h5>THỰC ĐƠN</h5>
-                    </div>
-                    <div class="card-body-menu">
-                        <div class="row">
-                            <div class="col-12 table-responsive">
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>Tên món ăn</th>
-                                            <th>Số lượng</th>
-                                            <th>Thành tiền</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var item in Model.DetailInvoices)
-                                        {
-                                            <tr>
-                                                <td>@item.Dish.DishName</td>
-                                                <td>@item.Number</td>
-                                                <td>@item.Amount.ToString("#,##").Replace(",",".") đ</td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        }
-    </div>
-    <!-- /.container-fluid -->
+
+				</div>
+			</div>
+		</div>
+
+
+
+		@if (Model.DetailInvoices.Count() > 0)
+		{
+			<div class="container-fluid">
+				<div class="card card-primary">
+					<div class="card-header">
+						<h5>THỰC ĐƠN</h5>
+					</div>
+					<div class="card-body-menu">
+						<div class="row">
+							<div class="col-12 table-responsive">
+								<table class="table table-striped">
+									<thead>
+										<tr>
+											<th>Tên món ăn</th>
+											<th>Số lượng</th>
+											<th>Thành tiền</th>
+										</tr>
+									</thead>
+									<tbody>
+										@foreach (var item in Model.DetailInvoices)
+										{
+											<tr>
+												<td>@item.Dish.DishName</td>
+												<td>@item.Number</td>
+												<td>@item.Amount.ToString("#,##").Replace(",",".") đ</td>
+											</tr>
+										}
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		}
+	</div>
+	<!-- /.container-fluid -->
 </section>
 <!-- /.content -->

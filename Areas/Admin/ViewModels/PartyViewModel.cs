@@ -124,6 +124,8 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.ViewModels
         public string Status { get; set; }
         [DisplayName("Mã tiệc")]
         public int PartyId { get; set; }
+        [DisplayName("Trạng thái thanh toán")]
+        public bool HasCharges { get; set; } // paymenttime!=null or deposit !=null
 
         public ICollection<DetailInvoice> DetailInvoices { get; set; } = new List<DetailInvoice>();
     }
