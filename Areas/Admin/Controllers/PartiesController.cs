@@ -66,6 +66,8 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
                 return NotFound();
             }
 
+            var foundInvoice = _context.Invoices.FirstOrDefault(i => i.PartyId == id);
+
             PartyDetailsViewModel viewModel = new PartyDetailsViewModel()
             {
                 PartyId = party.PartyId,
@@ -77,7 +79,8 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
                 Time = party.Time,
                 Location = party.Location,
                 Status = party.Status!,
-                HasMenu = party.HasMenu
+                HasMenu = party.HasMenu,
+                HasCharges = foundInvoice !=null || foundInvoice!.Deposit != null || foundInvoice!.PaymentTime != null,
             };
 
             var invoice = await _context.Invoices
@@ -533,7 +536,13 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
 
             if (foundInvoice == null)
             {
-                return RedirectToAction(nameof(Index));
+                return NotFound();
+            }
+
+            if (foundInvoice.PaymentTime!=null || foundInvoice.Deposit != null)
+            {
+				TempData["ErrorMessage1"] = "Tiệc đã được đặt cọc hoặc đã thanh toán";
+                return RedirectToAction("Index");
             }
 
             int invoiceId = foundInvoice.InvoiceId;
