@@ -6,8 +6,6 @@
 
 @{
     ViewData["Title"] = "Chọn món ăn";
-    ViewData["Count"] = Model.NewMenu.Count;
-
 }
 
 
@@ -21,7 +19,7 @@
             <div class="col-sm-6">
                 <div class="float-sm-right">
                     <a asp-area="admin" asp-controller="parties" asp-action="details" asp-route-id="@Model.PartyId">
-                        @* <i class="fas fa-arrow-left"></i> *@
+                        <i class="fas fa-arrow-left"></i>
                         Chi tiết tiệc
                     </a>
                 </div>
@@ -29,9 +27,9 @@
         </div>
     </div>
 </div>
+        @Html.BeginForm(method: FormMethod.Post,actionName:"EditMenu",controllerName:"Parties",htmlAttributes:new{@class="form"}){
 <section class="container">
     <div class="container-fluid">
-        @Html.BeginForm(method: FormMethod.Post,actionName:"EditMenu",controllerName:"Parties",htmlAttributes:new{@class="form"}){
 
         <input type="submit" class="btn btn-warning mb-2" value="Luu"/>
         <div class="card card-primary">
@@ -51,15 +49,11 @@
                                 </tr>
                             </thead>
                             <tbody class="list-menu">
-                                @for (int i = 0; i < ViewBag.Count; i++)
+                                @for (int i = 0; i < Model.NewMenu.Count; i++)
                                 {
-                                    <tr id="menu-@i">
+                                    <tr id="menu-@Model.NewMenu[i].DishId">
                                         <td>
-                                            <button onclick="deleteItem(@i)" id="btn-remove-@i">
-                                                <span style="color: red">
-                                                    <i class="fas fa-trash-can"></i>
-                                                </span>
-                                            </button>
+                                            <button onclick="deleteItem(@Model.NewMenu[i].DishId)" id="btn-remove-@Model.NewMenu[i].DishId">Delete</button>
                                         </td>
                                         <td>
                                             @{
@@ -73,6 +67,8 @@
                                                 new{@value=Model.NewMenu[i].DishName,@id=d_name})
                                             @Html.HiddenFor(m=>m.NewMenu[i].DishId,
                                                 new{@value=Model.NewMenu[i].DishId,@id=d_id})
+                                            @Html.HiddenFor(m=>m.NewMenu[i].Price,
+                                                new{@value=Model.NewMenu[i].Price})
                                         </td>
                                         <td>
                                             @Html.EditorFor(m=>m.NewMenu[i].Qty)
@@ -85,10 +81,23 @@
           
                 </div>
             </div>
-        }
         </div>
     </div>
 </section>
+<section style="display:none">
+    @Html.HiddenFor(m=>m.PartyId, new{@value = Model.PartyId})
+    @Html.HiddenFor(m=>m.InvoiceId, new{@value = Model.InvoiceId})
+    @for (int i = 0; i < Model.OldMenu.Count; i++)
+    {
+        <div>
+            @Html.HiddenFor(m=>m.OldMenu[i].DishId, new{@value=Model.OldMenu[i].DishId})
+            @Html.HiddenFor(m=>m.OldMenu[i].DishName, new{@value=Model.OldMenu[i].DishName})
+            @Html.HiddenFor(m=>m.OldMenu[i].Qty, new{@value=Model.OldMenu[i].Qty})
+            @Html.HiddenFor(m=>m.OldMenu[i].Price, new{@value=Model.OldMenu[i].Price})
+        </div>
+    }
+</section>
+        }
 
 <section class="container-fluid">
     <div class="card">
@@ -120,12 +129,14 @@
 
                     @foreach (var item in ViewBag.Repository)
                     {                          
-                                string cb_id = "cb-" + item.DishId;
+                        string cb_id = "cb-" + item.DishId;
+                        string d_id = "id-" + item.DishId;
+                        
                         <tr id="repo-@item.DishId">
                             <td>
                                 <input type="checkbox" id=@cb_id checked="@item.Selected" />
-                                <label for=@cb_id>@item.DishName</label>
-                                <input type="hidden" value=@item.DishId />
+                                <label id="lbl-@item.DishId" for=@cb_id>@item.DishName</label>
+                                <input type="hidden" id=@d_id value=@item.DishId />
 
                             </td>
                             <td id="dishtype-@item.DishId">
@@ -147,19 +158,89 @@
         </div>
     </div>
 </section>
+<section id="">
+
+</section>
 @section scripts{
     <script>
 
-        function deleteItem(id) {
-            $('.list-menu').find(`#menu-${id}`).remove();
+        function deleteItem(dish_id) {
+            $('.list-menu').find(`#menu-${dish_id}`).remove();
+            $(`input:checkbox#cb-${dish_id}`).prop('checked', false);
         }
     </script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            $('#list-repo > input:checkbox').on('click', fuction(){
+            $('input:checkbox').on('click', function (){
+
                 const id = $(this).attr('id').split('-')[1];
-                const dishName = $(`repo-${id}`).find('label').text();
-            })
+
+                if ($(this).prop('checked')) {
+
+                    console.log('checked')
+
+                    const $listMenu = $(".list-menu");
+                    const dishName = document.getElementById(`lbl-${id}`).innerHTML;
+
+                    console.log(dishName);
+
+                    const price = $(`input[type="hidden"]#price-${id}`).attr('value');
+                    const count = $(".list-menu tr").length;
+                    const index = (count > 0) ? count : 0;
+                    const name = `NewMenu[${index}].`;
+
+                    const input_DishName = $('<input>').attr({
+                        type: 'hidden',
+                        value: dishName,
+                        id: 'name-'.concat(id),
+                        name: name.concat('DishName')
+                    });
+                    const input_DishId = $('<input>').attr({
+                        type: 'hidden',
+                        value: id,
+                        id: 'id-'.concat(id),
+                        name: name.concat('DishId')
+                    });
+                    const input_Price = $('<input>').attr({
+                        type: 'hidden',
+                        value: price,
+                        name: name.concat('Price')
+                    });
+                    const input_Qty = $('<input>').attr({
+                        type: 'number',
+                        value: @ViewBag.MinQty,
+                        min: @ViewBag.MinQty,
+                        class: 'text-box single-line',
+                            name: name.concat('Qty')
+                    });
+
+                    const button = $('<button>').attr({
+                        id: 'btn-remove-'.concat(id),
+                        onclick: `deleteItem(${id})`
+                    }).text('Delete');
+
+                    const newEntry = $('<tr>').attr('id', `menu-${id}`);
+
+                    newEntry.append($('<td>').append(button));
+                    const dishNameCell = $('<td>').text(dishName);
+                    dishNameCell.append(input_DishName);
+                    dishNameCell.append(input_DishId);
+                    dishNameCell.append(input_Price);
+                    newEntry.append(dishNameCell);
+                    newEntry.append($('<td>').append(input_Qty));
+
+                    $listMenu.append(newEntry);
+                    console.log('list menu')
+
+                }
+
+                else {
+
+                    deleteItem(id);
+
+                }
+
+            });
         })
     </script>
 }

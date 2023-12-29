@@ -558,6 +558,8 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
             };
             // find intersection
             IEnumerable<int> checkedList = items.Select(i => i.DishId);
+            //
+
             // view data
             ViewData["CheckedList"] = checkedList;
             ViewData["Repository"] = _context.Dishes
@@ -574,6 +576,10 @@ namespace ASP.NET_Core_Website_QuanLyTiecCuoiLanHue.Areas.Admin.Controllers
                 })
                 .OrderBy(i => i.Selected == false)
                 .ToImmutableArray();
+
+            var foundParty = _context.Parties.FirstOrDefaultAsync(i => i.PartyId == id);
+            Task.WaitAny(foundParty);
+            ViewData["MinQty"] = foundParty.Result!.Quantity;
 
             return View(model);
         }
